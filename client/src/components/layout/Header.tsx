@@ -28,55 +28,55 @@ const Header = () => {
   };
 
   return (
-    <header className={`fixed w-full bg-white bg-opacity-95 shadow-sm z-50 transition-all duration-300 ${
-      scrolled ? 'py-2 shadow-md' : 'py-3'
+    <header className={`fixed w-full bg-transparent z-50 transition-all duration-300 ${
+      scrolled ? 'py-2 backdrop-blur-sm' : 'py-3'
     }`}>
       <div className="container mx-auto px-4 flex justify-between items-center">
         <Link href="/" className="flex items-center">
-          <img src={logoImage} alt="Kasa Serena Designs" className="h-10 md:h-12" />
+          <img src={logoImage} alt="Kasa Serena Designs" className="h-14 md:h-20" />
         </Link>
         
         <nav className="hidden md:flex space-x-6">
-          <Link href="/" className={`text-neutral-700 hover:text-primary transition-colors ${location === '/' ? 'text-primary' : ''}`}>
+          <Link href="/" className={`text-white font-medium hover:text-primary transition-colors ${location === '/' ? 'text-primary' : ''}`}>
             Inicio
           </Link>
-          <Link href="/design-studio" className={`text-neutral-700 hover:text-primary transition-colors ${location === '/design-studio' ? 'text-primary' : ''}`}>
+          <Link href="/design-studio" className={`text-white font-medium hover:text-primary transition-colors ${location === '/design-studio' ? 'text-primary' : ''}`}>
             Diseñador
           </Link>
-          <Link href="/#servicios" className="text-neutral-700 hover:text-primary transition-colors">
+          <Link href="/#servicios" className="text-white font-medium hover:text-primary transition-colors">
             Servicios
           </Link>
-          <Link href="/#estimador" className="text-neutral-700 hover:text-primary transition-colors">
+          <Link href="/#estimador" className="text-white font-medium hover:text-primary transition-colors">
             Estimador
           </Link>
-          <Link href="/#socios" className="text-neutral-700 hover:text-primary transition-colors">
+          <Link href="/#socios" className="text-white font-medium hover:text-primary transition-colors">
             Distribuidores
           </Link>
-          <Link href="/#contacto" className="text-neutral-700 hover:text-primary transition-colors">
+          <Link href="/#contacto" className="text-white font-medium hover:text-primary transition-colors">
             Contacto
           </Link>
         </nav>
         
         <div className="flex items-center space-x-3">
           <Link href="/design-studio" className="hidden md:inline-block">
-            <Button variant="default" className="bg-primary hover:bg-primary/90 text-white">
+            <Button variant="default" className="bg-primary hover:bg-primary/90 text-white border border-primary">
               Iniciar proyecto
             </Button>
           </Link>
           
           <button 
-            className="md:hidden text-neutral-700 hover:text-primary" 
+            className="md:hidden text-white hover:text-primary" 
             onClick={toggleMobileMenu}
           >
             <FaBars className="text-xl" />
           </button>
           
           {isAuthenticated ? (
-            <Link href="/profile" className="px-3 py-2 rounded-full bg-neutral-200 text-neutral-700 hover:bg-neutral-300 transition-colors">
+            <Link href="/profile" className="px-3 py-2 rounded-full bg-primary/20 backdrop-blur-sm text-white hover:bg-primary/30 transition-colors border border-primary/40">
               {user?.username?.charAt(0).toUpperCase() || <FaUser />}
             </Link>
           ) : (
-            <Link href="/login" className="px-3 py-2 rounded-full bg-neutral-200 text-neutral-700 hover:bg-neutral-300 transition-colors">
+            <Link href="/login" className="px-3 py-2 rounded-full bg-primary/20 backdrop-blur-sm text-white hover:bg-primary/30 transition-colors border border-primary/40">
               <FaUser />
             </Link>
           )}

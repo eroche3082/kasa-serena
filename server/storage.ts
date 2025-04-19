@@ -342,4 +342,190 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+import { db } from "./db";
+import { eq, and } from "drizzle-orm";
+
+export class DatabaseStorage implements IStorage {
+  async getUser(id: number): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user || undefined;
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user || undefined;
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const [user] = await db
+      .insert(users)
+      .values({
+        ...insertUser,
+        createdAt: new Date(),
+        role: insertUser.role || 'user',
+        fullName: insertUser.fullName || null,
+        isProfessional: insertUser.isProfessional || false,
+        stripeCustomerId: null,
+        stripeSubscriptionId: null
+      } as typeof users.$inferInsert)
+      .returning();
+    return user;
+  }
+
+  async updateUser(id: number, updates: Partial<User>): Promise<User> {
+    const [user] = await db
+      .update(users)
+      .set(updates)
+      .where(eq(users.id, id))
+      .returning();
+    return user;
+  }
+
+  async updateStripeCustomerId(userId: number, customerId: string): Promise<User> {
+    const [user] = await db
+      .update(users)
+      .set({ stripeCustomerId: customerId })
+      .where(eq(users.id, userId))
+      .returning();
+    return user;
+  }
+
+  async updateUserStripeInfo(userId: number, info: {id: string, subscriptionId: string}): Promise<User> {
+    const [user] = await db
+      .update(users)
+      .set({ 
+        stripeCustomerId: info.id,
+        stripeSubscriptionId: info.subscriptionId
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    return user;
+  }
+  
+  async getProjects(): Promise<Project[]> {
+    return db.select().from(projects);
+  }
+
+  async getProjectsByUser(userId: number): Promise<Project[]> {
+    return db.select().from(projects).where(eq(projects.userId, userId));
+  }
+
+  async getProject(id: number): Promise<Project | undefined> {
+    const [project] = await db.select().from(projects).where(eq(projects.id, id));
+    return project || undefined;
+  }
+
+  async createProject(insertProject: InsertProject): Promise<Project> {
+    const [project] = await db
+      .insert(projects)
+      .values({
+        ...insertProject,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        cost: null,
+        estimatedDeliveryTime: null,
+        aiAnalysis: null,
+        materialsList: null,
+        status: insertProject.status || 'draft'
+      })
+      .returning();
+    return project;
+  }
+
+  async updateProject(id: number, updates: Partial<Project>): Promise<Project> {
+    const [project] = await db
+      .update(projects)
+      .set({
+        ...updates,
+        updatedAt: new Date()
+      })
+      .where(eq(projects.id, id))
+      .returning();
+    return project;
+  }
+
+  async deleteProject(id: number): Promise<boolean> {
+    const result = await db
+      .delete(projects)
+      .where(eq(projects.id, id));
+    return true;
+  }
+  
+  async getMaterials(): Promise<Material[]> {
+    return db.select().from(materials);
+  }
+
+  async getMaterialsByType(type: string): Promise<Material[]> {
+    return db.select().from(materials).where(eq(materials.type, type));
+  }
+
+  async getMaterial(id: number): Promise<Material | undefined> {
+    const [material] = await db.select().from(materials).where(eq(materials.id, id));
+    return material || undefined;
+  }
+
+  async createMaterial(insertMaterial: InsertMaterial): Promise<Material> {
+    const [material] = await db
+      .insert(materials)
+      .values(insertMaterial)
+      .returning();
+    return material;
+  }
+  
+  async getDistributors(): Promise<Distributor[]> {
+    return db.select().from(distributors);
+  }
+
+  async getDistributor(id: number): Promise<Distributor | undefined> {
+    const [distributor] = await db.select().from(distributors).where(eq(distributors.id, id));
+    return distributor || undefined;
+  }
+
+  async createDistributor(insertDistributor: InsertDistributor): Promise<Distributor> {
+    const [distributor] = await db
+      .insert(distributors)
+      .values(insertDistributor)
+      .returning();
+    return distributor;
+  }
+  
+  async createMessage(insertMessage: InsertMessage): Promise<Message> {
+    const [message] = await db
+      .insert(messages)
+      .values({
+        ...insertMessage,
+        createdAt: new Date(),
+        isRead: false
+      })
+      .returning();
+    return message;
+  }
+
+  async getMessages(): Promise<Message[]> {
+    return db.select().from(messages);
+  }
+  
+  async createQuote(insertQuote: InsertQuote): Promise<Quote> {
+    const [quote] = await db
+      .insert(quotes)
+      .values({
+        ...insertQuote,
+        createdAt: new Date(),
+        status: 'pending'
+      })
+      .returning();
+    return quote;
+  }
+
+  async getQuotesByUser(userId: number): Promise<Quote[]> {
+    return db.select().from(quotes).where(eq(quotes.userId, userId));
+  }
+}
+
+// Usando la implementación de base de datos
+export const storage = new DatabaseStorage();

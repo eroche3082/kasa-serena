@@ -4,7 +4,7 @@ import { useAuth } from '@/context/AuthContext';
 import MobileMenu from './MobileMenu';
 import { FaUser, FaBars, FaHome } from 'react-icons/fa';
 import { Button } from '@/components/ui/button';
-import logoImage from '@/assets/logo.png';
+import logoImage from '@/assets/logo-new.png';
 
 const Header = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -33,7 +33,7 @@ const Header = () => {
     }`}>
       <div className="container mx-auto px-4 flex justify-between items-center">
         <Link href="/" className="flex items-center">
-          <img src={logoImage} alt="Kasa Serena Designs" className="h-14 md:h-20" />
+          <img src={logoImage} alt="Kasa Serena Designs" className="h-16 md:h-24 max-w-[200px] md:max-w-[300px]" />
         </Link>
         
         <nav className="hidden md:flex space-x-6">

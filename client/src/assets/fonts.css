@@ -1,0 +1,18 @@
+/* Fuentes personalizadas */
+@font-face {
+  font-family: 'Didonesque';
+  src: url('https://fonts-cdn.fontshare.com/wf/SLOFVJLK77ZFRROBNBTPHBKQTCLCCRLK/GDHBHIGTUKM4GVFUDM233R7CRXS5CFIR/TFJRCTZZ3PSE3UGAOBVBYF7FZQZXVNHC.woff2') format('woff2'),
+       url('https://fonts-cdn.fontshare.com/wf/SLOFVJLK77ZFRROBNBTPHBKQTCLCCRLK/GDHBHIGTUKM4GVFUDM233R7CRXS5CFIR/TFJRCTZZ3PSE3UGAOBVBYF7FZQZXVNHC.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Didonesque';
+  src: url('https://fonts-cdn.fontshare.com/wf/6SCCBVRDTTBZ3M4XABZ622TIDOGBIRLG/BVW6GJD7DOFKWCXNWPRJDUBH2P7GGNXJ/EKZVQHUDUMF74IHIMYE4QWAXVNUIIMSQ.woff2') format('woff2'),
+       url('https://fonts-cdn.fontshare.com/wf/6SCCBVRDTTBZ3M4XABZ622TIDOGBIRLG/BVW6GJD7DOFKWCXNWPRJDUBH2P7GGNXJ/EKZVQHUDUMF74IHIMYE4QWAXVNUIIMSQ.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

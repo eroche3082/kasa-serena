@@ -22,8 +22,8 @@ const ServiceCard = ({ image, title, features, link }: ServiceCardProps) => {
         <img src={image} alt={title} className="w-full h-full object-cover transition-transform group-hover:scale-105" />
       </div>
       <div className="p-5">
-        <h3 className="font-serif text-xl font-semibold uppercase mb-4 tracking-wide">{title}</h3>
-        <ul className="space-y-2 mb-5">
+        <h3 className="font-['Didonesque'] text-xl font-semibold uppercase mb-4 tracking-wide">{title}</h3>
+        <ul className="space-y-2 mb-5 font-['Poppins']">
           {features.map((feature, idx) => (
             <li key={idx} className="flex items-start">
               <FaCheck className="text-primary mt-1 mr-2 flex-shrink-0" />
@@ -31,7 +31,7 @@ const ServiceCard = ({ image, title, features, link }: ServiceCardProps) => {
             </li>
           ))}
         </ul>
-        <Link href={link} className="inline-flex items-center text-primary group-hover:underline font-medium">
+        <Link href={link} className="inline-flex items-center text-primary group-hover:underline font-medium font-['Poppins']">
           Ver más <FaArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
         </Link>
       </div>
@@ -78,8 +78,8 @@ const ServicesSection = () => {
       <div className="container mx-auto px-4">
         <div className="w-full border-t border-neutral-300 mb-10"></div>
         <div className="text-center mb-6">
-          <h2 className="font-serif text-3xl md:text-4xl font-light mb-6 tracking-wide uppercase">EN KASA SERENA, DISEÑAMOS Y CONSTRUIMOS COCINAS, PUERTAS, Y VENTANAS PERSONALIZADAS</h2>
-          <p className="text-lg text-neutral-600 max-w-4xl mx-auto">
+          <h2 className="font-['Didonesque'] text-3xl md:text-4xl font-light mb-6 tracking-wide uppercase">EN KASA SERENA, DISEÑAMOS Y CONSTRUIMOS COCINAS, PUERTAS, Y VENTANAS PERSONALIZADAS</h2>
+          <p className="text-lg text-neutral-600 max-w-4xl mx-auto font-['Poppins']">
             TENEMOS MÁS DE 20 AÑOS DE EXPERIENCIA. CREAMOS ESPACIOS ÚNICOS QUE COMBINAN ELEGANCIA, FUNCIONALIDAD Y DURABILIDAD.
           </p>
         </div>

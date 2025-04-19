@@ -1,0 +1,41 @@
+Crea una plataforma web interactiva y funcional llamada “Kasa Serena Designs”. Esta es una compañía especializada en diseño y construcción personalizada de cocinas, puertas, ventanas y gabinetes en Puerto Rico.
+
+La plataforma debe incluir:
+
+1. Página de presentación de la marca, con un diseño moderno, elegante y profesional (inspirado en arquitectura y diseño de interiores).
+2. Sistema de carga de fotos desde el celular o computadora para que los usuarios puedan subir imágenes de sus cocinas o espacios.
+3. Integración con Google Gemini (Vertex AI) para analizar las imágenes y extraer medidas, sugerencias de diseño, tipos de materiales y recomendaciones personalizadas.
+4. Estimador automático que muestre:
+   - Costo estimado de materiales
+   - Tiempo estimado de entrega e instalación
+   - Lista de utensilios o insumos requeridos
+   - Posibles advertencias si hay materiales en escasez
+5. Panel de selección interactiva con:
+   - Diferentes tipos de puertas, ventanas y gabinetes
+   - Opciones de colores, acabados y materiales
+   - Visualizador en tiempo real
+6. Un chatbot AI como asistente virtual que:
+   - Atienda preguntas sobre medidas, estilos, materiales
+   - Recomiende proveedores y fabricantes locales en Puerto Rico
+   - Ayude a completar pedidos
+7. Módulo de conexión con distribuidores/manufacturas locales para:
+   - Ver disponibilidad de materiales
+   - Solicitar cotizaciones o hacer pedidos desde la plataforma
+8. Dashboard para arquitectos, diseñadores y contratistas (versión SaaS):
+   - Crear cuentas profesionales
+   - Gestionar múltiples proyectos de clientes
+   - Usar las herramientas de AI para diseño, cotización y seguimiento
+9. Sección “Coming Soon” donde se muestran futuros módulos como:
+   - Diseño de piscinas personalizadas
+   - Containers inteligentes prediseñados para casas u oficinas sostenibles
+   - Energía renovable integrada
+10. Formulario de contacto, suscripción por correo y sistema de solicitudes de cotización
+
+Toda la plataforma debe estar optimizada para celular y escritorio, y lista para ser desplegada como SaaS. Usa Firebase para hosting y Firestore para almacenar datos de usuarios, proyectos y materiales. También debe integrar Stripe para pagos futuros.
+
+El diseño debe reflejar elegancia arquitectónica y tecnología de precisión. Utiliza componentes UI modernos con animaciones suaves y estructura limpia.
+
+Nombre oficial: **Kasa Serena Designs**
+Slogan sugerido: “Tu espacio, rediseñado con inteligencia”
+
+Crea el proyecto completo en Replit y déjalo listo para deploy.

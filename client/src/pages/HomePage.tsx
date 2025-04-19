@@ -1,10 +1,9 @@
 import HeroSection from '@/components/home/HeroSection';
 import ServicesSection from '@/components/home/ServicesSection';
-import DesignToolsSection from '@/components/home/DesignToolsSection';
+import MaterialsSection from '@/components/home/MaterialsSection';
+import ConsultingSection from '@/components/home/ConsultingSection';
 import EstimatorSection from '@/components/home/EstimatorSection';
 import DistributorsSection from '@/components/home/DistributorsSection';
-import ProfessionalDashboardSection from '@/components/home/ProfessionalDashboardSection';
-import ComingSoonSection from '@/components/home/ComingSoonSection';
 import ContactSection from '@/components/home/ContactSection';
 import { useEffect } from 'react';
 import { useLocation } from 'wouter';
@@ -42,11 +41,10 @@ const HomePage = () => {
     <main>
       <HeroSection />
       <ServicesSection />
-      <DesignToolsSection />
-      <EstimatorSection />
+      <MaterialsSection />
+      <ConsultingSection />
       <DistributorsSection />
-      <ProfessionalDashboardSection />
-      <ComingSoonSection />
+      <EstimatorSection />
       <ContactSection />
     </main>
   );

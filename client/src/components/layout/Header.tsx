@@ -4,6 +4,7 @@ import { useAuth } from '@/context/AuthContext';
 import MobileMenu from './MobileMenu';
 import { FaUser, FaBars, FaHome } from 'react-icons/fa';
 import { Button } from '@/components/ui/button';
+import logoImage from '@/assets/logo.png';
 
 const Header = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -31,17 +32,8 @@ const Header = () => {
       scrolled ? 'py-2 shadow-md' : 'py-3'
     }`}>
       <div className="container mx-auto px-4 flex justify-between items-center">
-        <Link href="/" className="flex items-center space-x-2">
-          <div className="flex items-center">
-            <h1 className="text-xl md:text-2xl font-serif font-light tracking-widest text-neutral-800">
-              <span>KASA</span>
-              <span className="font-light text-neutral-600">SERENA</span>
-            </h1>
-            <div className="h-6 mx-2 border-l border-primary"></div>
-            <span className="text-xs md:text-sm text-primary uppercase tracking-widest font-semibold">
-              Designs
-            </span>
-          </div>
+        <Link href="/" className="flex items-center">
+          <img src={logoImage} alt="Kasa Serena Designs" className="h-10 md:h-12" />
         </Link>
         
         <nav className="hidden md:flex space-x-6">

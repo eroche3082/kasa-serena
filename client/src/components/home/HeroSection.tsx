@@ -9,7 +9,7 @@ const HeroSection = () => {
 
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.playbackRate = 0.8; // Más lento para mejor efecto
+      videoRef.current.playbackRate = 1.0; // Velocidad normal
       videoRef.current.muted = isMuted;
     }
   }, [isMuted]);
@@ -19,7 +19,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section id="inicio" className="pt-24 md:pt-36 pb-24 md:pb-36 relative overflow-hidden bg-neutral-900">
+    <section id="inicio" className="h-screen w-full relative overflow-hidden bg-neutral-900">
       <div className="absolute top-0 left-0 w-full h-full bg-black opacity-40 z-10"></div>
       <div className="absolute top-0 left-0 w-full h-full z-0">
         <video 
@@ -44,20 +44,7 @@ const HeroSection = () => {
       </button>
       
       <div className="container mx-auto px-4 relative z-20 text-white h-full flex items-center justify-center">
-        <div className="text-center mt-8">
-          <div className="flex flex-col md:flex-row gap-6 justify-center mt-6">
-            <Link href="/login">
-              <Button className="w-full md:w-auto px-8 py-6 bg-primary hover:bg-primary/90 text-white text-lg tracking-wide">
-                INICIAR PROYECTO
-              </Button>
-            </Link>
-            <Link href="/servicios">
-              <Button variant="outline" className="w-full md:w-auto px-8 py-6 bg-transparent border border-white hover:bg-white/10 text-white text-lg tracking-wide">
-                VER SERVICIOS
-              </Button>
-            </Link>
-          </div>
-        </div>
+        {/* Contenido hero vacío - sin botones */}
       </div>
     </section>
   );

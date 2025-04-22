@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+import { DesignParams, DesignResult } from "./designGenerator";
 
 // El modelo más reciente de OpenAI es "gpt-4o" que fue lanzado el 13 de mayo de 2024. No cambiar esto a menos que sea solicitado explícitamente por el usuario
 const openai = new OpenAI({ 
@@ -55,7 +56,8 @@ export async function analyzeDesignImage(base64Image: string, projectType: strin
       response_format: { type: "json_object" },
     });
     
-    const result = JSON.parse(response.choices[0].message.content);
+    const content = response.choices[0].message.content || "{}";
+    const result = JSON.parse(content);
     
     return {
       description: result.description || "No se pudo analizar la descripción",
@@ -94,7 +96,7 @@ export async function generateDesignPreview(description: string, style: string, 
       quality: "standard",
     });
 
-    return response.data[0].url;
+    return response.data[0].url || "";
   } catch (error: any) {
     console.error("Error generando previsualización:", error);
     throw new Error(`Error al generar la previsualización: ${error.message}`);
@@ -126,7 +128,8 @@ export async function getDesignSuggestions(projectType: string, style: string, m
       response_format: { type: "json_object" },
     });
     
-    const result = JSON.parse(response.choices[0].message.content);
+    const content = response.choices[0].message.content || "{}";
+    const result = JSON.parse(content);
     return Array.isArray(result.suggestions) ? result.suggestions : [];
   } catch (error: any) {
     console.error("Error obteniendo sugerencias:", error);
@@ -169,7 +172,8 @@ export async function estimateDesignCost(projectType: string, materials: string[
       response_format: { type: "json_object" },
     });
     
-    const result = JSON.parse(response.choices[0].message.content);
+    const content = response.choices[0].message.content || "{}";
+    const result = JSON.parse(content);
     
     return {
       estimatedCost: result.estimatedCost || { min: 0, max: 0 },
@@ -179,5 +183,78 @@ export async function estimateDesignCost(projectType: string, materials: string[
   } catch (error: any) {
     console.error("Error estimando costos:", error);
     throw new Error(`Error al estimar costos: ${error.message}`);
+  }
+}
+
+// Generador de diseño personalizado con IA
+export async function generateDesign(params: DesignParams): Promise<DesignResult> {
+  try {
+    // 1. Genera la imagen basada en los parámetros
+    const imagePrompt = `Genera una imagen realista de ${
+      params.tipo === 'cocina' ? "una cocina" : 
+      params.tipo === 'puerta' ? "una puerta" : 
+      params.tipo === 'ventana' ? "una ventana" : 
+      params.tipo === 'gabinete' ? "un gabinete" : 
+      params.tipo === 'piscina' ? "una piscina" : "un elemento arquitectónico"
+    } con las siguientes características:
+    
+    Material: ${params.material}
+    Color: ${params.color}
+    Estilo: ${params.estilo}
+    Dimensiones: ${params.medidas}
+    ${params.extra ? `Características adicionales: ${params.extra}` : ""}
+    
+    La imagen debe ser fotorrealista, con buena iluminación, y mostrar los detalles de los materiales y colores mencionados.`;
+
+    const imageResponse = await openai.images.generate({
+      model: "dall-e-3",
+      prompt: imagePrompt,
+      n: 1,
+      size: "1024x1024",
+      quality: "standard",
+    });
+
+    const imageUrl = imageResponse.data[0].url || "";
+
+    // 2. Genera la descripción y los detalles
+    const detailsPrompt = `Proporciona los siguientes detalles para un diseño de ${params.tipo} con estas características:
+    
+    Material: ${params.material}
+    Color: ${params.color}
+    Estilo: ${params.estilo}
+    Dimensiones: ${params.medidas}
+    ${params.extra ? `Características adicionales: ${params.extra}` : ""}
+    
+    Proporciona en formato JSON:
+    1. Una descripción detallada del diseño y consejos de instalación (clave: "description")
+    2. Una lista de materiales necesarios (clave: "materials" como array)
+    3. Tiempo estimado de producción (clave: "estimatedTime" como string)`;
+
+    const detailsResponse = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        {
+          role: "system",
+          content: "Eres un experto en diseño arquitectónico y construcción con amplia experiencia en materiales, estilos y procesos de producción. Responde en español."
+        },
+        {
+          role: "user",
+          content: detailsPrompt
+        }
+      ],
+      response_format: { type: "json_object" },
+    });
+    
+    const details = JSON.parse(detailsResponse.choices[0].message.content);
+    
+    return {
+      imageUrl,
+      description: details.description || "No se pudo generar una descripción",
+      materials: Array.isArray(details.materials) ? details.materials : [],
+      estimatedTime: details.estimatedTime || "Tiempo no disponible"
+    };
+  } catch (error: any) {
+    console.error("Error generando diseño:", error);
+    throw new Error(`Error al generar el diseño: ${error.message}`);
   }
 }

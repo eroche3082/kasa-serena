@@ -1,0 +1,66 @@
+/**
+ * MEGAPROMPT Casa Serena – Generador AI de Diseño Visual
+ * Plataforma: Replit + Gemini API + Firebase
+ * Objetivo: Crear un sistema donde el usuario selecciona un tipo de diseño (puerta, ventana, gabinete, piscina, etc.),
+ * ingresa parámetros clave (material, color, estilo, medidas), y recibe un diseño generado por IA con imagen y especificaciones.
+ */
+
+// STEP 1 – ESTRUCTURA GENERAL DEL FEATURE
+
+export const casaSerenaDesignPrompt = ({
+  tipo,          // 'puerta', 'ventana', 'gabinete', 'piscina'
+  material,      // 'madera natural', 'aluminio negro', 'vidrio templado'
+  color,         // 'blanco', 'negro mate', 'turquesa'
+  estilo,        // 'moderno', 'minimalista', 'rústico', 'industrial'
+  medidas,       // '120x80 cm', '2.4m alto x 1.2m ancho'
+  extra,         // 'con panel solar integrado', 'resistente a humedad', etc.
+}: {
+  tipo: string;
+  material: string;
+  color: string;
+  estilo: string;
+  medidas: string;
+  extra?: string;
+}) => `
+You are an expert visual architectural designer using AI.
+
+Please generate a **high-quality AI image** of a **${tipo}** with the following attributes:
+- **Material:** ${material}
+- **Color:** ${color}
+- **Style:** ${estilo}
+- **Dimensions:** ${medidas}
+${extra ? `- **Extra features:** ${extra}` : ""}
+
+The design should be modern, clean and detailed. Center the object in the frame with realistic lighting and textures. Output format should be a **square, high-resolution render**.
+
+Return only:
+1. [Image]
+2. Short description of the design and potential installation tips
+3. Materials needed (estimated list)
+4. Estimated production time
+`;
+
+// STEP 2 – INTEGRACIÓN CON GEMINI (Vertex AI o DreamMina / SD API)
+import { generateImageWithGemini } from "./lib/gemini"; // o el wrapper que estés usando
+
+async function createDesignImage(params) {
+  const prompt = casaSerenaDesignPrompt(params);
+  const result = await generateImageWithGemini(prompt); // puede ser vía DALL·E, SDXL o Vertex
+  return result; // Imagen generada + descripción + materiales
+}
+
+// STEP 3 – FRONTEND IMPLEMENTACIÓN
+
+// Crear formulario en Replit frontend con select/input para cada uno:
+// [tipo] [material] [color] [estilo] [medidas] [extra]
+// Botón: “Generar Diseño con IA”
+
+// Al presionar el botón, llama a createDesignImage(params) y muestra:
+// - Imagen generada
+- Descripción
+- Lista de materiales
+- Tiempo estimado
+
+// STEP 4 – FLUJO DE ENTREGA
+// Enviar resultados al cliente vía email, PDF descargable o carpeta Firebase (opcional)
+

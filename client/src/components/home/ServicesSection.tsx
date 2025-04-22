@@ -7,6 +7,10 @@ import {
   FaCheck
 } from 'react-icons/fa6';
 import { RiArchiveDrawerFill } from 'react-icons/ri';
+// Importar imágenes correctamente desde la ruta exacta
+import woodenDoorImg from '../../assets/images/wooden-door-1.jpg';
+import woodenWindowImg from '../../assets/images/wooden-window-1.jpg';
+import kitchenWoodenImg from '../../assets/images/kitchen-wooden-3.jpg';
 
 interface ServiceCardProps {
   image: string;
@@ -42,7 +46,7 @@ const ServiceCard = ({ image, title, features, link }: ServiceCardProps) => {
 const ServicesSection = () => {
   const services = [
     {
-      image: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+      image: woodenDoorImg,
       title: "PUERTAS DE ENSUEÑO",
       features: [
         "Diseños Personalizados: Cada puerta es única, adaptada a tus gustos y necesidades.",
@@ -52,7 +56,7 @@ const ServicesSection = () => {
       link: "/design-studio?type=puerta"
     },
     {
-      image: "https://images.unsplash.com/photo-1560185007-5f0bb1866cab?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+      image: woodenWindowImg,
       title: "VENTANAS QUE INSPIRAN",
       features: [
         "Diseño Personalizado: Cada ventana se adapta a tus necesidades estéticas y funcionales.",
@@ -62,7 +66,7 @@ const ServicesSection = () => {
       link: "/design-studio?type=ventana"
     },
     {
-      image: "https://images.unsplash.com/photo-1588854337236-6889d631faa8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+      image: kitchenWoodenImg,
       title: "COCINAS QUE CAUTIVAN",
       features: [
         "Cocinas Modernas: Líneas limpias, colores neutros y electrodomésticos integrados.",

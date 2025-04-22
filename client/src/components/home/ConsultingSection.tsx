@@ -1,5 +1,6 @@
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
+import familyKitchenImg from '../../assets/images/family-kitchen-1.jpg';
 
 const ConsultingSection = () => {
   return (
@@ -8,7 +9,7 @@ const ConsultingSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div>
             <img 
-              src="https://images.unsplash.com/photo-1531971589569-0d9370cbe1e5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
+              src={familyKitchenImg} 
               alt="Cocina moderna diseñada por Kasa Serena" 
               className="rounded-md w-full h-auto object-cover shadow-lg"
             />

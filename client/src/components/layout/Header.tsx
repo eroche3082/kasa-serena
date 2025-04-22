@@ -43,6 +43,9 @@ const Header = () => {
           <Link href="/design-studio" className={`text-white font-medium hover:text-primary transition-colors ${location === '/design-studio' ? 'text-primary' : ''}`}>
             Diseñador
           </Link>
+          <Link href="/design-generator" className={`text-white font-medium hover:text-primary transition-colors ${location === '/design-generator' ? 'text-primary' : ''}`}>
+            Generador IA
+          </Link>
           <Link href="/#servicios" className="text-white font-medium hover:text-primary transition-colors">
             Servicios
           </Link>

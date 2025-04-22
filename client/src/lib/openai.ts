@@ -245,7 +245,8 @@ export async function generateDesign(params: DesignParams): Promise<DesignResult
       response_format: { type: "json_object" },
     });
     
-    const details = JSON.parse(detailsResponse.choices[0].message.content);
+    const detailsContent = detailsResponse.choices[0].message.content || "{}";
+    const details = JSON.parse(detailsContent);
     
     return {
       imageUrl,

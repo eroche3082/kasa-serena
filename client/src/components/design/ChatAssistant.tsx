@@ -46,10 +46,12 @@ const ChatAssistant = () => {
     
     try {
       // Get response from AI assistant
-      const botResponse = await chatWithAssistant(
-        inputMessage, 
-        messages.map(msg => ({ role: msg.role, content: msg.content }))
-      );
+      const responseText = await chatWithAssistant(inputMessage);
+      
+      const botResponse: Message = {
+        role: 'assistant',
+        content: responseText
+      };
       
       setMessages(prev => [...prev, botResponse]);
     } catch (error) {

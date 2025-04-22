@@ -10,6 +10,7 @@ import ProfilePage from "@/pages/ProfilePage";
 import DashboardPage from "@/pages/DashboardPage";
 import LoginPage from "@/pages/LoginPage";
 import AIVisualizationDemo from "@/pages/AIVisualizationDemo";
+import DesignGeneratorPage from "@/pages/DesignGeneratorPage";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { useAuth } from "@/context/AuthContext";
@@ -34,6 +35,7 @@ function Router() {
         <Route path="/dashboard" component={DashboardPage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/ai-visualization" component={AIVisualizationDemo} />
+        <Route path="/design-generator" component={DesignGeneratorPage} />
         <Route component={NotFound} />
       </Switch>
       <Footer />

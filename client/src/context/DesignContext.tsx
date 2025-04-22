@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, ReactNode, useCallback } from 'react';
-import { analyzeImage, generateDesignSuggestions } from '@/lib/gemini';
+import { analyzeDesignImage as analyzeImage, getDesignSuggestions as generateDesignSuggestions } from '@/lib/gemini';
 import { useToast } from '@/hooks/use-toast';
 
 interface DesignContextType {
@@ -7,7 +7,7 @@ interface DesignContextType {
   setProjectType: (type: string) => void;
   uploadedImage: File | null;
   imagePreview: string | null;
-  uploadImage: (file: File) => Promise<void>;
+  uploadImage: (file: File) => Promise<string>;
   clearImage: () => void;
   isAnalyzing: boolean;
   analysisResult: any;
@@ -22,7 +22,7 @@ interface DesignContextType {
   estimatedTime: string | null;
   materialsList: any[];
   designSuggestions: string[];
-  generateCostEstimate: () => Promise<void>;
+  generateCostEstimate: () => Promise<{cost: number, time: string | null}>;
   saveCurrentDesign: (name: string, description?: string) => Promise<boolean>;
 }
 
@@ -93,33 +93,67 @@ export const DesignProvider = ({ children }: { children: ReactNode }) => {
     try {
       setIsAnalyzing(true);
       
-      // Analyze the image using Gemini API
-      const result = await analyzeImage(uploadedImage, projectType);
-      setAnalysisResult(result);
+      // Convert File to base64 for API call
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(uploadedImage);
       
-      // Set data from analysis
-      setEstimatedCost(result.estimatedCost);
-      setEstimatedTime(result.estimatedTime);
+      fileReader.onload = async () => {
+        try {
+          const base64String = fileReader.result?.toString().split(',')[1] || '';
+          
+          // Analyze the image using Gemini API
+          const result = await analyzeImage(base64String, projectType);
+          setAnalysisResult(result);
+          
+          // Transform the result to match our expected format
+          const transformedResult = {
+            estimatedCost: 0,
+            estimatedTime: "4-6 semanas",
+            materialRecommendations: result.materials.map(m => ({ name: m })),
+            designSuggestions: result.recommendations || [],
+          };
+          
+          // Set data from analysis
+          setEstimatedCost(transformedResult.estimatedCost);
+          setEstimatedTime(transformedResult.estimatedTime);
+          
+          if (transformedResult.materialRecommendations) {
+            setMaterialsList(transformedResult.materialRecommendations);
+          }
+          
+          if (transformedResult.designSuggestions) {
+            setDesignSuggestions(transformedResult.designSuggestions);
+          }
+          
+          toast({
+            title: "Análisis completado",
+            description: "La IA ha analizado tu imagen correctamente",
+          });
+        } catch (error) {
+          toast({
+            title: "Error procesando la imagen",
+            description: "No se pudo procesar la imagen para análisis",
+            variant: "destructive",
+          });
+        } finally {
+          setIsAnalyzing(false);
+        }
+      };
       
-      if (result.materialRecommendations) {
-        setMaterialsList(result.materialRecommendations);
-      }
-      
-      if (result.designSuggestions) {
-        setDesignSuggestions(result.designSuggestions);
-      }
-      
-      toast({
-        title: "Análisis completado",
-        description: "La IA ha analizado tu imagen correctamente",
-      });
+      fileReader.onerror = () => {
+        toast({
+          title: "Error leyendo la imagen",
+          description: "No se pudo leer la imagen",
+          variant: "destructive",
+        });
+        setIsAnalyzing(false);
+      };
     } catch (error) {
       toast({
         title: "Error en el análisis",
         description: "No se pudo analizar la imagen",
         variant: "destructive",
       });
-    } finally {
       setIsAnalyzing(false);
     }
   }, [uploadedImage, projectType, toast]);

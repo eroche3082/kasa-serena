@@ -1,41 +1,40 @@
+// Tipos para el generador de diseño visual con IA
+
+// Parámetros para la generación de diseño
 export interface DesignParams {
-  tipo: string;        // 'puerta', 'ventana', 'gabinete', 'piscina'
-  material: string;    // 'madera natural', 'aluminio negro', 'vidrio templado'
-  color: string;       // 'blanco', 'negro mate', 'turquesa'
-  estilo: string;      // 'moderno', 'minimalista', 'rústico', 'industrial'
-  medidas: string;     // '120x80 cm', '2.4m alto x 1.2m ancho'
-  extra?: string;      // 'con panel solar integrado', 'resistente a humedad', etc.
+  tipo: 'puerta' | 'ventana' | 'cocina' | 'gabinete' | 'piscina' | string;
+  material: string;
+  color: string;
+  estilo: string;
+  medidas: string;
+  extra?: string;
 }
 
-export const casaSerenaDesignPrompt = ({
-  tipo,
-  material,
-  color,
-  estilo,
-  medidas,
-  extra,
-}: DesignParams): string => `
-You are an expert visual architectural designer using AI.
-
-Please generate a **high-quality AI image** of a **${tipo}** with the following attributes:
-- **Material:** ${material}
-- **Color:** ${color}
-- **Style:** ${estilo}
-- **Dimensions:** ${medidas}
-${extra ? `- **Extra features:** ${extra}` : ""}
-
-The design should be modern, clean and detailed. Center the object in the frame with realistic lighting and textures. Output format should be a **square, high-resolution render**.
-
-Return only:
-1. [Image]
-2. Short description of the design and potential installation tips
-3. Materials needed (estimated list)
-4. Estimated production time
-`;
-
+// Resultado de la generación de diseño
 export interface DesignResult {
   imageUrl: string;
   description: string;
   materials: string[];
   estimatedTime: string;
 }
+
+// Categorías de materiales disponibles
+export const materialCategories = [
+  { id: 'madera', name: 'Maderas' },
+  { id: 'metal', name: 'Metales' },
+  { id: 'piedra', name: 'Piedras y mármoles' },
+  { id: 'vidrio', name: 'Vidrios' },
+  { id: 'ceramica', name: 'Cerámicas' },
+  { id: 'sintético', name: 'Materiales sintéticos' },
+];
+
+// Estilos disponibles
+export const availableStyles = [
+  { id: 'moderno', name: 'Moderno' },
+  { id: 'minimalista', name: 'Minimalista' },
+  { id: 'clasico', name: 'Clásico' },
+  { id: 'rustico', name: 'Rústico' },
+  { id: 'colonial', name: 'Colonial' },
+  { id: 'industrial', name: 'Industrial' },
+  { id: 'contemporaneo', name: 'Contemporáneo' },
+];

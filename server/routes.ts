@@ -15,6 +15,13 @@ import MemoryStore from "memorystore";
 import heicConvert from 'heic-convert';
 import { log } from "./vite";
 import { analyzeImage, generateDesignPreview, estimateDesignCost } from "./openai";
+import { 
+  generateDesign as generateDesignWithGemini, 
+  analyzeDesignImage as analyzeImageWithGemini,
+  getDesignSuggestions,
+  estimateDesignCost as estimateDesignCostWithGemini,
+  chatWithAssistant
+} from "./gemini";
 
 // Declare module to extend express-session
 declare module 'express-session' {
@@ -341,6 +348,113 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error: any) {
       log(`Error estimando costos: ${error.message}`, "api");
       res.status(500).json({ message: `Error estimando costos: ${error.message}` });
+    }
+  });
+  
+  // Nuevos endpoints para generador de diseño con Gemini
+  
+  // Endpoint para chat con asistente de diseño
+  app.post("/api/design-chat", async (req, res) => {
+    try {
+      const { message, projectType } = req.body;
+      
+      if (!message) {
+        return res.status(400).json({ 
+          message: "Se requiere un mensaje para el chat" 
+        });
+      }
+      
+      log(`Chat con asistente. Mensaje: ${message.substring(0, 50)}...`, "gemini-api");
+      
+      // Llamada a Gemini para procesar el chat
+      const response = await chatWithAssistant(
+        message, 
+        projectType || 'general'
+      );
+      
+      res.json(response);
+    } catch (error: any) {
+      log(`Error en chat con asistente: ${error.message}`, "gemini-api");
+      res.status(500).json({ message: `Error en chat con asistente: ${error.message}` });
+    }
+  });
+  
+  // Endpoint para generar diseño personalizado
+  app.post("/api/design-generator", async (req, res) => {
+    try {
+      const { tipo, material, color, estilo, medidas, extra } = req.body;
+      
+      if (!tipo || !material || !color || !estilo || !medidas) {
+        return res.status(400).json({ 
+          message: "Se requieren todos los campos: tipo, material, color, estilo, medidas" 
+        });
+      }
+      
+      log(`Generando diseño tipo: ${tipo}, estilo: ${estilo}`, "gemini-api");
+      
+      // Llamada a Gemini para generar diseño
+      const designResult = await generateDesignWithGemini({
+        tipo,
+        material,
+        color,
+        estilo,
+        medidas,
+        extra
+      });
+      
+      res.json(designResult);
+    } catch (error: any) {
+      log(`Error generando diseño: ${error.message}`, "gemini-api");
+      res.status(500).json({ message: `Error generando diseño: ${error.message}` });
+    }
+  });
+  
+  // Endpoint para analizar imagen con Gemini
+  app.post("/api/analyze-image-gemini", upload.single("image"), async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "No image uploaded" });
+      }
+      
+      const projectType = req.body.projectType || "cocina";
+      const imageBase64 = req.file.buffer.toString("base64");
+      
+      log(`Analizando imagen con Gemini para: ${projectType}`, "gemini-api");
+      
+      // Llamada a Gemini para analizar la imagen
+      const analysis = await analyzeImageWithGemini(imageBase64, projectType);
+      
+      res.json(analysis);
+    } catch (error: any) {
+      log(`Error analizando imagen: ${error.message}`, "gemini-api");
+      res.status(500).json({ message: `Error analizando imagen: ${error.message}` });
+    }
+  });
+  
+  // Endpoint para obtener sugerencias de diseño
+  app.post("/api/design-suggestions", async (req, res) => {
+    try {
+      const { projectType, style, materials } = req.body;
+      
+      if (!projectType || !style || !materials) {
+        return res.status(400).json({ 
+          message: "Se requieren todos los campos: projectType, style, materials" 
+        });
+      }
+      
+      log(`Generando sugerencias para: ${projectType}, estilo: ${style}`, "gemini-api");
+      
+      // Llamada a Gemini para obtener sugerencias
+      const suggestions = await getDesignSuggestions(
+        projectType,
+        style,
+        Array.isArray(materials) ? materials : [materials]
+      );
+      
+      res.json(suggestions);
+    } catch (error: any) {
+      log(`Error generando sugerencias: ${error.message}`, "gemini-api");
+      res.status(500).json({ message: `Error generando sugerencias: ${error.message}` });
     }
   });
   

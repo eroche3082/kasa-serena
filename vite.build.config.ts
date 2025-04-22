@@ -1,15 +1,14 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import * as cartographer from '@replit/vite-plugin-cartographer';
-import * as shadcnThemeJson from '@replit/vite-plugin-shadcn-theme-json';
 
 export default defineConfig({
-  plugins: [react(), cartographer(), shadcnThemeJson()],
+  plugins: [react()],
   build: {
     outDir: 'client/dist',
     emptyOutDir: true
   },
+  root: './client',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './client/src'),

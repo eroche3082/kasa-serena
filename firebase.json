@@ -1,11 +1,13 @@
 {
   "hosting": {
-    "public": "client/dist",
+    "public": "client/client/dist",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
     ],
+    "cleanUrls": true,
+    "trailingSlash": false,
     "rewrites": [
       {
         "source": "**",

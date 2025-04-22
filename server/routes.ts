@@ -20,7 +20,8 @@ import {
   analyzeDesignImage as analyzeImageWithGemini,
   getDesignSuggestions,
   estimateDesignCost as estimateDesignCostWithGemini,
-  chatWithAssistant
+  chatWithAssistant,
+  generateDesignFromPrompt
 } from "./gemini";
 
 // Declare module to extend express-session
@@ -405,6 +406,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(designResult);
     } catch (error: any) {
       log(`Error generando diseño: ${error.message}`, "gemini-api");
+      res.status(500).json({ message: `Error generando diseño: ${error.message}` });
+    }
+  });
+  
+  // Endpoint para generar diseño a partir de un prompt
+  app.post("/api/design-generator-prompt", async (req, res) => {
+    try {
+      const { prompt } = req.body;
+      
+      if (!prompt) {
+        return res.status(400).json({ 
+          message: "Se requiere un prompt para generar el diseño" 
+        });
+      }
+      
+      log(`Generando diseño desde prompt: ${prompt.substring(0, 50)}...`, "gemini-api");
+      
+      // Llamada a Gemini para generar diseño desde prompt
+      const designResult = await generateDesignFromPrompt(prompt);
+      
+      res.json(designResult);
+    } catch (error: any) {
+      log(`Error generando diseño desde prompt: ${error.message}`, "gemini-api");
       res.status(500).json({ message: `Error generando diseño: ${error.message}` });
     }
   });

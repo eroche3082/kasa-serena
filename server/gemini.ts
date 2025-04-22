@@ -133,3 +133,56 @@ export async function estimateDesignCost(projectType: string, materials: string[
     throw new Error(`Error al estimar costos: ${error.message}`);
   }
 }
+
+// Función para generar diseño a partir de un prompt textual
+export async function generateDesignFromPrompt(prompt: string) {
+  try {
+    log(`Generando diseño a partir de prompt: ${prompt.substring(0, 50)}...`, "gemini");
+    
+    // Extraer información clave del prompt
+    let tipo = 'cocina';
+    let material = 'madera';
+    let color = 'natural';
+    let estilo = 'moderno';
+    let medidas = '120x200';
+    
+    if (prompt.toLowerCase().includes('puerta')) tipo = 'puerta';
+    else if (prompt.toLowerCase().includes('ventana')) tipo = 'ventana';
+    else if (prompt.toLowerCase().includes('cocina')) tipo = 'cocina';
+    else if (prompt.toLowerCase().includes('gabinete')) tipo = 'gabinete';
+    else if (prompt.toLowerCase().includes('closet')) tipo = 'closet';
+    
+    if (prompt.toLowerCase().includes('aluminio')) material = 'aluminio';
+    else if (prompt.toLowerCase().includes('vidrio')) material = 'vidrio';
+    else if (prompt.toLowerCase().includes('pvc')) material = 'pvc';
+    else if (prompt.toLowerCase().includes('acero')) material = 'acero';
+    
+    if (prompt.toLowerCase().includes('blanco')) color = 'blanco';
+    else if (prompt.toLowerCase().includes('negro')) color = 'negro';
+    else if (prompt.toLowerCase().includes('gris')) color = 'gris';
+    else if (prompt.toLowerCase().includes('café')) color = 'café';
+    
+    if (prompt.toLowerCase().includes('rústico')) estilo = 'rústico';
+    else if (prompt.toLowerCase().includes('minimalista')) estilo = 'minimalista';
+    else if (prompt.toLowerCase().includes('clásico')) estilo = 'clásico';
+    else if (prompt.toLowerCase().includes('industrial')) estilo = 'industrial';
+    
+    // En una implementación real, aquí se haría la llamada a la API de Gemini
+    // para generar el diseño basado en el análisis del prompt
+    
+    // Generar resultado con los parámetros extraídos
+    const result = await generateDesign({
+      tipo,
+      material,
+      color,
+      estilo,
+      medidas,
+      extra: prompt // Guardar el prompt completo como información adicional
+    });
+    
+    return result;
+  } catch (error: any) {
+    log(`Error generando diseño desde prompt: ${error.message}`, "gemini-error");
+    throw new Error(`Error al generar diseño desde prompt: ${error.message}`);
+  }
+}

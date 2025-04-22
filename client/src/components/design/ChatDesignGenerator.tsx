@@ -113,11 +113,11 @@ const ChatDesignGenerator = () => {
               type: 'options',
               content: 'Selecciona un material:',
               options: [
-                { value: 'Madera', label: 'Madera' },
-                { value: 'Aluminio', label: 'Aluminio' },
-                { value: 'PVC', label: 'PVC' },
-                { value: 'Vidrio', label: 'Vidrio' },
-                { value: 'Acero', label: 'Acero' }
+                { value: 'madera', label: 'Madera' },
+                { value: 'aluminio', label: 'Aluminio' },
+                { value: 'pvc', label: 'PVC' },
+                { value: 'vidrio', label: 'Vidrio' },
+                { value: 'acero', label: 'Acero' }
               ]
             }
           ]);
@@ -134,11 +134,11 @@ const ChatDesignGenerator = () => {
               type: 'options',
               content: 'Selecciona un color:',
               options: [
-                { value: 'Natural', label: 'Natural' },
-                { value: 'Blanco', label: 'Blanco' },
-                { value: 'Negro', label: 'Negro' },
-                { value: 'Gris', label: 'Gris' },
-                { value: 'Café', label: 'Café' }
+                { value: 'natural', label: 'Natural' },
+                { value: 'blanco', label: 'Blanco' },
+                { value: 'negro', label: 'Negro' },
+                { value: 'gris', label: 'Gris' },
+                { value: 'cafe', label: 'Café' }
               ]
             }
           ]);

@@ -3,9 +3,21 @@ import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
+
+// Componentes simples para reemplazar los que faltan
+const Separator = () => <hr className="my-4 border-t border-neutral-200" />;
+const Badge = ({ children, variant, className }: any) => (
+  <span className={`inline-block rounded-full px-3 py-1 text-sm font-medium ${
+    variant === 'secondary' ? 'bg-neutral-100 text-neutral-800' : 'bg-neutral-800 text-white'
+  } ${className}`}>
+    {children}
+  </span>
+);
+const Progress = ({ value, className }: any) => (
+  <div className={`w-full bg-neutral-200 rounded-full h-2.5 ${className}`}>
+    <div className="bg-neutral-600 h-2.5 rounded-full" style={{ width: `${value}%` }}></div>
+  </div>
+);
 import { FaImage, FaInfoCircle, FaEye, FaPaintBrush, FaCalculator, FaSave } from 'react-icons/fa';
 import { apiRequest } from '@/lib/queryClient';
 import { useAuth } from '@/context/AuthContext';

@@ -9,6 +9,7 @@ import DesignStudioPage from "@/pages/DesignStudioPage";
 import ProfilePage from "@/pages/ProfilePage";
 import DashboardPage from "@/pages/DashboardPage";
 import LoginPage from "@/pages/LoginPage";
+import AIVisualizationDemo from "@/pages/AIVisualizationDemo";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { useAuth } from "@/context/AuthContext";
@@ -32,6 +33,7 @@ function Router() {
         <Route path="/profile" component={ProfilePage} />
         <Route path="/dashboard" component={DashboardPage} />
         <Route path="/login" component={LoginPage} />
+        <Route path="/ai-visualization" component={AIVisualizationDemo} />
         <Route component={NotFound} />
       </Switch>
       <Footer />

@@ -14,6 +14,7 @@ import session from "express-session";
 import MemoryStore from "memorystore";
 import heicConvert from 'heic-convert';
 import { log } from "./vite";
+import { analyzeImage, generateDesignPreview, estimateDesignCost } from "./openai";
 
 // Declare module to extend express-session
 declare module 'express-session' {
@@ -28,49 +29,46 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
 });
 
-// Vertex AI/Gemini API integration
-async function analyzeImageWithGemini(imageBase64: string, projectType: string) {
+// OpenAI API integration for image analysis
+async function analyzeImageWithAI(imageBase64: string, projectType: string) {
   try {
-    // In a real implementation, we would call the Gemini API here
-    // For now, returning mock analysis data based on project type
-    let analysisResult: any = {
+    log(`Analizando imagen utilizando OpenAI para proyecto tipo: ${projectType}`, "analyze-image");
+    
+    // Llamar a la API de OpenAI para analizar la imagen
+    const analysis = await analyzeImage(imageBase64, projectType);
+    
+    // Transformar la respuesta al formato esperado por el cliente
+    const transformedResult = {
       dimensions: {
-        width: Math.floor(Math.random() * 300) + 100,
-        height: Math.floor(Math.random() * 300) + 100,
-        depth: Math.floor(Math.random() * 50) + 20
+        width: 0,
+        height: 0,
+        depth: 0
       },
-      materialRecommendations: [],
-      designSuggestions: [],
-      estimatedCost: Math.floor(Math.random() * 5000) + 2000,
-      estimatedTime: "3-4 semanas"
+      description: analysis.description,
+      style: analysis.style,
+      materialRecommendations: analysis.materials.map(material => ({ name: material })),
+      colorPalette: analysis.colors,
+      designSuggestions: analysis.recommendations,
+      estimatedCost: 0,
+      estimatedTime: ""
     };
     
-    if (projectType === "cocina") {
-      analysisResult.materialRecommendations = [
-        { name: "Laminado blanco mate", area: "12 m²" },
-        { name: "Cuarzo blanco", area: "2 m²" }
-      ];
-      analysisResult.designSuggestions = [
-        "Isla central con espacio de almacenamiento",
-        "Iluminación LED bajo gabinetes",
-        "Distribución en L para maximizar espacio"
-      ];
-    } else if (projectType === "puerta") {
-      analysisResult.materialRecommendations = [
-        { name: "Madera de caoba", area: "2.2 m²" },
-        { name: "Bisagras de acero inoxidable", quantity: 3 }
-      ];
-      analysisResult.designSuggestions = [
-        "Diseño con paneles para mayor durabilidad",
-        "Tratamiento resistente a la humedad",
-        "Cerradura de seguridad reforzada"
-      ];
+    // Si hay suficiente información, intentar estimar costos
+    try {
+      const size = "Medio"; // Por defecto, podríamos extraer esto del análisis en una implementación más avanzada
+      const costEstimate = await estimateDesignCost(projectType, analysis.materials, size);
+      
+      transformedResult.estimatedCost = costEstimate.estimatedCost.min;
+      transformedResult.estimatedTime = costEstimate.timeFrame;
+    } catch (costError) {
+      log(`Error estimando costos: ${costError.message}`, "analyze-image");
+      // No fallar el análisis completo si falla la estimación de costos
     }
     
-    return analysisResult;
-  } catch (error) {
-    console.error("Error analyzing image with Gemini:", error);
-    throw new Error("Failed to analyze image");
+    return transformedResult;
+  } catch (error: any) {
+    log(`Error en el análisis de imagen: ${error.message}`, "analyze-image");
+    throw new Error(`Error en el análisis de imagen: ${error.message}`);
   }
 }
 
@@ -271,7 +269,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // Image analysis route
+  // Image analysis route with OpenAI
   app.post("/api/analyze-image", requireAuth, upload.single("image"), async (req, res) => {
     try {
       if (!req.file) {
@@ -281,13 +279,68 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const projectType = req.body.projectType || "cocina";
       const imageBase64 = req.file.buffer.toString("base64");
       
-      // Call Gemini API to analyze the image
-      const analysis = await analyzeImageWithGemini(imageBase64, projectType);
+      // Call OpenAI API to analyze the image
+      const analysis = await analyzeImageWithAI(imageBase64, projectType);
       
       res.json(analysis);
-    } catch (error) {
-      console.error("Error in image analysis:", error);
-      res.status(500).json({ message: "Failed to analyze image" });
+    } catch (error: any) {
+      log(`Error en el análisis de imagen: ${error.message}`, "api");
+      res.status(500).json({ message: `Error en el análisis de imagen: ${error.message}` });
+    }
+  });
+  
+  // Generate design preview route
+  app.post("/api/generate-preview", requireAuth, async (req, res) => {
+    try {
+      const { description, style, materials, projectType } = req.body;
+      
+      if (!description || !style || !materials || !projectType) {
+        return res.status(400).json({ 
+          message: "Se requieren todos los campos: description, style, materials, projectType" 
+        });
+      }
+      
+      log(`Generando previsualización para ${projectType}`, "api");
+      
+      // Llamada a OpenAI para generar imagen
+      const imageUrl = await generateDesignPreview(
+        description,
+        style,
+        Array.isArray(materials) ? materials : [materials],
+        projectType
+      );
+      
+      res.json({ imageUrl });
+    } catch (error: any) {
+      log(`Error generando previsualización: ${error.message}`, "api");
+      res.status(500).json({ message: `Error generando previsualización: ${error.message}` });
+    }
+  });
+  
+  // Estimate design cost route
+  app.post("/api/estimate-cost", requireAuth, async (req, res) => {
+    try {
+      const { projectType, materials, size } = req.body;
+      
+      if (!projectType || !materials || !size) {
+        return res.status(400).json({ 
+          message: "Se requieren todos los campos: projectType, materials, size" 
+        });
+      }
+      
+      log(`Estimando costos para ${projectType}`, "api");
+      
+      // Llamada a OpenAI para estimar costos
+      const estimate = await estimateDesignCost(
+        projectType,
+        Array.isArray(materials) ? materials : [materials],
+        size
+      );
+      
+      res.json(estimate);
+    } catch (error: any) {
+      log(`Error estimando costos: ${error.message}`, "api");
+      res.status(500).json({ message: `Error estimando costos: ${error.message}` });
     }
   });
   

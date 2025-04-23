@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Loader2, Download, Send } from 'lucide-react';
+import { Loader2, Download, Send, FileText } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useAuth } from '@/context/AuthContext';
+import { queryClient } from '@/lib/queryClient';
 import { 
   SmartContainerParams, 
   generateSmartContainer, 
@@ -18,6 +20,7 @@ import {
 } from '@/lib/smartContainer';
 import { DesignResult } from '@/lib/designGenerator';
 import { generateSmartContainerPDF, createWhatsAppShareLink } from '@/lib/pdfGenerator';
+import { submitQuote } from '@/lib/quoteService';
 
 const SmartContainerGenerator = () => {
   const [params, setParams] = useState<SmartContainerParams>({
@@ -31,8 +34,10 @@ const SmartContainerGenerator = () => {
 
   const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isSubmittingQuote, setIsSubmittingQuote] = useState(false);
   const [generatedDesign, setGeneratedDesign] = useState<DesignResult | null>(null);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const handleExtraChange = (value: string, checked: boolean) => {
     setSelectedExtras(prev => {
@@ -87,6 +92,54 @@ const SmartContainerGenerator = () => {
       });
     } finally {
       setIsGenerating(false);
+    }
+  };
+  
+  const handleSubmitQuote = async () => {
+    if (!generatedDesign) return;
+    
+    if (!user) {
+      toast({
+        title: "Inicia sesión",
+        description: "Necesitas iniciar sesión para solicitar una cotización",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    setIsSubmittingQuote(true);
+    
+    try {
+      // Preparar los datos para la cotización
+      const quoteData = {
+        tipo: "Smart Container",
+        datos: {
+          ...params,
+          extras: selectedExtras.length > 0 ? selectedExtras.join(', ') : undefined
+        },
+        imageUrl: generatedDesign.imageUrl,
+        descripcion: generatedDesign.description
+      };
+      
+      // Enviar la cotización a través de la API
+      await submitQuote(quoteData);
+      
+      // Invalidar la caché para que se actualice la lista de cotizaciones
+      queryClient.invalidateQueries({ queryKey: ['/api/quotes'] });
+      
+      toast({
+        title: "Cotización enviada",
+        description: "Tu solicitud de cotización ha sido enviada exitosamente. Te contactaremos pronto.",
+      });
+    } catch (error) {
+      console.error('Error enviando cotización:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo enviar la cotización. Por favor, intenta nuevamente.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmittingQuote(false);
     }
   };
 
@@ -302,9 +355,27 @@ const SmartContainerGenerator = () => {
                   >
                     <Button variant="outline">
                       <Send className="mr-2 h-4 w-4" />
-                      Solicitar Cotización
+                      Cotizar por WhatsApp
                     </Button>
                   </a>
+                  
+                  <Button 
+                    variant="secondary"
+                    onClick={handleSubmitQuote}
+                    disabled={isSubmittingQuote}
+                  >
+                    {isSubmittingQuote ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Enviando...
+                      </>
+                    ) : (
+                      <>
+                        <FileText className="mr-2 h-4 w-4" />
+                        Solicitar Cotización
+                      </>
+                    )}
+                  </Button>
                 </div>
               </div>
             </div>

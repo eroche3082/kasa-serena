@@ -14,6 +14,7 @@ import DesignGeneratorPage from "@/pages/DesignGeneratorPage";
 import AIDesignPage from "@/pages/AIDesignPage";
 import SmartContainerPage from "@/pages/SmartContainerPage";
 import ModularPoolPage from "@/pages/ModularPoolPage";
+import QuotesPage from "@/pages/QuotesPage";
 import AgentChecklistPage from "@/pages/AgentChecklistPage";
 import { Header, Footer } from "@/features/layout";
 import { useAuth } from "@/context/AuthContext";
@@ -42,6 +43,7 @@ function Router() {
         <Route path="/ai-design" component={AIDesignPage} />
         <Route path="/smart-container" component={SmartContainerPage} />
         <Route path="/modular-pool" component={ModularPoolPage} />
+        <Route path="/cotizaciones" component={QuotesPage} />
         <Route path="/internal-map" component={AgentChecklistPage} />
         <Route path="/agent-checklist" component={AgentChecklistPage} />
         <Route component={NotFound} />

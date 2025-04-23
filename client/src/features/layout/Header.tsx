@@ -50,9 +50,14 @@ const Header = () => {
             Piscinas Modulares
           </Link>
           {isAuthenticated && (
-            <Link href="/dashboard" className={`text-white font-medium hover:text-primary transition-colors ${location === '/dashboard' ? 'text-primary' : ''}`}>
-              Panel
-            </Link>
+            <>
+              <Link href="/dashboard" className={`text-white font-medium hover:text-primary transition-colors ${location === '/dashboard' ? 'text-primary' : ''}`}>
+                Panel
+              </Link>
+              <Link href="/cotizaciones" className={`text-white font-medium hover:text-primary transition-colors ${location === '/cotizaciones' ? 'text-primary' : ''}`}>
+                Mis Cotizaciones
+              </Link>
+            </>
           )}
           <Link href="/#contacto" className="text-white font-medium hover:text-primary transition-colors">
             Contacto

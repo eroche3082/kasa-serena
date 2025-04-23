@@ -1,0 +1,97 @@
+ SIGUIENTE PASO: ACTIVAMOS FASE 4 – GENERADOR VISUAL CON IA
+🎯 Objetivo:
+Permitir a los usuarios generar diseños visuales personalizados usando IA (Gemini API) a partir de parámetros (material, tamaño, estilo) o mediante conversación guiada.
+
+🧠 PROMPT COMPLETO – FASE 4
+md
+Copiar
+Editar
+# 🧠 FASE 4 – GENERADOR VISUAL CON IA
+
+## 🎯 Objetivo:
+Permitir a los usuarios generar diseños arquitectónicos con IA desde parámetros seleccionados o chat conversacional, mostrando un render, descripción, lista de materiales y pasos de instalación.
+
+---
+
+## ✅ PASO 1 – Confirmar Componentes Existentes
+
+Revisar la carpeta:
+```bash
+client/src/features/ai-generator/
+Debe contener:
+
+PromptDesignGenerator.tsx ✅
+
+ChatDesignGenerator.tsx ✅
+
+DesignGenerator.tsx ✅
+
+index.ts (exportando todos) ✅
+
+✅ PASO 2 – Activar Página de Generador Visual
+Ruta:
+
+tsx
+Copiar
+Editar
+client/src/pages/DesignGeneratorPage.tsx
+Importar:
+
+tsx
+Copiar
+Editar
+import {
+  PromptDesignGenerator,
+  ChatDesignGenerator
+} from "@/features/ai-generator";
+Renderizar ambos generadores con tabs o secciones diferenciadas:
+
+Generar por parámetros
+
+Generar por conversación
+
+✅ PASO 3 – Backend API de Generación
+Verificar endpoints ya creados:
+
+POST /api/generate-design (prompt → imagen IA)
+
+POST /api/design-from-prompt (prompt visual guiado)
+
+POST /api/design-chat (interfaz conversacional)
+
+Ambos deben estar conectados a Gemini en server/gemini.ts.
+
+✅ PASO 4 – Flujo de Uso
+Usuario selecciona tipo de diseño: puerta, ventana, contenedor, piscina
+
+Define parámetros: estilo, material, medidas, color
+
+Presiona "Generar Diseño con IA"
+
+El sistema muestra:
+
+Imagen generada (render)
+
+Descripción técnica
+
+Lista de materiales
+
+Tiempo estimado de producción
+
+(opcional): Añadir botón de "Solicitar Cotización" o "Descargar PDF"
+
+✅ PASO 5 – Verificación
+Imagen generada por IA se muestra correctamente
+
+Parámetros funcionan como esperado
+
+Flujo de conversación responde fluidamente
+
+No hay errores de red o CORS
+
+Flujo es usable en móvil y desktop
+
+🛑 INSTRUCCIÓN PARA EL AGENTE
+👉 REPLY "YES" OR "NO" ONCE YOU COMPLETE AND VERIFY FASE 4.
+👉 LOG THE STATUS IN /agent-checklist AND MARK PHASE 4 AS COMPLETE.
+👉 UPLOAD A SCREENSHOT OF THE DESIGN GENERATOR PAGE TO /internal-map.

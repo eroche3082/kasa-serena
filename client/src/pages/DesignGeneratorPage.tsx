@@ -1,6 +1,11 @@
-import { DesignGenerator } from '@/features/ai-generator';
+import { useState } from 'react';
+import { DesignGenerator, PromptDesignGenerator, ChatDesignGenerator } from '@/features/ai-generator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card } from "@/components/ui/card";
 
 export default function DesignGeneratorPage() {
+  const [activeTab, setActiveTab] = useState("parameters");
+
   return (
     <main className="min-h-screen bg-neutral-50 py-20">
       <div className="container mx-auto px-4">
@@ -14,7 +19,22 @@ export default function DesignGeneratorPage() {
             </p>
           </div>
           
-          <DesignGenerator />
+          <Card className="p-6 bg-white shadow-sm">
+            <Tabs defaultValue="parameters" value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <TabsList className="w-full mb-6">
+                <TabsTrigger value="parameters" className="flex-1">Generación por Parámetros</TabsTrigger>
+                <TabsTrigger value="conversation" className="flex-1">Asistente Conversacional</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="parameters" className="mt-0">
+                <DesignGenerator />
+              </TabsContent>
+              
+              <TabsContent value="conversation" className="mt-0">
+                <ChatDesignGenerator />
+              </TabsContent>
+            </Tabs>
+          </Card>
         </div>
       </div>
     </main>

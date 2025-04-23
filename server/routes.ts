@@ -163,6 +163,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Set session
       req.session.userId = user.id;
+      req.session.user = {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role
+      };
       
       // Remove password from response
       const { password: _, ...userWithoutPassword } = user;
@@ -199,7 +205,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Project routes
-  app.get("/api/projects", async (req, res) => {
+  app.get("/api/projects", requireAuth, requireAnyRole(['admin', 'disenador']), async (req, res) => {
     try {
       const projects = await storage.getProjects();
       res.json(projects);
@@ -229,7 +235,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  app.post("/api/projects", requireAuth, async (req, res) => {
+  app.post("/api/projects", requireAuth, requireRole('disenador'), async (req, res) => {
     try {
       const projectData = insertProjectSchema.parse({
         ...req.body,
@@ -364,7 +370,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Nuevos endpoints para generador de diseño con Gemini
   
   // Endpoint para chat con asistente de diseño
-  app.post("/api/design-chat", async (req, res) => {
+  app.post("/api/design-chat", requireAuth, requireAnyRole(['cliente', 'disenador']), async (req, res) => {
     try {
       const { message, projectType } = req.body;
       
@@ -390,7 +396,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Endpoint para generar diseño personalizado
-  app.post("/api/design-generator", async (req, res) => {
+  app.post("/api/design-generator", requireAuth, requireAnyRole(['cliente', 'disenador']), async (req, res) => {
     try {
       const { tipo, material, color, estilo, medidas, extra } = req.body;
       
@@ -420,7 +426,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Endpoint para generar diseño a partir de un prompt
-  app.post("/api/design-generator-prompt", async (req, res) => {
+  app.post("/api/design-generator-prompt", requireAuth, requireAnyRole(['cliente', 'disenador']), async (req, res) => {
     try {
       const { prompt } = req.body;
       
@@ -443,7 +449,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Endpoint para analizar imagen con Gemini
-  app.post("/api/analyze-image-gemini", upload.single("image"), async (req, res) => {
+  app.post("/api/analyze-image-gemini", requireAuth, upload.single("image"), async (req, res) => {
     try {
       if (!req.file) {
         return res.status(400).json({ message: "No image uploaded" });
@@ -465,7 +471,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Endpoint para obtener sugerencias de diseño
-  app.post("/api/design-suggestions", async (req, res) => {
+  app.post("/api/design-suggestions", requireAuth, requireAnyRole(['cliente', 'disenador']), async (req, res) => {
     try {
       const { projectType, style, materials } = req.body;
       
@@ -492,7 +498,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Endpoint para generar Smart Containers
-  app.post("/api/smart-container", async (req, res) => {
+  app.post("/api/smart-container", requireAuth, requireAnyRole(['cliente', 'disenador']), async (req, res) => {
     try {
       const { uso, tamaño, energia, fachada, tech, extras } = req.body;
       
@@ -522,7 +528,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Endpoint para generar Piscinas Modulares
-  app.post("/api/pool-designer", async (req, res) => {
+  app.post("/api/pool-designer", requireAuth, requireAnyRole(['cliente', 'disenador']), async (req, res) => {
     try {
       const { forma, tamaño, profundidad, vidrio, acabados, extras, estilo, entorno } = req.body;
       

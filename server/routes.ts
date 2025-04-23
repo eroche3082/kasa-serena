@@ -642,7 +642,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // HEIC conversion endpoint
-  app.post("/api/convert-heic", upload.single("image"), async (req, res) => {
+  app.post("/api/convert-heic", requireAuth, upload.single("image"), async (req, res) => {
     try {
       if (!req.file) {
         return res.status(400).json({ message: "No image uploaded" });

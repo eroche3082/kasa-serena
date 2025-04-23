@@ -1,13 +1,24 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { useAuth } from '@/context/AuthContext';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
+import { 
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { toast } from '@/hooks/use-toast';
 import { 
   FaUser, 
   FaColumns, 
@@ -16,37 +27,246 @@ import {
   FaStore, 
   FaChartBar,
   FaExclamationTriangle,
-  FaPlus
+  FaPlus,
+  FaPencilAlt,
+  FaTrash,
+  FaEye,
+  FaFileInvoiceDollar
 } from 'react-icons/fa';
+
+// Tipo para los proyectos
+interface Project {
+  id: number;
+  userId: number;
+  name: string;
+  description?: string;
+  type: string;
+  status: string;
+  cost?: number;
+  estimatedDeliveryTime?: string;
+  imageUrl?: string;
+  aiAnalysis?: any;
+  materialsList?: any;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Componente de tarjeta de proyecto
+const ProjectCard = ({ project, onEdit, onDelete, onView }: { 
+  project: Project, 
+  onEdit: (id: number) => void,
+  onDelete: (id: number) => void,
+  onView: (id: number, type: string) => void
+}) => {
+  // Traducir el tipo de proyecto
+  const getProjectTypeName = (type: string) => {
+    switch (type) {
+      case 'contenedor': return 'Contenedor Inteligente';
+      case 'piscina': return 'Piscina Modular';
+      case 'cocina': return 'Cocina';
+      case 'puerta': return 'Puerta';
+      case 'ventana': return 'Ventana';
+      case 'gabinete': return 'Gabinete';
+      case 'oficina': return 'Oficina/Espacio Creativo';
+      default: return type.charAt(0).toUpperCase() + type.slice(1);
+    }
+  };
+
+  // Estado de proyecto traducido
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'draft':
+        return <Badge variant="outline" className="bg-yellow-100 text-yellow-800">Borrador</Badge>;
+      case 'in_progress':
+        return <Badge variant="outline" className="bg-blue-100 text-blue-800">En Progreso</Badge>;
+      case 'completed':
+        return <Badge variant="outline" className="bg-green-100 text-green-800">Completado</Badge>;
+      default:
+        return <Badge variant="outline">{status}</Badge>;
+    }
+  };
+
+  return (
+    <Card className="hover:shadow-md transition-shadow">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="md:col-span-1 bg-neutral-100 rounded-l-lg overflow-hidden">
+          {project.imageUrl ? (
+            <img 
+              src={project.imageUrl} 
+              alt={project.name} 
+              className="w-full h-full object-cover aspect-square"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-neutral-400 aspect-square">
+              <FaFileAlt className="w-12 h-12" />
+            </div>
+          )}
+        </div>
+        
+        <div className="md:col-span-3 p-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2">
+            <h3 className="text-lg font-bold">{project.name}</h3>
+            {getStatusBadge(project.status)}
+          </div>
+          
+          <div className="mt-2 space-y-2">
+            <div className="flex items-center text-sm text-neutral-600">
+              <span className="font-medium mr-2">Tipo:</span> 
+              {getProjectTypeName(project.type)}
+            </div>
+            
+            <div className="flex items-center text-sm text-neutral-600">
+              <span className="font-medium mr-2">Fecha:</span> 
+              {new Date(project.createdAt).toLocaleDateString()}
+            </div>
+            
+            {project.description && (
+              <div className="text-sm text-neutral-600 mt-2">
+                <span className="font-medium">Descripción:</span>
+                <p className="mt-1 line-clamp-2">{project.description}</p>
+              </div>
+            )}
+            
+            <div className="flex flex-wrap gap-2 mt-4">
+              <Button 
+                size="sm" 
+                variant="outline"
+                className="flex items-center gap-1"
+                onClick={() => onView(project.id, project.type)}
+              >
+                <FaEye className="w-3 h-3" /> Ver
+              </Button>
+              
+              <Button 
+                size="sm" 
+                variant="outline"
+                className="flex items-center gap-1"
+                onClick={() => onEdit(project.id)}
+              >
+                <FaPencilAlt className="w-3 h-3" /> Editar
+              </Button>
+              
+              <Button 
+                size="sm" 
+                variant="outline"
+                className="flex items-center gap-1 text-red-600 hover:text-red-700 hover:bg-red-50"
+                onClick={() => onDelete(project.id)}
+              >
+                <FaTrash className="w-3 h-3" /> Eliminar
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Card>
+  );
+};
 
 const DashboardPage = () => {
   const [location, setLocation] = useLocation();
   const { user, isAuthenticated, isLoading } = useAuth();
+  const [deleteProjectId, setDeleteProjectId] = useState<number | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const queryClient = useQueryClient();
   
-  // Redirect if not authenticated or not a professional
+  // Redirect if not authenticated
   useEffect(() => {
-    if (!isLoading && (!isAuthenticated || !user?.isProfessional)) {
-      setLocation('/login?professional=true');
+    if (!isLoading && !isAuthenticated) {
+      setLocation('/login');
     }
-  }, [isAuthenticated, isLoading, user, setLocation]);
+  }, [isAuthenticated, isLoading, setLocation]);
   
   // Get projects
   const { data: projects, isLoading: isLoadingProjects } = useQuery({
     queryKey: ['/api/projects/user'],
-    enabled: isAuthenticated && user?.isProfessional,
+    enabled: isAuthenticated,
   });
   
-  // Get materials
-  const { data: materials, isLoading: isLoadingMaterials } = useQuery({
-    queryKey: ['/api/materials'],
-    enabled: isAuthenticated && user?.isProfessional,
+  // Get quotes
+  const { data: quotes, isLoading: isLoadingQuotes } = useQuery({
+    queryKey: ['/api/quotes'],
+    enabled: isAuthenticated,
   });
   
-  // Get distributors
-  const { data: distributors, isLoading: isLoadingDistributors } = useQuery({
-    queryKey: ['/api/distributors'],
-    enabled: isAuthenticated && user?.isProfessional,
+  // Delete project mutation
+  const deleteProjectMutation = useMutation({
+    mutationFn: async (projectId: number) => {
+      const response = await fetch(`/api/projects/${projectId}`, {
+        method: 'DELETE',
+      });
+      
+      if (!response.ok) {
+        throw new Error('Error al eliminar el proyecto');
+      }
+      
+      return projectId;
+    },
+    onSuccess: () => {
+      // Invalidate projects query to refresh the list
+      queryClient.invalidateQueries({ queryKey: ['/api/projects/user'] });
+      
+      toast({
+        title: "Proyecto eliminado",
+        description: "El proyecto se ha eliminado correctamente",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: `No se pudo eliminar el proyecto: ${error.message}`,
+        variant: "destructive",
+      });
+    },
   });
+  
+  // Handle edit project
+  const handleEditProject = (projectId: number) => {
+    // Redirigir según el tipo de proyecto
+    const project = projects?.find((p: Project) => p.id === projectId);
+    
+    if (project) {
+      switch (project.type) {
+        case 'contenedor':
+          setLocation(`/smart-container?id=${projectId}`);
+          break;
+        case 'piscina':
+          setLocation(`/modular-pool?id=${projectId}`);
+          break;
+        default:
+          setLocation(`/design-studio?id=${projectId}`);
+          break;
+      }
+    }
+  };
+  
+  // Handle view project details
+  const handleViewProject = (projectId: number, type: string) => {
+    // Redirigir según el tipo de proyecto
+    switch (type) {
+      case 'contenedor':
+        setLocation(`/smart-container?id=${projectId}&view=true`);
+        break;
+      case 'piscina':
+        setLocation(`/modular-pool?id=${projectId}&view=true`);
+        break;
+      default:
+        setLocation(`/design-studio?id=${projectId}&view=true`);
+        break;
+    }
+  };
+  
+  // Handle delete project
+  const handleDeleteClick = (projectId: number) => {
+    setDeleteProjectId(projectId);
+    setIsDeleteDialogOpen(true);
+  };
+  
+  const confirmDelete = () => {
+    if (deleteProjectId) {
+      deleteProjectMutation.mutate(deleteProjectId);
+    }
+    setIsDeleteDialogOpen(false);
+  };
   
   if (isLoading) {
     return (
@@ -64,7 +284,7 @@ const DashboardPage = () => {
     );
   }
   
-  if (!isAuthenticated || !user?.isProfessional) {
+  if (!isAuthenticated) {
     return null; // Will redirect
   }
 

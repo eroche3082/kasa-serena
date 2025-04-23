@@ -1,0 +1,117 @@
+FASE 8 – DASHBOARD DE USUARIO
+🎯 Objetivo de la Fase 8:
+Crear una página de Dashboard de Usuario donde los usuarios autenticados puedan ver y gestionar sus proyectos (Smart Containers, Piscinas, etc.), ver cotizaciones y tener opciones de editar o eliminar proyectos.
+
+🧠 PROMPT COMPLETO – FASE 8: DASHBOARD DE USUARIO
+md
+Copiar
+Editar
+# 🧠 FASE 8 – DASHBOARD DE USUARIO
+
+## 🎯 Objetivo:
+Desarrollar una página de **Dashboard** donde el usuario pueda:
+- Ver todos sus proyectos generados (Smart Containers, Piscinas Modulares, etc.)
+- Ver las cotizaciones asociadas
+- Tener la opción de **editar** o **eliminar** proyectos existentes
+
+---
+
+## ✅ PASO 1 – Crear la Página de Dashboard
+
+1. Verificar que la ruta `/dashboard` esté configurada en `client/src/pages/DashboardPage.tsx`.
+
+2. **Componente `DashboardPage.tsx`**:
+   - Mostrar una **lista de proyectos** guardados (smart containers, piscinas modulares, etc.).
+   - Incluir **botones de acción** para cada proyecto:
+     - **Ver detalles**: Lleva a la página del proyecto específico.
+     - **Editar**: Permite editar los parámetros del proyecto.
+     - **Eliminar**: Elimina el proyecto de la base de datos.
+
+3. **Visualización de Cotizaciones**:
+   - Mostrar una **tabla** de cotizaciones con:
+     - Nombre del proyecto
+     - Estado (pendiente, aceptado)
+     - Fecha de solicitud
+   - Botón para **ver detalles de cotización**.
+
+---
+
+## ✅ PASO 2 – Backend: Rutas de Proyectos y Cotizaciones
+
+1. Verificar las siguientes rutas en `server/routes.ts`:
+
+```ts
+// Obtener proyectos del usuario actual
+app.get("/api/projects/user", getUserProjects);
+
+// Crear un proyecto
+app.post("/api/projects", createProject);
+
+// Eliminar un proyecto
+app.delete("/api/projects/:id", deleteProject);
+
+// Obtener cotizaciones del usuario
+app.get("/api/quotes", getUserQuotes);
+Verificar que las funciones en server/projects.ts y server/quotes.ts estén bien definidas para manejar obtener, crear y eliminar proyectos y cotizaciones.
+
+✅ PASO 3 – Interfaz del Dashboard
+Visualizar los proyectos:
+
+Crear una tabla o lista para los proyectos guardados:
+
+Nombre del proyecto
+
+Estado
+
+Fecha de creación
+
+Enlace para ver los detalles
+
+Botones de acción:
+
+Añadir botones de editar y eliminar proyectos.
+
+Mostrar cotizaciones:
+
+Agregar una sección de cotizaciones.
+
+Mostrar las cotizaciones asociadas a cada proyecto, con botones para ver detalles.
+
+Estilo visual:
+
+Usar un diseño limpio, con clases container mx-auto px-4 md:px-8 para un espaciado adecuado.
+
+Tarjetas o tablas con bordes suaves y sombreado para cada proyecto/cotización.
+
+✅ PASO 4 – Funcionalidad de Edición y Eliminación de Proyectos
+Edición de proyectos:
+
+Redirigir al usuario a la página de edición cuando haga clic en "Editar".
+
+Permitir que el usuario cambie los parámetros del proyecto.
+
+Eliminación de proyectos:
+
+Preguntar al usuario si está seguro de eliminar el proyecto antes de proceder.
+
+Eliminar el proyecto de la base de datos y refrescar la lista de proyectos.
+
+✅ PASO 5 – Verificación
+Los proyectos guardados deben mostrarse correctamente.
+
+El botón de editar debe redirigir a la página de edición.
+
+El botón de eliminar debe eliminar correctamente el proyecto.
+
+Las cotizaciones deben mostrarse bien con los detalles correctos.
+
+La página debe ser responsiva en móvil, tablet y escritorio.
+
+🛑 INSTRUCCIÓN PARA EL AGENTE
+👉 REPLY "YES" OR "NO" ONCE YOU COMPLETE AND VERIFY FASE 8.
+👉 LOG FASE 8 AS COMPLETE IN /agent-checklist.
+👉 UPLOAD A SCREENSHOT OF THE USER DASHBOARD PAGE TO /internal-map.
+
+yaml
+Copiar
+Editar

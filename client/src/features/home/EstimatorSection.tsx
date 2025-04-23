@@ -16,13 +16,13 @@ const EstimatorSection = () => {
   const [materials, setMaterials] = useState<any[]>([]);
   
   // Fetch materials data
-  const { data: materialsData } = useQuery({
+  const { data: materialsData } = useQuery<any[]>({
     queryKey: ['/api/materials'],
     refetchOnWindowFocus: false
   });
   
   useEffect(() => {
-    if (materialsData) {
+    if (materialsData && Array.isArray(materialsData)) {
       setMaterials(materialsData);
     }
   }, [materialsData]);

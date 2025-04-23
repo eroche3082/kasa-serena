@@ -9,6 +9,8 @@ export { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 export { Switch } from './switch';
 export { Toast, ToastProvider, ToastViewport } from './toast';
 export { Toaster } from './toaster';
+export { Badge } from './badge';
+export { Skeleton } from './skeleton';
 
 // Exportamos los hooks de toast para uso global
 export { useToast } from '@/hooks/use-toast';

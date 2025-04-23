@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
 import { FaMapMarkerAlt, FaArrowRight } from 'react-icons/fa';
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Badge, Skeleton } from "@/features/common";
 
 interface Distributor {
   id: number;
@@ -54,13 +53,13 @@ const DistributorsSection = () => {
   const [distributors, setDistributors] = useState<Distributor[]>([]);
   
   // Fetch distributors data
-  const { data: distributorsData, isLoading } = useQuery({
+  const { data: distributorsData, isLoading } = useQuery<Distributor[]>({
     queryKey: ['/api/distributors'],
     refetchOnWindowFocus: false
   });
   
   useEffect(() => {
-    if (distributorsData) {
+    if (distributorsData && Array.isArray(distributorsData)) {
       setDistributors(distributorsData);
     }
   }, [distributorsData]);

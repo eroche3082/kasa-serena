@@ -1,5 +1,5 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import SmartContainerGenerator from '@/components/design/SmartContainerGenerator';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/features/common';
+import { SmartContainerGenerator } from '@/features/smart-container';
 
 const SmartContainerPage = () => {
   return (

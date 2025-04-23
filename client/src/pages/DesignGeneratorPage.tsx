@@ -1,4 +1,4 @@
-import DesignGenerator from '@/components/design/DesignGenerator';
+import { DesignGenerator } from '@/features/ai-generator';
 
 export default function DesignGeneratorPage() {
   return (

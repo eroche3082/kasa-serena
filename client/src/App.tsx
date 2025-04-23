@@ -1,7 +1,7 @@
 import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/features/common";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import HomePage from "@/pages/HomePage";
@@ -14,8 +14,7 @@ import DesignGeneratorPage from "@/pages/DesignGeneratorPage";
 import AIDesignPage from "@/pages/AIDesignPage";
 import SmartContainerPage from "@/pages/SmartContainerPage";
 import ModularPoolPage from "@/pages/ModularPoolPage";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import { Header, Footer } from "@/features/layout";
 import { useAuth } from "@/context/AuthContext";
 import { useEffect } from "react";
 

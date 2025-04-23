@@ -1,5 +1,5 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import ModularPoolDesigner from '@/components/design/ModularPoolDesigner';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/features/common';
+import { ModularPoolDesigner } from '@/features/modular-pool';
 
 const ModularPoolPage = () => {
   return (

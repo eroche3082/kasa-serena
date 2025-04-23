@@ -1,6 +1,7 @@
 // Re-exportamos los componentes principales de la feature
 export { default as ChatDesignGenerator } from './ChatDesignGenerator';
 export { default as PromptDesignGenerator } from './PromptDesignGenerator';
+export { default as DesignGenerator } from './DesignGenerator';
 
 // Las siguientes constantes pueden usarse para centralizar los tipos, rutas o propiedades específicas
 export const DESIGN_CHAT_API_ENDPOINT = '/api/design-chat';

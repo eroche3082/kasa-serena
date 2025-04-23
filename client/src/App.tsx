@@ -42,6 +42,8 @@ function Router() {
         <Route path="/ai-design" component={AIDesignPage} />
         <Route path="/smart-container" component={SmartContainerPage} />
         <Route path="/modular-pool" component={ModularPoolPage} />
+        <Route path="/internal-map" component={AgentChecklistPage} />
+        <Route path="/agent-checklist" component={AgentChecklistPage} />
         <Route component={NotFound} />
       </Switch>
       <Footer />

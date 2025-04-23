@@ -1,0 +1,107 @@
+MASTERPLAN KASA SERENA DESIGNS – FASES DE ACTIVACIÓN TOTAL
+💼 Objetivo del plan:
+Ejecutar por completo todas las funcionalidades de la plataforma Kasa Serena Designs, desde la estructura de carpetas hasta la generación de diseño con IA y visualización de proyectos en el panel del usuario.
+
+✅ FASE 1: Reorganización por Feature Folders
+Reestructurar todos los componentes en carpetas según funcionalidad: smart-container, modular-pool, ai-generator, layout, common, home.
+
+Limpiar archivos duplicados.
+
+Actualizar importaciones en todas las páginas.
+
+Verificar que HomePage funcione sin errores.
+
+✅ FASE 2: Sistema de Autenticación y Roles
+Implementar roles: cliente, diseñador, admin.
+
+Proteger rutas sensibles.
+
+Agregar verificación de sesión y redirección.
+
+Añadir selector de rol en el formulario de registro.
+
+Proteger endpoints sensibles con rate limiting y CSRF.
+
+✅ FASE 3: Interfaz Visual de Navegación y HomePage
+Completar diseño de Hero Section, Servicios, Contacto, Estimador, Distribuidores.
+
+Integrar video de fondo y assets.
+
+Asegurar diseño mobile responsive.
+
+Conectar secciones a sus páginas respectivas (SmartContainer, Pools, Design Generator).
+
+✅ FASE 4: Generador Visual con IA
+Conectar PromptDesignGenerator con Gemini API.
+
+Mostrar render de diseño, descripción, materiales y tiempos estimados.
+
+Permitir generación desde parámetros y conversacional.
+
+Habilitar descarga o cotización directa.
+
+✅ FASE 5: Smart Containers (Diseño Inteligente)
+Activar módulo SmartContainerPage.
+
+Formulario para tipo de uso, fachada, energía, tamaño, tech.
+
+Conectar a /api/smart-container y mostrar resultados generados por IA.
+
+✅ FASE 6: Piscinas Modulares
+Activar página /modular-pool.
+
+Inputs: medidas, profundidad, vidrio, acabados, entorno.
+
+Generar imagen IA y descripción.
+
+Integrar opción de cotización automática.
+
+✅ FASE 7: Chat AI de Diseño
+Activar ChatDesignGenerator.tsx.
+
+Conectar a /api/design-chat.
+
+Respuestas dinámicas, contextualizadas.
+
+Posibilidad de enviar imágenes y obtener sugerencias.
+
+✅ FASE 8: Dashboard de Usuario
+Mostrar proyectos y cotizaciones del usuario.
+
+Permitir descargar imágenes generadas.
+
+Sección para feedback o solicitud de ajustes.
+
+Protección por sesión y rol.
+
+✅ FASE 9: Cotización y Contacto
+Activar formulario de contacto conectado a /api/contact.
+
+Envío automático desde los diseños generados con botón “Solicitar Cotización”.
+
+Mostrar mensajes enviados en Dashboard (opcional).
+
+✅ FASE 10: Seguridad, Deploy y Optimización
+Prefetch de rutas.
+
+SEO dinámico (title/meta por página).
+
+Optimización de imágenes.
+
+Firebase deploy con dominio en producción.
+
+Activar logs y alertas.
+
+🔁 CICLO CONTINUO DE CONTROL
+Crear una página interna de verificación llamada /agent-checklist o /internal-map donde se liste:
+
+ Cada fase completada
+
+ Qué endpoints están activos
+
+ Qué UI está funcionando
+
+🛑 INSTRUCCIÓN AL AGENTE
+👉 REPLY "YES" OR "NO" ONCE YOU CHECK THE PLAN AND MAKE SURE WE FOLLOW THAT.
+👉 CREATE AN INTERNAL PAGE OR MAP TO MAKE SURE EVERYTHING HAS BEEN IMPLEMENTED AND IS TRACEABLE.
+

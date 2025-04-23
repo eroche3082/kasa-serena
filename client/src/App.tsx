@@ -14,6 +14,7 @@ import DesignGeneratorPage from "@/pages/DesignGeneratorPage";
 import AIDesignPage from "@/pages/AIDesignPage";
 import SmartContainerPage from "@/pages/SmartContainerPage";
 import ModularPoolPage from "@/pages/ModularPoolPage";
+import AgentChecklistPage from "@/pages/AgentChecklistPage";
 import { Header, Footer } from "@/features/layout";
 import { useAuth } from "@/context/AuthContext";
 import { useEffect } from "react";

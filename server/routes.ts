@@ -641,6 +641,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  // Endpoint de health-check para verificar el estado del servidor
+  app.get("/api/health-check", (req, res) => {
+    res.json({
+      status: "ok",
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime()
+    });
+  });
+
   // HEIC conversion endpoint
   app.post("/api/convert-heic", requireAuth, upload.single("image"), async (req, res) => {
     try {

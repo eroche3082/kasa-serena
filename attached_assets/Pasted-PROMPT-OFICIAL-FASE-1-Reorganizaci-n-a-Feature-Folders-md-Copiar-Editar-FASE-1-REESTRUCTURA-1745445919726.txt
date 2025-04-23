@@ -1,0 +1,131 @@
+PROMPT OFICIAL – FASE 1: Reorganización a Feature Folders
+md
+Copiar
+Editar
+# 🔧 FASE 1: REESTRUCTURACIÓN A FEATURE FOLDERS – KASA SERENA DESIGNS
+
+## 🎯 Objetivo:
+Organizar todo el código de frontend en una estructura modular por funcionalidades (*Feature Folders*), para facilitar la escalabilidad, mantenimiento y lectura.
+
+---
+
+## 📁 PASO 1: Crear estructura base de carpetas
+
+En la ruta `client/src/`, crear las siguientes carpetas:
+
+```bash
+mkdir -p client/src/features/smart-container
+mkdir -p client/src/features/modular-pool
+mkdir -p client/src/features/ai-generator
+mkdir -p client/src/features/home
+mkdir -p client/src/features/common
+mkdir -p client/src/features/layout
+🧩 PASO 2: Mover componentes según funcionalidad
+Smart Container:
+
+bash
+Copiar
+Editar
+mv client/src/components/design/SmartContainerGenerator.tsx client/src/features/smart-container/
+Modular Pool:
+
+bash
+Copiar
+Editar
+mv client/src/components/design/ModularPoolDesigner.tsx client/src/features/modular-pool/
+Generadores AI:
+
+bash
+Copiar
+Editar
+mv client/src/components/design/PromptDesignGenerator.tsx client/src/features/ai-generator/
+mv client/src/components/design/ChatDesignGenerator.tsx client/src/features/ai-generator/
+mv client/src/components/design/DesignGenerator.tsx client/src/features/ai-generator/
+Layout:
+
+bash
+Copiar
+Editar
+mv client/src/components/layout/*.tsx client/src/features/layout/
+UI Común (Shadcn + utilidades):
+
+bash
+Copiar
+Editar
+mv client/src/components/ui/*.tsx client/src/features/common/
+Componentes de la página de inicio:
+
+bash
+Copiar
+Editar
+mv client/src/components/home/*.tsx client/src/features/home/
+Assets (opcional):
+
+bash
+Copiar
+Editar
+mkdir -p client/src/features/home/assets
+mv client/src/assets/images/*.jpg client/src/features/home/assets/
+📜 PASO 3: Crear archivos de exportación y documentación
+README.md por carpeta:
+
+bash
+Copiar
+Editar
+echo "# Smart Container Feature" > client/src/features/smart-container/README.md
+echo "# Modular Pool Feature" > client/src/features/modular-pool/README.md
+echo "# AI Design Generator Feature" > client/src/features/ai-generator/README.md
+echo "# HomePage Features" > client/src/features/home/README.md
+echo "# Common UI Components" > client/src/features/common/README.md
+echo "# Layout Components" > client/src/features/layout/README.md
+index.ts por carpeta:
+
+bash
+Copiar
+Editar
+# Ejemplo en ai-generator
+touch client/src/features/ai-generator/index.ts
+echo "export { default as PromptDesignGenerator } from './PromptDesignGenerator';" >> client/src/features/ai-generator/index.ts
+Hacer lo mismo para los demás módulos.
+
+🛠 PASO 4: Actualizar importaciones en las páginas
+Actualizar referencias en:
+
+HomePage.tsx
+
+SmartContainerPage.tsx
+
+ModularPoolPage.tsx
+
+DesignGeneratorPage.tsx
+
+App.tsx
+
+Ejemplo de importación actualizada:
+
+tsx
+Copiar
+Editar
+import { Header, Footer } from "@/features/layout";
+import { PromptDesignGenerator } from "@/features/ai-generator";
+🧪 PASO 5: Verificación
+Inicia el servidor y verifica que:
+
+La HomePage carga sin errores.
+
+Todos los botones y formularios funcionan.
+
+No hay rutas rotas ni componentes faltantes.
+
+✅ FINALIZA ESTA FASE SI:
+ Todas las carpetas fueron creadas.
+
+ Todos los componentes están reubicados por funcionalidad.
+
+ Los README.md y index.ts están presentes en cada feature.
+
+ El sitio se ejecuta correctamente con la nueva estructura.
+
+🛑 INSTRUCCIÓN FINAL PARA EL AGENT:
+👉 REPLY "YES" OR "NO" ONCE YOU CHECK THE PLAN AND MAKE SURE WE FOLLOW THAT.
+👉 CREATE AN INTERNAL PAGE OR MAP TO TRACK IMPLEMENTATION: /internal-map o /agent-checklist

@@ -40,28 +40,27 @@ const Header = () => {
           <Link href="/" className={`text-white font-medium hover:text-primary transition-colors ${location === '/' ? 'text-primary' : ''}`}>
             Inicio
           </Link>
-          <Link href="/design-studio" className={`text-white font-medium hover:text-primary transition-colors ${location === '/design-studio' ? 'text-primary' : ''}`}>
-            Diseñador
-          </Link>
           <Link href="/design-generator" className={`text-white font-medium hover:text-primary transition-colors ${location === '/design-generator' ? 'text-primary' : ''}`}>
-            Generador IA
+            Diseños con IA
           </Link>
-          <Link href="/#servicios" className="text-white font-medium hover:text-primary transition-colors">
-            Servicios
+          <Link href="/smart-container" className={`text-white font-medium hover:text-primary transition-colors ${location === '/smart-container' ? 'text-primary' : ''}`}>
+            Contenedores Inteligentes
           </Link>
-          <Link href="/#estimador" className="text-white font-medium hover:text-primary transition-colors">
-            Estimador
+          <Link href="/modular-pool" className={`text-white font-medium hover:text-primary transition-colors ${location === '/modular-pool' ? 'text-primary' : ''}`}>
+            Piscinas Modulares
           </Link>
-          <Link href="/#socios" className="text-white font-medium hover:text-primary transition-colors">
-            Distribuidores
-          </Link>
+          {isAuthenticated && (
+            <Link href="/dashboard" className={`text-white font-medium hover:text-primary transition-colors ${location === '/dashboard' ? 'text-primary' : ''}`}>
+              Panel
+            </Link>
+          )}
           <Link href="/#contacto" className="text-white font-medium hover:text-primary transition-colors">
             Contacto
           </Link>
         </nav>
         
         <div className="flex items-center space-x-3">
-          <Link href="/design-studio" className="hidden md:inline-block">
+          <Link href="/design-generator" className="hidden md:inline-block">
             <Button variant="default" className="bg-primary hover:bg-primary/90 text-white border border-primary">
               Iniciar proyecto
             </Button>

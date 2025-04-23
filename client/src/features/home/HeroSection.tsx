@@ -85,8 +85,18 @@ const HeroSection = () => {
         {isMuted ? <FaVolumeMute size={20} /> : <FaVolumeUp size={20} />}
       </button>
       
-      <div className="container mx-auto px-4 relative z-20 text-white h-full flex items-center justify-center">
-        {/* Contenido hero vacío - sin botones */}
+      <div className="container mx-auto px-4 relative z-20 text-white h-full flex flex-col items-center justify-center text-center">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-6">
+          Diseña tu espacio con IA
+        </h1>
+        <p className="text-lg md:text-xl max-w-2xl mb-8 text-white/90">
+          Transforma tu visión en diseños personalizados con la más avanzada tecnología de inteligencia artificial
+        </p>
+        <Link href="/design-generator">
+          <Button size="lg" className="mt-4">
+            Comenzar ahora
+          </Button>
+        </Link>
       </div>
     </section>
   );

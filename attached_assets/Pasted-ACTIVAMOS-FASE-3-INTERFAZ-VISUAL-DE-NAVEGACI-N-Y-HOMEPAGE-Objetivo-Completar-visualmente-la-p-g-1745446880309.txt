@@ -1,0 +1,122 @@
+ACTIVAMOS FASE 3: INTERFAZ VISUAL DE NAVEGACIÓN Y HOMEPAGE
+🎯 Objetivo:
+Completar visualmente la página de inicio (/), integrando todos los componentes clave, navegación fluida, diseño responsive y vínculo con los módulos visuales de diseño.
+
+🧠 PROMPT COMPLETO – FASE 3
+md
+Copiar
+Editar
+# ✨ FASE 3 – INTERFAZ VISUAL Y HOMEPAGE
+
+## 🎯 Objetivo:
+Diseñar e implementar una landing page visualmente atractiva, responsiva y funcional que conecte con los módulos principales: Smart Containers, Piscinas, Diseño AI.
+
+---
+
+## ✅ PASO 1 – COMPONENTES A INTEGRAR
+
+En la ruta `client/src/pages/HomePage.tsx`, importar y usar los siguientes componentes desde `features/home`:
+
+```tsx
+import {
+  HeroSection,
+  ServicesSection,
+  MaterialsSection,
+  ConsultingSection,
+  DistributorsSection,
+  ContactSection,
+  EstimatorSection
+} from "@/features/home";
+Estos componentes deben aparecer en el siguiente orden visual:
+
+HeroSection – con video de fondo o imagen llamativa
+
+ServicesSection – íconos o cards que enlacen a /smart-container, /modular-pool, /design-generator
+
+MaterialsSection – presentación de acabados y materiales
+
+ConsultingSection – banner con CTA para agendar diseño
+
+EstimatorSection – formulario para estimar un proyecto
+
+DistributorsSection – mapa o listado de aliados
+
+ContactSection – formulario de contacto
+
+🎥 PASO 2 – INTEGRAR VIDEO HERO
+Asegurarse que el video esté en public/videos/hero-video.mp4
+En HeroSection.tsx, usar:
+
+tsx
+Copiar
+Editar
+<video
+  autoPlay
+  muted
+  loop
+  playsInline
+  className="absolute top-0 left-0 w-full h-full object-cover z-[-1]"
+>
+  <source src="/videos/hero-video.mp4" type="video/mp4" />
+</video>
+Overlay de texto encima del video con título + CTA:
+“Diseña tu espacio con IA” → botón hacia /design-generator
+
+🎯 PASO 3 – ACTUALIZAR HEADER Y NAVEGACIÓN
+Desde features/layout/Header.tsx, asegurar que el menú contenga:
+
+Inicio (/)
+
+Diseños con IA (/design-generator)
+
+Contenedores Inteligentes (/smart-container)
+
+Piscinas Modulares (/modular-pool)
+
+Iniciar Sesión (/login)
+
+Panel (/dashboard, solo si autenticado)
+
+El header debe tener fondo transparente y blur hasta hacer scroll.
+
+🖥️ PASO 4 – RESPONSIVIDAD Y ESTILO
+Verificar que todos los componentes:
+
+Usan grid o flex adaptativos
+
+Usan className="container mx-auto px-4 md:px-8" para padding estándar
+
+Se adaptan correctamente en móvil, tablet y desktop
+
+Tipografías: Didonesque para títulos, Poppins para texto base
+
+🧪 PASO 5 – VERIFICACIÓN FINAL
+HomePage se carga sin errores
+
+Secciones visuales enlazan a los módulos correctos
+
+El video o imagen de Hero se ve correctamente
+
+Formulario de contacto funcional
+
+Estimator recibe y muestra data correctamente
+
+Diseño responsivo en móvil, tablet, desktop
+
+El menú navega sin recargar la página
+
+✅ MARCAR COMO COMPLETO SI:
+ Todos los componentes están activos
+
+ El header está vinculado correctamente
+
+ El Hero tiene video o imagen funcional
+
+ Todo el diseño es responsivo y elegante
+
+ La página enlaza a los módulos de diseño visual
+
+🛑 INSTRUCCIÓN FINAL PARA EL AGENT
+👉 REPLY "YES" OR "NO" ONCE YOU COMPLETE AND VERIFY FASE 3.
+👉 LOG THE STATUS IN /agent-checklist AND MARK PHASE 3 AS COMPLETE.
+👉 UPLOAD A SCREENSHOT OF THE FINAL HOMEPAGE TO /internal-map.

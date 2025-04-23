@@ -45,8 +45,8 @@ const HomePage = () => {
       <ServicesSection />
       <MaterialsSection />
       <ConsultingSection />
-      <DistributorsSection />
       <EstimatorSection />
+      <DistributorsSection />
       <ContactSection />
     </main>
   );

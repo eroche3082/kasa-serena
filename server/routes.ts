@@ -23,6 +23,7 @@ import {
   chatWithAssistant,
   generateDesignFromPrompt
 } from "./gemini";
+import { generateSmartContainer, SmartContainerParams } from "./smartContainer";
 
 // Declare module to extend express-session
 declare module 'express-session' {
@@ -479,6 +480,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error: any) {
       log(`Error generando sugerencias: ${error.message}`, "gemini-api");
       res.status(500).json({ message: `Error generando sugerencias: ${error.message}` });
+    }
+  });
+  
+  // Endpoint para generar Smart Containers
+  app.post("/api/smart-container", async (req, res) => {
+    try {
+      const { uso, tamaño, energia, fachada, tech, extras } = req.body;
+      
+      if (!uso || !tamaño || !energia || !fachada || !tech) {
+        return res.status(400).json({ 
+          message: "Se requieren todos los campos: uso, tamaño, energia, fachada y tech" 
+        });
+      }
+      
+      log(`Generando Smart Container para uso: ${uso}, tamaño: ${tamaño}`, "smart-container-api");
+      
+      // Llamada a la función para generar el Smart Container
+      const smartContainerResult = await generateSmartContainer({
+        uso,
+        tamaño,
+        energia,
+        fachada,
+        tech,
+        extras
+      });
+      
+      res.json(smartContainerResult);
+    } catch (error: any) {
+      log(`Error generando Smart Container: ${error.message}`, "smart-container-api");
+      res.status(500).json({ message: `Error generando Smart Container: ${error.message}` });
     }
   });
   

@@ -1,8 +1,12 @@
-import HeroSection from '@/components/home/HeroSection';
-import ServicesSection from '@/components/home/ServicesSection';
-import MaterialsSection from '@/components/home/MaterialsSection';
-import ConsultingSection from '@/components/home/ConsultingSection';
-import { EstimatorSection, DistributorsSection, ContactSection } from '@/features/home';
+import { 
+  HeroSection, 
+  ServicesSection, 
+  MaterialsSection, 
+  ConsultingSection, 
+  EstimatorSection, 
+  DistributorsSection, 
+  ContactSection 
+} from '@/features/home';
 import { useEffect } from 'react';
 import { useLocation } from 'wouter';
 

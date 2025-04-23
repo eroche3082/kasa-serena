@@ -1,0 +1,65 @@
+Realiza una auditoría estructural **exhaustiva** de toda esta aplicación (Agent actual). Tu misión es generar un **MAPA COMPLETO** de la estructura del sistema, con estos 10 objetivos:
+
+📍1. Mapa de Rutas
+- Enumera TODAS las rutas disponibles (frontend y backend).
+- Indica para cada una si es pública, protegida o si requiere autenticación.
+- Asocia cada ruta con el archivo exacto donde vive y su componente principal.
+
+📂2. Estructura de Carpetas
+- Haz una radiografía completa del árbol del proyecto.
+- Identifica qué carpetas pertenecen al frontend, backend y recursos compartidos.
+- Distingue entre código fuente, configuraciones, assets y estilos.
+
+🧩3. Componentes por Página
+- Lista las páginas principales de la app.
+- Detalla qué componentes utiliza cada una, su función, y en qué carpeta están.
+- Indica si son visuales, funcionales o híbridos.
+
+🔌4. APIs y Servicios Activos
+- Describe todas las integraciones externas (Firebase, Gemini, Spotify, Stripe, etc).
+- Indica qué archivo las configura y qué componente o página las usa.
+- Incluye rutas API y métodos (GET/POST/etc).
+
+🧠5. Sistema de Autenticación
+- ¿Hay login? ¿Qué método se usa? (Google, Firebase, Discord, bypass, etc).
+- ¿Dónde está el contexto de auth y cómo se accede?
+- ¿Se protege alguna ruta? ¿Cómo?
+
+📁6. Archivos Críticos
+- Enumera los archivos más importantes para el sistema.
+- Indica para qué sirve cada uno (ej: App.tsx, firebase.ts, routes.ts, db.ts, vite.config.ts).
+
+👁️7. Diagnóstico Visual
+- ¿Cuál es la pantalla por defecto?
+- ¿Qué componentes cargan primero?
+- ¿Hay elementos UI destacados como el avatar, stickers o rewards?
+
+📌8. Sugerencias de Mejora
+- Recomienda cómo reorganizar mejor el código (feature folders, design system, etc).
+- Sugiere qué herramientas implementar (Zustand, Redux, React Query, etc).
+- Propón mejoras visuales o de experiencia de usuario.
+
+📍9. Ubicación Ideal para Nuevos Features
+- Indica exactamente dónde colocar:
+  - Nuevas páginas
+  - Nuevos componentes
+  - Nuevos servicios o APIs
+  - Nuevos endpoints
+
+🔒10. Validación de Seguridad
+- ¿Hay validación en las rutas del backend?
+- ¿Dónde se verifica el token?
+- ¿Hay rutas públicas que deberían ser protegidas?
+
+🚨 FORMATO DE RESPUESTA:
+Organiza tu respuesta en 10 secciones claras. Cada sección debe tener título, listado organizado y referencias de archivos o carpetas precisas.
+
+⚠️ Importante:
+Tu objetivo es crear un **esqueleto completo y navegable** de la aplicación. Que sirva como guía técnica para el equipo. No omitas ninguna parte. Cada archivo, ruta, hook, página, API, debe estar documentado.
+
+Nombra este reporte como:
+📘 `structure-map-AGENTNAME.md`
+
+Y si puedes, guárdalo dentro de `/docs/` o `client/docs/`.
+
+Ejecuta el análisis ahora.

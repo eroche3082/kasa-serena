@@ -24,6 +24,7 @@ import {
   generateDesignFromPrompt
 } from "./gemini";
 import { generateSmartContainer, SmartContainerParams } from "./smartContainer";
+import { generateModularPool, PoolParams } from "./poolDesigner";
 
 // Declare module to extend express-session
 declare module 'express-session' {
@@ -510,6 +511,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error: any) {
       log(`Error generando Smart Container: ${error.message}`, "smart-container-api");
       res.status(500).json({ message: `Error generando Smart Container: ${error.message}` });
+    }
+  });
+  
+  // Endpoint para generar Piscinas Modulares
+  app.post("/api/pool-designer", async (req, res) => {
+    try {
+      const { forma, tamaño, profundidad, vidrio, acabados, extras, estilo, entorno } = req.body;
+      
+      if (!forma || !tamaño || !profundidad || !vidrio || !acabados || !estilo || !entorno) {
+        return res.status(400).json({ 
+          message: "Se requieren todos los campos obligatorios para diseñar la piscina" 
+        });
+      }
+      
+      log(`Generando Piscina Modular de forma: ${forma}, tamaño: ${tamaño}`, "pool-designer-api");
+      
+      // Llamada a la función para generar la Piscina Modular
+      const poolResult = await generateModularPool({
+        forma,
+        tamaño,
+        profundidad,
+        vidrio,
+        acabados,
+        extras,
+        estilo,
+        entorno
+      });
+      
+      res.json(poolResult);
+    } catch (error: any) {
+      log(`Error generando Piscina Modular: ${error.message}`, "pool-designer-api");
+      res.status(500).json({ message: `Error generando Piscina Modular: ${error.message}` });
     }
   });
   

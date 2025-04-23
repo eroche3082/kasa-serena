@@ -13,6 +13,7 @@ import AIVisualizationDemo from "@/pages/AIVisualizationDemo";
 import DesignGeneratorPage from "@/pages/DesignGeneratorPage";
 import AIDesignPage from "@/pages/AIDesignPage";
 import SmartContainerPage from "@/pages/SmartContainerPage";
+import ModularPoolPage from "@/pages/ModularPoolPage";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { useAuth } from "@/context/AuthContext";
@@ -40,6 +41,7 @@ function Router() {
         <Route path="/design-generator" component={DesignGeneratorPage} />
         <Route path="/ai-design" component={AIDesignPage} />
         <Route path="/smart-container" component={SmartContainerPage} />
+        <Route path="/modular-pool" component={ModularPoolPage} />
         <Route component={NotFound} />
       </Switch>
       <Footer />

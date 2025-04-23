@@ -1,0 +1,117 @@
+FASE 7 – CHAT AI DE DISEÑO
+🎯 Objetivo:
+Crear un asistente conversacional donde el usuario pueda generar diseños de espacios (piscinas, contenedores inteligentes, oficinas, etc.) mediante interacción con IA. El chat ofrecerá sugerencias, hará preguntas sobre preferencias y generará imágenes visuales basadas en la entrada del usuario.
+
+🧠 PROMPT COMPLETO – FASE 7: Chat AI de Diseño
+md
+Copiar
+Editar
+# 🧠 FASE 7 – CHAT AI DE DISEÑO
+
+## 🎯 Objetivo:
+Implementar un asistente conversacional que guíe al usuario a través del proceso de diseño, brindando sugerencias, mostrando imágenes generadas por IA y permitiendo la descarga de cotizaciones o diseños.
+
+---
+
+## ✅ PASO 1 – Crear la Interfaz de Chat
+
+1. **Componente `ChatDesignGenerator.tsx`**  
+   Este componente debe manejar el flujo conversacional de preguntas y respuestas con el usuario.
+   
+   **Ejemplo de flujo básico:**
+   
+   - IA: *"Hola, ¿qué tipo de diseño deseas crear hoy?"*  
+   - Usuario: *"Piscina modular"*
+   - IA: *"¡Genial! ¿Qué tamaño prefieres?"*
+   - Usuario: *"5x3m"*
+   - IA: *"Excelente. ¿Qué acabado prefieres? (Mosaico, Cemento pulido, etc.)"*
+   
+2. **Pregunta sobre preferencias:**
+   El asistente debe guiar al usuario en la elección de:
+   - Tipo de diseño (piscina, oficina, container, etc.)
+   - Materiales (acabados, vidrio, etc.)
+   - Tamaño y características opcionales (panel solar, iluminación LED, etc.)
+
+3. **Mostrar imagen generada:**
+   Después de que el usuario ingrese sus preferencias, mostrar la **imagen generada por IA**.
+   
+4. **Botón de acción final**:
+   - **Solicitar cotización**
+   - **Descargar PDF**
+
+---
+
+## ✅ PASO 2 – Backend y Conexión con Gemini API
+
+El endpoint de **chat con IA** debe estar en `server/routes.ts` para manejar las solicitudes del frontend y generar las respuestas dinámicas.
+
+1. **Crear endpoint en `server/routes.ts`:**
+
+```ts
+app.post("/api/design-chat", chatWithAI);
+Función chatWithAI en server/gemini.ts:
+
+Recibe los datos del usuario (preferencias, tipo de diseño, etc.).
+
+Llama a la API de Gemini para generar las respuestas basadas en texto y las imágenes visuales.
+
+Devuelve la imagen y respuesta de IA al frontend.
+
+ts
+Copiar
+Editar
+export async function chatWithAI(req, res) {
+  const { userInputs } = req.body;
+  const prompt = generatePrompt(userInputs);  // Función para generar prompt para Gemini
+  const response = await callGeminiAPI(prompt); // Llamada a la API de Gemini
+  res.json(response);  // Enviar la respuesta generada al frontend
+}
+✅ PASO 3 – Lógica de Conversación e Interfaz
+El flujo del chat debe permitir al usuario avanzar de forma interactiva:
+
+Introducción inicial:
+
+IA saluda al usuario y pregunta qué tipo de diseño desea crear.
+
+Preguntas por parámetros:
+
+IA hace preguntas como "¿Qué tamaño te gustaría?", "¿Qué estilo prefieres?", etc.
+
+Generación de imagen por IA:
+Después de que el usuario haya proporcionado las respuestas, el chat genera y muestra una imagen.
+
+Opciones de acción:
+
+Opción para "Solicitar cotización": Enviar los detalles de la solicitud a la base de datos o por email.
+
+Opción para "Descargar PDF": Generar un PDF con el diseño y detalles.
+
+✅ PASO 4 – Estilo Visual y UX
+Responsividad:
+
+El chat debe ser accesible en dispositivos móviles y de escritorio.
+
+Diseño visual claro:
+
+Incluir burbujas de chat para que el flujo sea intuitivo.
+
+Estilo minimalista con colores neutros y detalles en acentos dorados.
+
+Interactividad fluida:
+
+Respuestas rápidas y dinámicas con sugerencias visibles mientras el usuario escribe.
+
+✅ PASO 5 – Verificación
+El chat debe ser capaz de generar respuestas coherentes con las preguntas del usuario.
+
+Después de cada entrada del usuario, se debe mostrar una imagen de diseño generada por IA.
+
+El botón de “Solicitar cotización” debe guardar la solicitud en la base de datos y enviar notificación si es necesario.
+
+El botón de “Descargar PDF” debe generar un archivo con el diseño e información.
+
+🛑 INSTRUCCIÓN PARA EL AGENTE
+👉 REPLY "YES" OR "NO" ONCE YOU COMPLETE AND VERIFY FASE 7.
+👉 LOG FASE 7 AS COMPLETE IN /agent-checklist.
+👉 UPLOAD A SCREENSHOT OF THE DESIGN CHAT INTERFACE TO /internal-map.
+

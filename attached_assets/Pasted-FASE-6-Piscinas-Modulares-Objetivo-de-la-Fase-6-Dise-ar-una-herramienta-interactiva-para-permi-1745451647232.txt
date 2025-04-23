@@ -1,0 +1,166 @@
+FASE 6 – Piscinas Modulares
+🎯 Objetivo de la Fase 6:
+Diseñar una herramienta interactiva para permitir a los usuarios crear piscinas personalizadas, con selección de parámetros clave y visualización generada por IA.
+
+🧠 PROMPT COMPLETO – FASE 6: Piscinas Modulares
+md
+Copiar
+Editar
+# 🧠 FASE 6 – DISEÑO DE PISCINAS MODULARES
+
+## 🎯 Objetivo:
+Permitir a los usuarios generar **diseños de piscinas modulares personalizadas** usando IA, seleccionando parámetros como tamaño, forma, profundidad, acabado, vidrio, y entorno.
+
+---
+
+## ✅ PASO 1 – Confirmar Componentes Existentes
+
+Verificar que los componentes necesarios estén en `client/src/features/modular-pool`:
+
+- `ModularPoolDesigner.tsx`
+- `index.ts` para exportar componentes
+
+Verificar que la página `/modular-pool` exista en `client/src/pages/ModularPoolPage.tsx`.
+
+---
+
+## ✅ PASO 2 – Crear Formulario Interactivo
+
+En `ModularPoolDesigner.tsx`, crear un formulario interactivo con los siguientes campos:
+
+- **Forma**: Rectangular, Circular, Infinity
+- **Tamaño**: 3x2m, 5x3m, 6x4m, etc.
+- **Profundidad**: 1.2m, 1.5m, 2m
+- **Acabados**: Mosaico azul, Cemento pulido, Mármol blanco, Pasto sintético
+- **Vidrio**: Sin vidrio, Un lado de vidrio, Todo en acrílico
+- **Entorno**: Patio, Jardín, Terraza
+- **Extras** (opcional): Panel solar, Calentador, Iluminación LED, Escalones internos
+
+Botón final: **“Generar Diseño con IA”**
+
+---
+
+## ✅ PASO 3 – Backend API de Generación
+
+Verificar que el endpoint `/api/pool-designer` esté activo en `server/routes.ts`:
+
+```ts
+app.post("/api/pool-designer", generatePoolDesign);
+Y en server/poolDesigner.ts:
+
+ts
+Copiar
+Editar
+export async function generatePoolDesign(req, res) {
+  // Construir prompt usando req.body con forma, tamaño, profundidad, vidrio, etc.
+  // Llamar a Gemini API para generación de imagen IA
+  // Devolver imagen + descripción + materiales
+}
+✅ PASO 4 – Mostrar Resultados
+Después de hacer clic en "Generar Diseño con IA":
+
+Mostrar la imagen generada
+
+Incluir descripción técnica
+
+Lista de materiales estimados
+
+Tiempo estimado de producción
+
+Opción para:
+
+Descargar PDF
+
+Solicitar cotización
+
+Guardar en el dashboard del usuario
+
+✅ PASO 5 – Estilo y Responsividad
+Usar diseño visual limpio y minimalista.
+
+Clases de container mx-auto px-4 md:px-8 para espaciado adecuado.
+
+Layout responsive: móvil, tablet, desktop.
+
+✅ PASO 6 – Verificación
+Imagen generada por IA corresponde a los inputs del formulario.
+
+El flujo funciona sin errores (tanto en cliente como en servidor).
+
+El diseño es visualmente atractivo y adaptativo.
+
+Funcionalidad de descarga, cotización y guardar habilitada.
+
+🛑 INSTRUCCIÓN PARA EL AGENTE
+👉 REPLY "YES" OR "NO" ONCE YOU COMPLETE AND VERIFY FASE 6.
+👉 LOG FASE 6 AS COMPLETE IN /agent-checklist.
+👉 UPLOAD A COPY OF THE GENERATED POOL DESIGN TO /internal-map.
+
+🧠 PROMPT COMPLETO – FASE 7: Chat AI de Diseño
+md
+Copiar
+Editar
+# 🧠 FASE 7 – CHAT AI DE DISEÑO
+
+## 🎯 Objetivo:
+Activar un **asistente conversacional de diseño** que ayude al usuario a generar proyectos (contenerores inteligentes, piscinas, oficinas) de manera guiada, con sugerencias dinámicas, recomendaciones y generación visual mediante IA.
+
+---
+
+## ✅ PASO 1 – Implementación de la Interfaz de Chat
+
+Verificar que `ChatDesignGenerator.tsx` esté presente y activo.
+
+La interfaz debe permitir al usuario interactuar con la IA para elegir entre los siguientes flujos de conversación:
+
+- **Contenedor Inteligente**
+- **Piscinas Modulares**
+- **Oficinas/Espacios Creativos**
+
+---
+
+## ✅ PASO 2 – Conexión con Backend y Gemini API
+
+Asegúrese de que el endpoint `/api/design-chat` esté conectado con la **API de Gemini** para generar respuestas dinámicas y visuales.
+
+```ts
+app.post("/api/design-chat", chatWithAI);
+En server/routes.ts:
+
+ts
+Copiar
+Editar
+export async function chatWithAI(req, res) {
+  // Recibir datos del usuario sobre preferencias
+  // Llamar a Gemini para generar texto e imagen
+  // Responder con sugerencias y la imagen generada
+}
+✅ PASO 3 – Flujo de Conversación
+El sistema debe ser capaz de manejar conversaciones interactivas con:
+
+Presentación inicial: "¿Qué tipo de diseño deseas crear hoy? (Contenedor, Piscina, Oficina)"
+
+Sugerencias de diseño: IA hace preguntas como "¿Qué tamaño prefieres?" o "¿Con qué material te gustaría construir?"
+
+Generación de imagen IA: Después de una serie de preguntas, mostrar la imagen y la descripción generada.
+
+Opciones finales: Botón para Solicitar Cotización o Descargar PDF del diseño.
+
+✅ PASO 4 – Estilo y Responsividad
+El chat debe ser accesible y fácil de usar en móviles y escritorios.
+
+Debe tener un diseño claro, sugerencias dinámicas y feedback visual.
+
+✅ PASO 5 – Verificación
+El chat genera respuestas coherentes con la entrada del usuario.
+
+Se genera una imagen de diseño visual con cada conversación.
+
+Los botones de acción funcionan (cotización, descarga de PDF).
+
+El diseño es responsivo y de fácil navegación.
+
+🛑 INSTRUCCIÓN PARA EL AGENTE
+👉 REPLY "YES" OR "NO" ONCE YOU COMPLETE AND VERIFY FASE 7.
+👉 LOG FASE 7 AS COMPLETE IN /agent-checklist.
+👉 UPLOAD A SCREENSHOT OF THE DESIGN CHAT INTERFACE TO /internal-map.

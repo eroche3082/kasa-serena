@@ -47,33 +47,33 @@ const ServicesSection = () => {
   const services = [
     {
       image: woodenDoorImg,
-      title: "PUERTAS DE ENSUEÑO",
+      title: "DISEÑOS CON IA",
       features: [
-        "Diseños Personalizados: Cada puerta es única, adaptada a tus gustos y necesidades.",
-        "Calidad Garantizada: Materiales duraderos que resisten el paso del tiempo.",
-        "Estilo Atemporal: Diseños que complementan cualquier ambiente, ya sea moderno o clásico."
+        "Diseños Personalizados generados con IA.",
+        "Visualización instantánea de tus ideas.",
+        "Materiales y estimaciones de tiempo automáticas."
       ],
-      link: "/design-studio?type=puerta"
+      link: "/design-generator"
     },
     {
       image: woodenWindowImg,
-      title: "VENTANAS QUE INSPIRAN",
+      title: "CONTENEDORES INTELIGENTES",
       features: [
-        "Diseño Personalizado: Cada ventana se adapta a tus necesidades estéticas y funcionales.",
-        "Estilo Atemporal: Ventanas que complementan cualquier estilo arquitectónico.",
-        "Durabilidad Garantizada: Materiales resistentes que aseguran un producto de larga vida útil."
+        "Espacios modulares personalizables.",
+        "Soluciones sostenibles y energéticamente eficientes.",
+        "Diseños innovadores para múltiples usos."
       ],
-      link: "/design-studio?type=ventana"
+      link: "/smart-container"
     },
     {
       image: kitchenWoodenImg,
-      title: "COCINAS QUE CAUTIVAN",
+      title: "PISCINAS MODULARES",
       features: [
-        "Cocinas Modernas: Líneas limpias, colores neutros y electrodomésticos integrados.",
-        "Cocinas Rústicas: Estilo acogedor con madera desgastada, tonos tierra y materiales naturales.",
-        "Cocinas Industriales: Acabados metálicos, colores oscuros y combinaciones de madera y acero."
+        "Diseños a medida para cualquier espacio.",
+        "Acabados exclusivos y materiales de alta calidad.",
+        "Soluciones eficientes adaptadas a tu entorno."
       ],
-      link: "/design-studio?type=cocina"
+      link: "/modular-pool"
     }
   ];
 
@@ -82,9 +82,9 @@ const ServicesSection = () => {
       <div className="container mx-auto px-4">
         <div className="w-full border-t border-neutral-300 mb-10"></div>
         <div className="text-center mb-6">
-          <h2 className="font-['Didonesque'] text-3xl md:text-4xl font-light mb-6 tracking-wide uppercase">EN KASA SERENA, DISEÑAMOS Y CONSTRUIMOS COCINAS, PUERTAS, Y VENTANAS PERSONALIZADAS</h2>
+          <h2 className="font-['Didonesque'] text-3xl md:text-4xl font-light mb-6 tracking-wide uppercase">KASA SERENA DESIGNS - SOLUCIONES INNOVADORAS PARA TU ESPACIO</h2>
           <p className="text-lg text-neutral-600 max-w-4xl mx-auto font-['Poppins']">
-            TENEMOS MÁS DE 20 AÑOS DE EXPERIENCIA. CREAMOS ESPACIOS ÚNICOS QUE COMBINAN ELEGANCIA, FUNCIONALIDAD Y DURABILIDAD.
+            Transformamos tu visión en realidad mediante tecnología de IA, diseño modular y soluciones personalizadas para cada proyecto.
           </p>
         </div>
         
@@ -101,8 +101,8 @@ const ServicesSection = () => {
         </div>
         
         <div className="mt-12 text-center">
-          <Link href="/design-studio" className="inline-block bg-neutral-700 hover:bg-neutral-800 text-white py-3 px-6 text-center tracking-wide">
-            Conoce más
+          <Link href="/design-generator" className="inline-block bg-neutral-700 hover:bg-neutral-800 text-white py-3 px-6 text-center tracking-wide">
+            Comienza tu diseño
           </Link>
         </div>
       </div>

@@ -34,22 +34,22 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
         <Link href="/" onClick={handleLinkClick} className="text-neutral-700 hover:text-primary py-2 border-b border-neutral-200">
           Inicio
         </Link>
-        <Link href="/design-studio" onClick={handleLinkClick} className="text-neutral-700 hover:text-primary py-2 border-b border-neutral-200">
-          Diseñador
+        <Link href="/design-generator" onClick={handleLinkClick} className="text-neutral-700 hover:text-primary py-2 border-b border-neutral-200">
+          Diseños con IA
         </Link>
-        <Link href="/#servicios" onClick={handleLinkClick} className="text-neutral-700 hover:text-primary py-2 border-b border-neutral-200">
-          Servicios
+        <Link href="/smart-container" onClick={handleLinkClick} className="text-neutral-700 hover:text-primary py-2 border-b border-neutral-200">
+          Contenedores Inteligentes
         </Link>
-        <Link href="/#estimador" onClick={handleLinkClick} className="text-neutral-700 hover:text-primary py-2 border-b border-neutral-200">
-          Estimador
+        <Link href="/modular-pool" onClick={handleLinkClick} className="text-neutral-700 hover:text-primary py-2 border-b border-neutral-200">
+          Piscinas Modulares
         </Link>
-        <Link href="/#socios" onClick={handleLinkClick} className="text-neutral-700 hover:text-primary py-2 border-b border-neutral-200">
-          Distribuidores
+        <Link href="/login" onClick={handleLinkClick} className="text-neutral-700 hover:text-primary py-2 border-b border-neutral-200">
+          Iniciar Sesión
         </Link>
         <Link href="/#contacto" onClick={handleLinkClick} className="text-neutral-700 hover:text-primary py-2">
           Contacto
         </Link>
-        <Link href="/design-studio" onClick={handleLinkClick}>
+        <Link href="/design-generator" onClick={handleLinkClick}>
           <Button className="w-full bg-primary hover:bg-primary/90 text-white">
             Iniciar proyecto
           </Button>

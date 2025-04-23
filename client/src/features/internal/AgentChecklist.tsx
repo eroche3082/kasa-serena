@@ -57,12 +57,12 @@ const AgentChecklist = () => {
     {
       id: 3,
       name: "Interfaz Visual de Navegación y HomePage",
-      completed: false,
+      completed: true,
       items: [
-        { name: "Diseño de Hero Section, Servicios, Contacto", completed: false },
-        { name: "Integrar video de fondo y assets", completed: false },
-        { name: "Asegurar diseño mobile responsive", completed: false },
-        { name: "Conectar secciones a sus páginas respectivas", completed: false }
+        { name: "Diseño de Hero Section, Servicios, Contacto", completed: true },
+        { name: "Integrar video de fondo y assets", completed: true },
+        { name: "Asegurar diseño mobile responsive", completed: true },
+        { name: "Conectar secciones a sus páginas respectivas", completed: true }
       ]
     },
     {

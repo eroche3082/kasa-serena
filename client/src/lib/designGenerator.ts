@@ -2,12 +2,35 @@
 
 // Parámetros para la generación de diseño
 export interface DesignParams {
-  tipo: 'puerta' | 'ventana' | 'cocina' | 'gabinete' | 'piscina' | string;
+  // Parámetros básicos
+  tipo: 'puerta' | 'ventana' | 'cocina' | 'gabinete' | 'contenedor' | 'piscina' | 'oficina' | string;
   material: string;
   color: string;
   estilo: string;
   medidas: string;
   extra?: string;
+  
+  // Parámetros para Contenedor Inteligente
+  uso?: string;
+  tamaño?: string;
+  energia?: string;
+  fachada?: string;
+  tech?: string;
+  extras?: string;
+  
+  // Parámetros para Piscina Modular
+  forma?: string;
+  profundidad?: string;
+  acabados?: string;
+  vidrio?: string;
+  entorno?: string;
+  
+  // Parámetros para Oficina/Espacio Creativo
+  capacidad?: string;
+  tecnologia?: string;
+  bienestar?: string;
+  
+  [key: string]: string | undefined; // Para acceso dinámico a propiedades
 }
 
 // Resultado de la generación de diseño

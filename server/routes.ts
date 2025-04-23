@@ -100,13 +100,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     secret: process.env.SESSION_SECRET || "kasaserena-secret"
   }));
   
-  // Helper for checking auth
-  const requireAuth = (req: any, res: any, next: any) => {
-    if (!req.session.userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-    next();
-  };
+  // Usamos el middleware de autenticación definido en ./middleware/auth.ts
 
   // API Routes
   // User routes
@@ -137,6 +131,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Set session
       req.session.userId = user.id;
+      req.session.user = {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role
+      };
       
       res.status(201).json(userWithoutPassword);
     } catch (error) {
@@ -223,7 +223,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  app.get("/api/projects/:id", async (req, res) => {
+  app.get("/api/projects/:id", requireAuth, async (req, res) => {
     try {
       const project = await storage.getProject(parseInt(req.params.id));
       if (!project) {
@@ -560,7 +560,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Material routes
-  app.get("/api/materials", async (req, res) => {
+  app.get("/api/materials", requireAuth, async (req, res) => {
     try {
       const materials = await storage.getMaterials();
       res.json(materials);
@@ -569,7 +569,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  app.get("/api/materials/type/:type", async (req, res) => {
+  app.get("/api/materials/type/:type", requireAuth, async (req, res) => {
     try {
       const materials = await storage.getMaterialsByType(req.params.type);
       res.json(materials);
@@ -579,7 +579,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Distributor routes
-  app.get("/api/distributors", async (req, res) => {
+  app.get("/api/distributors", requireAuth, async (req, res) => {
     try {
       const distributors = await storage.getDistributors();
       res.json(distributors);
@@ -588,7 +588,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  app.get("/api/distributors/:id", async (req, res) => {
+  app.get("/api/distributors/:id", requireAuth, async (req, res) => {
     try {
       const distributor = await storage.getDistributor(parseInt(req.params.id));
       if (!distributor) {

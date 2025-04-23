@@ -10,7 +10,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
 import { generateDesign } from '@/lib/gemini';
-import { DesignParams, DesignResult } from '@/lib/designGenerator';
+import { DesignParams, DesignResult, materialCategories, availableStyles } from '@/lib/designGenerator';
 import { Loader2 } from 'lucide-react';
 
 // Esquema de validación
@@ -151,13 +151,9 @@ export default function DesignGenerator() {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="moderno">Moderno</SelectItem>
-                            <SelectItem value="minimalista">Minimalista</SelectItem>
-                            <SelectItem value="clásico">Clásico</SelectItem>
-                            <SelectItem value="rústico">Rústico</SelectItem>
-                            <SelectItem value="colonial">Colonial</SelectItem>
-                            <SelectItem value="industrial">Industrial</SelectItem>
-                            <SelectItem value="contemporáneo">Contemporáneo</SelectItem>
+                            {availableStyles.map(style => (
+                              <SelectItem key={style.id} value={style.id}>{style.name}</SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                         <FormDescription>

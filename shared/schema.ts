@@ -9,7 +9,7 @@ export const users = pgTable("users", {
   password: text("password").notNull(),
   email: text("email").notNull(),
   fullName: text("full_name"),
-  role: text("role").default("customer"),
+  role: text("role").default("cliente"), // cliente | admin | disenador
   createdAt: timestamp("created_at").defaultNow(),
   stripeCustomerId: text("stripe_customer_id"),
   stripeSubscriptionId: text("stripe_subscription_id"),
@@ -139,6 +139,8 @@ export const insertQuoteSchema = createInsertSchema(quotes).pick({
 });
 
 // Type definitions
+export type UserRole = 'admin' | 'cliente' | 'disenador';
+
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
 

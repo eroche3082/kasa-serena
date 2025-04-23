@@ -1,0 +1,134 @@
+FASE 2 – AUTENTICACIÓN Y ROLES DE USUARIO
+Objetivo:
+Fortalecer el sistema de login, proteger rutas sensibles, e implementar roles de usuario (cliente, admin, diseñador).
+
+✅ PASO 1 – Definir roles en la base de datos
+En shared/schema.ts, agrega el campo role en la tabla users:
+
+ts
+Copiar
+Editar
+role: text('role').default('cliente') // cliente | admin | disenador
+Actualiza el type en shared/types.ts:
+
+ts
+Copiar
+Editar
+export type UserRole = 'admin' | 'cliente' | 'disenador';
+
+export interface User {
+  id: string;
+  username: string;
+  email: string;
+  role: UserRole;
+}
+✅ PASO 2 – Backend: proteger rutas y validar roles
+Crear middleware de autenticación y roles
+En server/middleware/auth.ts:
+
+ts
+Copiar
+Editar
+import { Request, Response, NextFunction } from 'express';
+
+export function requireAuth(req: Request, res: Response, next: NextFunction) {
+  if (!req.session.user) {
+    return res.status(401).json({ message: 'Not authenticated' });
+  }
+  next();
+}
+
+export function requireRole(role: 'admin' | 'cliente' | 'disenador') {
+  return (req: Request, res: Response, next: NextFunction) => {
+    if (!req.session.user || req.session.user.role !== role) {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+    next();
+  };
+}
+Proteger rutas en server/routes.ts:
+
+ts
+Copiar
+Editar
+import { requireAuth, requireRole } from './middleware/auth';
+
+// Solo accesible para diseñadores
+app.post('/api/projects', requireAuth, requireRole('disenador'), createProject);
+
+// Acceso a cotizaciones solo para usuarios autenticados
+app.get('/api/quotes', requireAuth, getQuotesByUser);
+✅ PASO 3 – Frontend: contexto y protección
+Actualizar el contexto de autenticación En client/src/context/AuthContext.tsx, asegúrate que user incluya role.
+
+ts
+Copiar
+Editar
+interface AuthContextType {
+  user: User | null;
+  isAuthenticated: boolean;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+}
+Protección de rutas por rol
+
+Crea un withRoleProtection HOC o usa useAuth directamente en páginas protegidas:
+
+ts
+Copiar
+Editar
+const { user, isAuthenticated } = useAuth();
+
+if (!isAuthenticated || user?.role !== 'disenador') {
+  return <Navigate to="/login" />;
+}
+✅ PASO 4 – Login/Register con selección de rol
+En RegisterForm.tsx, añade selector de rol:
+
+tsx
+Copiar
+Editar
+<Select onValueChange={(value) => setUserData({...userData, role: value})}>
+  <SelectItem value="cliente">Cliente</SelectItem>
+  <SelectItem value="disenador">Diseñador</SelectItem>
+</Select>
+Y en el backend de /api/register, guarda ese role en la DB.
+
+✅ PASO 5 – Seguridad Adicional
+Rate Limiting en endpoints IA:
+
+ts
+Copiar
+Editar
+import rateLimit from 'express-rate-limit';
+
+const limiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 10,
+});
+
+app.use('/api/generate-design', limiter);
+CSRF Protection (si usas cookies):
+
+bash
+Copiar
+Editar
+npm install csurf
+En tu server/index.ts:
+
+ts
+Copiar
+Editar
+import csrf from 'csurf';
+
+const csrfProtection = csrf({ cookie: true });
+app.use(csrfProtection);
+🧪 Verificación Final de Fase 2
+
+Elemento	Estado Esperado
+Roles implementados en base de datos	✅
+Middleware requireRole	✅
+Rutas protegidas	✅
+Contexto actualizado en frontend	✅
+Select de rol en registro	✅
+Protección contra ataques

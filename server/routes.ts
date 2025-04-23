@@ -25,11 +25,18 @@ import {
 } from "./gemini";
 import { generateSmartContainer, SmartContainerParams } from "./smartContainer";
 import { generateModularPool, PoolParams } from "./poolDesigner";
+import { requireAuth, requireRole, requireAnyRole } from "./middleware/auth";
 
 // Declare module to extend express-session
 declare module 'express-session' {
   interface SessionData {
     userId: number;
+    user?: {
+      id: number;
+      username: string;
+      email: string;
+      role: string;
+    };
   }
 }
 

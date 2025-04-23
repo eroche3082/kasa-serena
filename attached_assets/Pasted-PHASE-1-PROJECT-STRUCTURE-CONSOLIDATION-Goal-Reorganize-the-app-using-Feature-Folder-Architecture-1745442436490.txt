@@ -1,0 +1,102 @@
+PHASE 1 – PROJECT STRUCTURE CONSOLIDATION
+Goal: Reorganize the app using Feature Folder Architecture, clean duplicates, and prepare the base for feature modularity.
+
+✅ 1. Create Feature-Based Folders
+bash
+Copiar
+Editar
+# Inside client/src/components/
+mkdir -p features/smart-container
+mkdir -p features/modular-pool
+mkdir -p features/ai-generator
+mkdir -p features/auth
+mkdir -p features/common
+mkdir -p features/layout
+Move the following components accordingly:
+
+bash
+Copiar
+Editar
+# Smart Containers
+mv client/src/components/design/SmartContainerGenerator.tsx client/src/features/smart-container/
+
+# Modular Pools
+mv client/src/components/design/ModularPoolDesigner.tsx client/src/features/modular-pool/
+
+# AI Prompt Generator
+mv client/src/components/design/PromptDesignGenerator.tsx client/src/features/ai-generator/
+mv client/src/components/design/ChatDesignGenerator.tsx client/src/features/ai-generator/
+
+# Layout
+mv client/src/components/layout/* client/src/features/layout/
+
+# Common UI
+mv client/src/components/ui/* client/src/features/common/
+✅ 2. Clean Duplicates & Rename Clearly
+bash
+Copiar
+Editar
+# Identify duplicate components
+grep -r "export default" client/src/components | sort
+
+# If you find multiple versions of Header, Button, or SelectionPanel:
+# Keep the most complete version and remove the others
+rm client/src/components/layout/Header copy.tsx
+rm client/src/components/ui/OldSelectionPanel.tsx
+Standardize file names for consistency:
+
+bash
+Copiar
+Editar
+mv client/src/features/common/toaster.tsx client/src/features/common/Toaster.tsx
+✅ 3. Update Imports Across App
+Search and replace all imports after moving files:
+
+bash
+Copiar
+Editar
+# Example: Update Header imports
+grep -rl "components/layout/Header" client/src | xargs sed -i '' 's/components\/layout\/Header/features\/layout\/Header/g'
+
+# Repeat similarly for other moved components (Toaster, SelectionPanel, PromptDesignGenerator, etc.)
+✅ 4. Add README.md to Each Feature Folder
+bash
+Copiar
+Editar
+echo "# Smart Container Feature\nThis folder contains all components and logic related to the Smart Container Designer." > client/src/features/smart-container/README.md
+Repeat for:
+
+/features/modular-pool/
+
+/features/ai-generator/
+
+/features/common/
+
+✅ 5. Update Main App Entry
+Make sure App.tsx and main.tsx import only from the new folders:
+
+tsx
+Copiar
+Editar
+// App.tsx
+import Header from "@/features/layout/Header";
+import Toaster from "@/features/common/Toaster";
+✅ 6. Confirm Vite & Tailwind Path Aliases (Optional)
+Check vite.config.ts to make sure @/ points to client/src/.
+
+ts
+Copiar
+Editar
+resolve: {
+  alias: {
+    '@': path.resolve(__dirname, './client/src'),
+  },
+}
+✅ 7. Git Commit for Phase 1
+bash
+Copiar
+Editar
+git add .
+git commit -m "🚀 Phase 1 complete: Reorganized to feature-based folders and cleaned duplicates"
+🟢 NEXT STEP:
+Let me know when you're ready to begin Phase 2: Authentication and Roles, or if you’d like help testing the new imports and structure before continuing.

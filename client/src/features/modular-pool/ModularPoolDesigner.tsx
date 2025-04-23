@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Download, Send, FileText } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/context/AuthContext';
+import { queryClient } from '@/lib/queryClient';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { 
@@ -19,6 +21,8 @@ import {
   entornoOptions 
 } from '@/lib/poolDesigner';
 import { DesignResult } from '@/lib/designGenerator';
+import { generateDesignPDF, createWhatsAppShareLink } from '@/lib/pdfGenerator';
+import { submitQuote } from '@/lib/quoteService';
 
 const ModularPoolDesigner = () => {
   const [params, setParams] = useState<PoolParams>({
@@ -33,8 +37,10 @@ const ModularPoolDesigner = () => {
 
   const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isSubmittingQuote, setIsSubmittingQuote] = useState(false);
   const [generatedDesign, setGeneratedDesign] = useState<DesignResult | null>(null);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const handleExtraChange = (value: string, checked: boolean) => {
     setSelectedExtras(prev => {

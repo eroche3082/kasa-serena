@@ -1,6 +1,7 @@
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { useEffect } from 'react';
+import { useAuth } from '@/context/AuthContext';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -8,6 +9,8 @@ interface MobileMenuProps {
 }
 
 const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
+  const { isAuthenticated } = useAuth();
+
   // Close menu when clicking anchor links
   const handleLinkClick = () => {
     onClose();
@@ -43,9 +46,25 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
         <Link href="/modular-pool" onClick={handleLinkClick} className="text-neutral-700 hover:text-primary py-2 border-b border-neutral-200">
           Piscinas Modulares
         </Link>
-        <Link href="/login" onClick={handleLinkClick} className="text-neutral-700 hover:text-primary py-2 border-b border-neutral-200">
-          Iniciar Sesión
-        </Link>
+        
+        {isAuthenticated ? (
+          <>
+            <Link href="/dashboard" onClick={handleLinkClick} className="text-neutral-700 hover:text-primary py-2 border-b border-neutral-200">
+              Panel
+            </Link>
+            <Link href="/cotizaciones" onClick={handleLinkClick} className="text-neutral-700 hover:text-primary py-2 border-b border-neutral-200">
+              Mis Cotizaciones
+            </Link>
+            <Link href="/profile" onClick={handleLinkClick} className="text-neutral-700 hover:text-primary py-2 border-b border-neutral-200">
+              Mi Perfil
+            </Link>
+          </>
+        ) : (
+          <Link href="/login" onClick={handleLinkClick} className="text-neutral-700 hover:text-primary py-2 border-b border-neutral-200">
+            Iniciar Sesión
+          </Link>
+        )}
+        
         <Link href="/#contacto" onClick={handleLinkClick} className="text-neutral-700 hover:text-primary py-2">
           Contacto
         </Link>

@@ -1,0 +1,103 @@
+PROMPT OFICIAL – FASE 5: SMART CONTAINER DESIGNER
+md
+Copiar
+Editar
+# 🧠 FASE 5 – DISEÑADOR DE SMART CONTAINERS
+
+## 🎯 Objetivo:
+Implementar una herramienta visual donde los usuarios puedan diseñar contenedores inteligentes personalizados, impulsados por energía renovable y conectividad AI/IoT.
+
+---
+
+## ✅ PASO 1 – Confirmar Componentes Existentes
+
+Verificar la carpeta:
+```bash
+client/src/features/smart-container/
+Debe incluir:
+
+SmartContainerGenerator.tsx ✅
+
+index.ts ✅
+
+Página vinculada:
+
+bash
+Copiar
+Editar
+client/src/pages/SmartContainerPage.tsx
+✅ PASO 2 – Crear Formulario Interactivo
+En SmartContainerGenerator.tsx, incluir inputs para:
+
+Uso del Contenedor: casa, oficina, spa, café, estudio creativo
+
+Tamaño: 20 pies, 40 pies, tiny, doble piso
+
+Energía: solar, eólica, mixta
+
+Fachada: madera minimalista, aluminio negro, jardín vertical, vidrio
+
+Tecnología Integrada: control por app, sensores de clima, luces AI, cámaras
+
+Extras (opcional): rooftop, deck, jardín interior, almacenamiento oculto
+
+Botón final: “Generar Diseño con IA”
+
+✅ PASO 3 – Backend API: Generador Visual con Gemini
+Verificar que el endpoint /api/smart-container esté activo en server/routes.ts:
+
+ts
+Copiar
+Editar
+app.post("/api/smart-container", generateSmartContainer);
+Y en server/smartContainer.ts:
+
+ts
+Copiar
+Editar
+export async function generateSmartContainer(req, res) {
+  // Construye prompt usando req.body con uso, energía, fachada, tech, etc.
+  // Llama a Gemini API
+  // Devuelve imagen + descripción + materiales
+}
+✅ PASO 4 – Mostrar Resultados
+Después de presionar “Generar Diseño con IA”:
+
+Mostrar la imagen generada
+
+Incluir una descripción técnica del diseño
+
+Lista de materiales estimados
+
+Tiempo estimado de producción
+
+Opción para:
+
+Descargar PDF
+
+Solicitar cotización
+
+Guardar en el dashboard del usuario (si está logueado)
+
+✅ PASO 5 – Estilo y Responsividad
+Usar diseño visual minimalista
+
+Clase general: container mx-auto px-4 md:px-8
+
+Espaciado entre secciones
+
+Layout adaptable para móvil, tablet, desktop
+
+✅ PASO 6 – Verificación Final
+Imagen generada por IA corresponde a los inputs
+
+No hay errores en el backend
+
+Diseño responsive y visualmente limpio
+
+Funciona correctamente en móvil
+
+Opciones como cotizar o guardar están activas (o preparadas)
+
+🛑 INSTRUCCIÓN PARA EL AGENTE
+👉 REPLY "YES" OR "NO" ONCE YOU COMPLETE AND VERIFY FASE 5.

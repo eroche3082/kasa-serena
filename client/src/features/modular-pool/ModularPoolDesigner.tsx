@@ -99,6 +99,116 @@ const ModularPoolDesigner = () => {
     }
   };
 
+  // Genera y descarga el PDF del diseño
+  const handleGeneratePDF = async () => {
+    if (!generatedDesign) return;
+    
+    const poolInfo = {
+      title: "Piscina Modular Personalizada",
+      description: generatedDesign.description,
+      materials: generatedDesign.materials,
+      estimatedTime: generatedDesign.estimatedTime,
+      type: "Piscina-Modular",
+      image: generatedDesign.imageUrl
+    };
+
+    try {
+      await generateDesignPDF(poolInfo);
+      
+      toast({
+        title: "PDF generado",
+        description: "El PDF de tu piscina modular ha sido descargado exitosamente"
+      });
+    } catch (error) {
+      console.error('Error generando PDF:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo generar el PDF. Intenta nuevamente.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  // Comparte el diseño por WhatsApp
+  const handleShareWhatsApp = () => {
+    if (!generatedDesign) return;
+    
+    const poolInfo = `
+🏊‍♂️ *PISCINA MODULAR PERSONALIZADA* 🏊‍♂️
+
+*Detalles:*
+• Forma: ${params.forma}
+• Tamaño: ${params.tamaño}
+• Profundidad: ${params.profundidad}
+• Vidrio/Acrílico: ${params.vidrio}
+• Acabados: ${params.acabados}
+• Estilo: ${params.estilo}
+• Entorno: ${params.entorno}
+${selectedExtras.length > 0 ? `• Extras: ${selectedExtras.join(', ')}` : ''}
+
+*Tiempo de Instalación:* ${generatedDesign.estimatedTime}
+
+Me gustaría recibir una cotización para este diseño.
+    `;
+    
+    const whatsappLink = createWhatsAppShareLink(poolInfo, "Piscina Modular");
+    window.open(whatsappLink, '_blank');
+  };
+
+  // Envía la cotización para guardarse en el sistema
+  const handleSubmitQuote = async () => {
+    if (!generatedDesign || !user) {
+      if (!user) {
+        toast({
+          title: "Inicia sesión",
+          description: "Debes iniciar sesión para guardar cotizaciones",
+          variant: "destructive"
+        });
+      }
+      return;
+    }
+    
+    setIsSubmittingQuote(true);
+    
+    try {
+      const poolParameters = {
+        forma: params.forma,
+        tamaño: params.tamaño,
+        profundidad: params.profundidad,
+        vidrio: params.vidrio,
+        acabados: params.acabados,
+        estilo: params.estilo,
+        entorno: params.entorno,
+        extras: selectedExtras.length > 0 ? selectedExtras.join(', ') : '',
+      };
+      
+      const quoteData = {
+        tipo: "Piscina Modular",
+        datos: poolParameters,
+        imageUrl: generatedDesign.imageUrl,
+        descripcion: generatedDesign.description
+      };
+      
+      await submitQuote(quoteData);
+      
+      queryClient.invalidateQueries({ queryKey: ['/api/quotes'] });
+      
+      toast({
+        title: "Cotización enviada",
+        description: "Tu cotización ha sido guardada exitosamente"
+      });
+    } catch (error) {
+      console.error('Error enviando cotización:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo enviar la cotización. Intenta nuevamente.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmittingQuote(false);
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <Card>
@@ -324,6 +434,44 @@ const ModularPoolDesigner = () => {
                 <div>
                   <h3 className="font-medium">Tiempo de Instalación</h3>
                   <p className="text-sm text-muted-foreground">{generatedDesign.estimatedTime}</p>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-2 pt-4">
+                  <Button 
+                    onClick={handleGeneratePDF} 
+                    variant="outline" 
+                    className="flex items-center space-x-2"
+                  >
+                    <Download className="h-4 w-4" />
+                    <span>Descargar PDF</span>
+                  </Button>
+                  
+                  <Button 
+                    onClick={handleShareWhatsApp} 
+                    variant="outline" 
+                    className="flex items-center space-x-2"
+                  >
+                    <Send className="h-4 w-4" />
+                    <span>Compartir</span>
+                  </Button>
+                  
+                  <Button 
+                    onClick={handleSubmitQuote} 
+                    disabled={isSubmittingQuote || !user}
+                    className="flex items-center space-x-2"
+                  >
+                    {isSubmittingQuote ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span>Enviando...</span>
+                      </>
+                    ) : (
+                      <>
+                        <FileText className="h-4 w-4" />
+                        <span>Guardar Cotización</span>
+                      </>
+                    )}
+                  </Button>
                 </div>
               </div>
             </div>

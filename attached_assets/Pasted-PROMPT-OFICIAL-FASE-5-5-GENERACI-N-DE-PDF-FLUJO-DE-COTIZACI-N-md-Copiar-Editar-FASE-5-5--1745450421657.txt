@@ -1,0 +1,106 @@
+PROMPT OFICIAL – FASE 5.5: GENERACIÓN DE PDF + FLUJO DE COTIZACIÓN
+md
+Copiar
+Editar
+# 📄 FASE 5.5 – GENERACIÓN AUTOMÁTICA DE PDF Y FLUJO DE COTIZACIÓN
+
+## 🎯 Objetivo:
+Permitir al usuario exportar su diseño de Smart Container como un archivo PDF descargable, que incluya el render, descripción técnica, lista de materiales, tiempo estimado y botones de acción.
+
+---
+
+## ✅ PASO 1 – Crear función de generación de PDF
+
+Archivo sugerido:  
+```bash
+client/src/lib/pdfGenerator.ts
+Código base usando html2pdf.js o jspdf:
+
+ts
+Copiar
+Editar
+import html2pdf from "html2pdf.js";
+
+export function generateSmartContainerPDF(containerData: {
+  image: string;
+  title: string;
+  description: string;
+  materials: string[];
+  estimatedTime: string;
+}) {
+  const element = document.createElement("div");
+  element.innerHTML = `
+    <h1>${containerData.title}</h1>
+    <img src="${containerData.image}" width="100%" />
+    <p>${containerData.description}</p>
+    <h3>Materiales:</h3>
+    <ul>
+      ${containerData.materials.map((m) => `<li>${m}</li>`).join("")}
+    </ul>
+    <p><strong>Tiempo estimado:</strong> ${containerData.estimatedTime}</p>
+  `;
+
+  html2pdf().from(element).save("SmartContainer-KasaSerena.pdf");
+}
+Instalar librería (si no está):
+
+bash
+Copiar
+Editar
+npm install html2pdf.js
+✅ PASO 2 – Integrar botón en SmartContainerGenerator.tsx
+Después de mostrar los resultados generados:
+
+tsx
+Copiar
+Editar
+import { generateSmartContainerPDF } from "@/lib/pdfGenerator";
+
+<Button onClick={() => generateSmartContainerPDF({
+  image: generatedImage,
+  title: "Contenedor Inteligente – Kasa Serena",
+  description: aiDescription,
+  materials: materialList,
+  estimatedTime: estimatedBuildTime
+})}>
+  Descargar PDF
+</Button>
+✅ PASO 3 – Crear botón de cotización por WhatsApp o email
+Opcionalmente puedes agregar:
+
+tsx
+Copiar
+Editar
+<a
+  href={`https://wa.me/1XXXXXXXXXX?text=Hola, me gustaría cotizar este contenedor: ${encodeURIComponent(aiDescription)}`}
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <Button variant="outline">Enviar por WhatsApp</Button>
+</a>
+También puedes habilitar un botón que llame al endpoint:
+
+ts
+Copiar
+Editar
+POST /api/quotes
+{
+  userId,
+  tipo: "smart-container",
+  datos: {...},
+  image: URL,
+  estado: "pendiente"
+}
+✅ PASO 4 – Verificación
+PDF se descarga correctamente con render, textos y lista
+
+Botón de WhatsApp o cotización funciona sin error
+
+Estilo visual del PDF limpio, legible y bien estructurado
+
+Funciona tanto en escritorio como en móvil
+
+🛑 INSTRUCCIÓN PARA EL AGENTE
+👉 REPLY "YES" OR "NO" ONCE YOU COMPLETE AND VERIFY FASE 5.5.
+👉 LOG FASE 5.5 AS COMPLETE IN /agent-checklist.
+👉 UPLOAD A COPY OF THE GENERATED PDF SAMPLE TO /internal-map.

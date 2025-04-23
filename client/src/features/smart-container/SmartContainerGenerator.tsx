@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Download, Send } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -17,6 +17,7 @@ import {
   extrasOptions 
 } from '@/lib/smartContainer';
 import { DesignResult } from '@/lib/designGenerator';
+import { generateSmartContainerPDF, createWhatsAppShareLink } from '@/lib/pdfGenerator';
 
 const SmartContainerGenerator = () => {
   const [params, setParams] = useState<SmartContainerParams>({
@@ -276,6 +277,34 @@ const SmartContainerGenerator = () => {
                 <div>
                   <h3 className="font-medium">Tiempo de Instalación</h3>
                   <p className="text-sm text-muted-foreground">{generatedDesign.estimatedTime}</p>
+                </div>
+                
+                <div className="flex flex-wrap gap-3 mt-6">
+                  <Button 
+                    variant="default"
+                    onClick={() => generateSmartContainerPDF({
+                      image: generatedDesign.imageUrl,
+                      title: `Smart Container para ${params.uso}`,
+                      description: generatedDesign.description,
+                      materials: generatedDesign.materials,
+                      estimatedTime: generatedDesign.estimatedTime
+                    })}
+                  >
+                    <Download className="mr-2 h-4 w-4" />
+                    Descargar PDF
+                  </Button>
+                  
+                  <a
+                    href={createWhatsAppShareLink(generatedDesign.description, "Smart Container")}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block"
+                  >
+                    <Button variant="outline">
+                      <Send className="mr-2 h-4 w-4" />
+                      Solicitar Cotización
+                    </Button>
+                  </a>
                 </div>
               </div>
             </div>

@@ -29,8 +29,9 @@ export async function chatWithAssistant(message: string, projectType?: string): 
 // Función para generar diseños usando Gemini Flash
 export async function generateDesign(params: DesignParams): Promise<DesignResult> {
   try {
+    console.log("Generando diseño con parámetros:", params);
     // Crear la solicitud a Vertex AI
-    const response = await fetch('/api/design-generator', {
+    const response = await fetch('/api/generate-design', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

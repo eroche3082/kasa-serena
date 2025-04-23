@@ -16,7 +16,7 @@ import heicConvert from 'heic-convert';
 import { log } from "./vite";
 import { analyzeImage, generateDesignPreview, estimateDesignCost } from "./openai";
 import { 
-  generateDesign as generateDesignWithGemini, 
+  generateDesign, 
   analyzeDesignImage as analyzeImageWithGemini,
   getDesignSuggestions,
   estimateDesignCost as estimateDesignCostWithGemini,
@@ -369,6 +369,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Nuevos endpoints para generador de diseño con Gemini
   
+  // Endpoint para generar diseño basado en parámetros
+  app.post("/api/design-generator", requireAuth, requireAnyRole(['cliente', 'disenador']), async (req, res) => {
+    try {
+      const { tipo, material, color, estilo, medidas, extra } = req.body;
+      
+      if (!tipo || !material || !color || !estilo || !medidas) {
+        return res.status(400).json({
+          message: "Se requieren todos los campos básicos: tipo, material, color, estilo, medidas" 
+        });
+      }
+      
+      log(`Generando diseño con parámetros: tipo=${tipo}, material=${material}, estilo=${estilo}`, "gemini-api");
+      
+      // Llamada a Gemini para generar el diseño con parámetros
+      const designParams = {
+        tipo,
+        material,
+        color,
+        estilo,
+        medidas,
+        extra
+      };
+      
+      const designResult = await generateDesign(designParams);
+      
+      res.json(designResult);
+    } catch (error: any) {
+      log(`Error generando diseño: ${error.message}`, "gemini-api");
+      res.status(500).json({ message: `Error generando diseño: ${error.message}` });
+    }
+  });
+  
   // Endpoint para chat con asistente de diseño
   app.post("/api/design-chat", requireAuth, requireAnyRole(['cliente', 'disenador']), async (req, res) => {
     try {
@@ -395,8 +427,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // Endpoint para generar diseño personalizado
-  app.post("/api/design-generator", requireAuth, requireAnyRole(['cliente', 'disenador']), async (req, res) => {
+  // Endpoint para generar diseño personalizado con Gemini
+  app.post("/api/generate-design", requireAuth, requireAnyRole(['cliente', 'disenador']), async (req, res) => {
     try {
       const { tipo, material, color, estilo, medidas, extra } = req.body;
       
@@ -409,7 +441,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       log(`Generando diseño tipo: ${tipo}, estilo: ${estilo}`, "gemini-api");
       
       // Llamada a Gemini para generar diseño
-      const designResult = await generateDesignWithGemini({
+      const designResult = await generateDesign({
         tipo,
         material,
         color,

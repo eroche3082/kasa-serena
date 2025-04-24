@@ -32,7 +32,7 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className="md:hidden bg-white px-4 py-2 shadow-md">
+    <div className="md:hidden fixed top-[60px] left-0 right-0 z-50 bg-white px-4 py-2 shadow-md max-h-[calc(100vh-60px)] overflow-y-auto">
       <nav className="flex flex-col space-y-3 py-3">
         <Link href="/" onClick={handleLinkClick} className="text-neutral-700 hover:text-primary py-2 border-b border-neutral-200">
           Inicio

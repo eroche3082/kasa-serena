@@ -2,6 +2,9 @@ import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import multer from "multer";
 import { storage } from "./storage";
+import path from "path";
+import fs from "fs";
+import { convertHeicToJpeg, generateLowQualityImage } from "./utils/imageConverter";
 import { 
   insertUserSchema, 
   insertProjectSchema, 
@@ -14,6 +17,7 @@ import session from "express-session";
 import MemoryStore from "memorystore";
 import heicConvert from 'heic-convert';
 import { log } from "./vite";
+import { logger } from "./utils/logger";
 import { analyzeImage, generateDesignPreview, estimateDesignCost } from "./openai";
 import { 
   generateDesign, 

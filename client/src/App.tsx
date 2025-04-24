@@ -51,6 +51,7 @@ function Router() {
         <Route path="/cotizaciones" component={QuotesPage} />
         <Route path="/solicitar-cotizacion" component={QuoteRequestPage} />
         <Route path="/solicitar-cotizacion/:id" component={QuoteRequestPage} />
+        <Route path="/galeria" component={GaleriaPage} />
         <Route path="/internal-map" component={AgentChecklistPage} />
         <Route path="/agent-checklist" component={AgentChecklistPage} />
         <Route component={NotFound} />

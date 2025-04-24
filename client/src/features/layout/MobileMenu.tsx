@@ -46,6 +46,9 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
         <Link href="/modular-pool" onClick={handleLinkClick} className="text-neutral-700 hover:text-primary py-2 border-b border-neutral-200">
           Piscinas Modulares
         </Link>
+        <Link href="/galeria" onClick={handleLinkClick} className="text-neutral-700 hover:text-primary py-2 border-b border-neutral-200">
+          Galería
+        </Link>
         
         {isAuthenticated ? (
           <>

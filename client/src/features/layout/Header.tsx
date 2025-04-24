@@ -84,6 +84,16 @@ const Header = () => {
           >
             Piscinas Modulares
           </Link>
+          <Link 
+            href="/galeria" 
+            className={`font-medium hover:text-primary transition-colors ${
+              location === '/galeria' 
+                ? 'text-primary' 
+                : isHomePage || scrolled ? 'text-neutral-800' : 'text-neutral-800'
+            }`}
+          >
+            Galería
+          </Link>
           {isAuthenticated && (
             <>
               <Link 

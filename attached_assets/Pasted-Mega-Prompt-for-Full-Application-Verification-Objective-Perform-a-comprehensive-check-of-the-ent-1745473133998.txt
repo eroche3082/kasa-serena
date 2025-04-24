@@ -1,0 +1,123 @@
+Mega Prompt for Full Application Verification 🚀
+Objective: Perform a comprehensive check of the entire application, ensuring that all features, APIs, services, and components are fully functional and integrated. Each agent will verify the current status of the application and provide a detailed report on what has been implemented, what is live, and any missing functionalities that still need to be addressed.
+
+Checklist for Full Application Verification:
+General Verification:
+
+Verify that the Main Menu Tabs are working correctly and lead to the proper pages.
+
+Ensure that all buttons (Submit, Download, Generate, etc.) are responsive and linked to their appropriate actions.
+
+Check if all services and membership packages are displayed correctly on the application’s dashboard.
+
+Confirm that each page loads correctly and adheres to the expected design structure.
+
+Verify that all forms (e.g., QuoteRequestForm, SignUp, Login) submit data properly and show appropriate validation/error messages.
+
+Confirm that the dashboard shows accurate information related to the user’s projects, quotes, and account details.
+
+Feature Verification:
+
+Ensure that all 30 features outlined in the project have been integrated and are functioning properly.
+
+Features to verify include:
+
+Design generators (Smart Containers, Modular Pools, etc.)
+
+Chat AI integration (Chatbot)
+
+API endpoints (Quotes, Projects, Designs, etc.)
+
+Payment and Membership functionality
+
+PDF and email sharing for quotes
+
+WhatsApp integration for communication
+
+SEO functionality
+
+Form validation and submission
+
+Mobile responsiveness
+
+Image loading and optimization (Lazy loading, HEIC conversion)
+
+Confirm that all features are Live and functional in the current build.
+
+API Verification:
+
+Ensure that all API endpoints are active and returning correct responses:
+
+/api/quotes
+
+/api/projects
+
+/api/designs
+
+/api/contact
+
+Confirm that the backend is integrated with the frontend correctly (e.g., form submission, retrieving user data, etc.).
+
+Integration Check:
+
+Ensure that all components are properly integrated across different pages:
+
+Chatbot integration
+
+Design tool components (Smart Containers, Modular Pools)
+
+User authentication and session management
+
+Quotes page and user dashboard
+
+Verify that the UI is consistent across all pages and components, with no missing styles or broken UI elements.
+
+Specific Verification for Functionalities:
+
+Verify that the Chatbot interacts with users properly and responds to design-related queries.
+
+Ensure the payment system works for premium memberships or additional services.
+
+Confirm that quote requests are handled correctly and can be sent to users via email or WhatsApp.
+
+Test that the Quote Request Form submits data and triggers the right backend functions.
+
+Verify that the Dashboard correctly displays the user’s projects, quotes, and project statuses.
+
+Ensure that the SEO functionality is working and the metadata (titles, descriptions) updates dynamically for each page.
+
+Missing Features & Implementation:
+
+Provide a list of missing features or components that still need to be implemented.
+
+Identify any bugs or issues that need attention.
+
+Provide an estimated timeline for implementing any remaining features or fixing any issues.
+
+Reporting:
+Status Update: Provide a report with all features that are live and functional, and confirm that they are working as expected.
+
+Missing Features: List any missing or incomplete features that have yet to be implemented.
+
+Improvements & Suggestions: Share any suggestions or improvements for optimizing the flow, security, or user experience.
+
+Current Application Status: Provide a status report on the overall progress, identifying what is fully functional, what requires attention, and what is ready for deployment.
+
+Reminder:
+Ensure all features from previous phases are fully implemented and live.
+
+Check each page, form, API, and interaction to make sure they meet the specifications outlined in the requirements.
+
+Provide feedback on the status of the app and what still needs to be done.
+
+INSTRUCTIONS FOR THE AGENT:
+Check all features listed above for each section of the application.
+
+Perform an end-to-end test on each feature to ensure they are working as expected.
+
+Fill out the checklist in the AgentChecklist document and mark any issues, bugs, or missing features.
+
+Submit a screenshot of the status and updates for the internal map and Agent Checklist.
+
+🚀 Next Phase: Once all items have been verified, we can finalize the application and proceed with deployment. Let us know when everything is ready, and we'll move to the final steps!
+

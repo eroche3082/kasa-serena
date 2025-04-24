@@ -294,10 +294,10 @@ const DashboardPage = () => {
         <div className="flex flex-col md:flex-row items-center justify-between mb-8">
           <div>
             <h1 className="font-['Playfair_Display'] text-3xl md:text-4xl font-bold mb-2 text-center md:text-left">
-              Dashboard Profesional
+              Mi Dashboard
             </h1>
             <p className="text-neutral-600 text-center md:text-left">
-              Gestiona tus proyectos, clientes y conexiones con distribuidores
+              Gestiona tus proyectos, diseños y cotizaciones
             </p>
           </div>
           
@@ -315,7 +315,7 @@ const DashboardPage = () => {
         </div>
         
         {/* Summary cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-lg flex items-center">
@@ -330,80 +330,86 @@ const DashboardPage = () => {
                   projects?.length || 0
                 )}
               </div>
-              <p className="text-sm text-neutral-500">Proyectos activos</p>
+              <p className="text-sm text-neutral-500">Proyectos guardados</p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-lg flex items-center">
-                <FaUserFriends className="mr-2 text-primary" /> Clientes
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold">0</div>
-              <p className="text-sm text-neutral-500">Clientes registrados</p>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg flex items-center">
-                <FaStore className="mr-2 text-primary" /> Distribuidores
+                <FaFileInvoiceDollar className="mr-2 text-primary" /> Cotizaciones
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold">
-                {isLoadingDistributors ? (
+                {isLoadingQuotes ? (
                   <Skeleton className="h-9 w-12" />
                 ) : (
-                  distributors?.length || 0
+                  quotes?.length || 0
                 )}
               </div>
-              <p className="text-sm text-neutral-500">Conexiones activas</p>
+              <p className="text-sm text-neutral-500">Cotizaciones solicitadas</p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-lg flex items-center">
-                <FaChartBar className="mr-2 text-primary" /> Cotizaciones
+                <FaChartBar className="mr-2 text-primary" /> Estado
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold">0</div>
-              <p className="text-sm text-neutral-500">Pendientes de aprobación</p>
+              <div className="text-3xl font-bold">
+                {isLoadingQuotes ? (
+                  <Skeleton className="h-9 w-12" />
+                ) : (
+                  quotes?.filter((q: any) => q.status === 'approved').length || 0
+                )}
+              </div>
+              <p className="text-sm text-neutral-500">Cotizaciones aprobadas</p>
             </CardContent>
           </Card>
         </div>
         
         <Tabs defaultValue="projects">
           <TabsList className="mb-6">
-            <TabsTrigger value="projects">Proyectos</TabsTrigger>
-            <TabsTrigger value="clients">Clientes</TabsTrigger>
-            <TabsTrigger value="materials">Materiales</TabsTrigger>
-            <TabsTrigger value="distributors">Distribuidores</TabsTrigger>
+            <TabsTrigger value="projects">Mis Proyectos</TabsTrigger>
+            <TabsTrigger value="quotes">Mis Cotizaciones</TabsTrigger>
           </TabsList>
           
           {/* Projects tab */}
           <TabsContent value="projects">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-['Playfair_Display'] font-semibold">Proyectos activos</h2>
-              <Button 
-                className="bg-primary hover:bg-primary/90 text-white flex items-center gap-2"
-                onClick={() => setLocation('/design-studio')}
-              >
-                <FaPlus /> Nuevo proyecto
-              </Button>
+              <h2 className="text-2xl font-['Playfair_Display'] font-semibold">Mis Proyectos</h2>
+              <div className="flex space-x-2">
+                <Button 
+                  className="bg-primary hover:bg-primary/90 text-white flex items-center gap-2"
+                  onClick={() => setLocation('/design-generator')}
+                >
+                  <FaPlus /> Nuevo Diseño
+                </Button>
+                <Button 
+                  className="bg-primary hover:bg-primary/90 text-white flex items-center gap-2"
+                  onClick={() => setLocation('/smart-container')}
+                >
+                  <FaPlus /> Contenedor
+                </Button>
+                <Button 
+                  className="bg-primary hover:bg-primary/90 text-white flex items-center gap-2"
+                  onClick={() => setLocation('/modular-pool')}
+                >
+                  <FaPlus /> Piscina
+                </Button>
+              </div>
             </div>
             
             {isLoadingProjects ? (
               <div className="space-y-4">
                 {[1, 2, 3].map((i) => (
                   <Card key={i}>
-                    <div className="flex flex-col md:flex-row">
-                      <Skeleton className="h-32 w-full md:w-48" />
-                      <div className="p-6 flex-grow">
+                    <div className="p-4">
+                      <Skeleton className="h-32 w-full" />
+                      <div className="mt-4">
                         <Skeleton className="h-6 w-48 mb-2" />
                         <Skeleton className="h-4 w-32 mb-4" />
                         <Skeleton className="h-4 w-full mb-2" />
@@ -415,52 +421,127 @@ const DashboardPage = () => {
               </div>
             ) : projects?.length > 0 ? (
               <div className="space-y-4">
-                {projects.map((project: any) => (
-                  <Card key={project.id}>
-                    <div className="flex flex-col md:flex-row">
-                      {project.imageUrl ? (
-                        <div className="h-32 w-full md:w-48 bg-neutral-200">
+                {projects.map((project: Project) => (
+                  <ProjectCard 
+                    key={project.id} 
+                    project={project} 
+                    onEdit={handleEditProject}
+                    onDelete={handleDeleteClick}
+                    onView={handleViewProject}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 bg-neutral-50 rounded-lg">
+                <FaFileAlt className="text-neutral-300 text-5xl mx-auto mb-4" />
+                <h3 className="text-xl font-medium mb-2">No tienes proyectos guardados</h3>
+                <p className="text-neutral-600 mb-6">
+                  Crea tu primer proyecto para comenzar a visualizar tus diseños personalizados
+                </p>
+                <div className="flex flex-col sm:flex-row justify-center gap-3">
+                  <Button 
+                    className="bg-primary hover:bg-primary/90 text-white"
+                    onClick={() => setLocation('/design-generator')}
+                  >
+                    Crear diseño personalizado
+                  </Button>
+                  <Button 
+                    variant="outline"
+                    onClick={() => setLocation('/smart-container')}
+                  >
+                    Diseñar Contenedor Inteligente
+                  </Button>
+                </div>
+              </div>
+            )}
+          </TabsContent>
+          
+          {/* Quotes tab */}
+          <TabsContent value="quotes">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-['Playfair_Display'] font-semibold">Mis Cotizaciones</h2>
+              <Button 
+                variant="outline" 
+                className="flex items-center gap-2"
+                onClick={() => setLocation('/cotizaciones')}
+              >
+                Ver todas las cotizaciones
+              </Button>
+            </div>
+            
+            {isLoadingQuotes ? (
+              <div className="space-y-4">
+                {[1, 2, 3].map((i) => (
+                  <Card key={i}>
+                    <div className="p-4">
+                      <Skeleton className="h-24 w-full" />
+                      <div className="mt-4">
+                        <Skeleton className="h-6 w-48 mb-2" />
+                        <Skeleton className="h-4 w-32 mb-4" />
+                        <Skeleton className="h-4 w-full mb-2" />
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            ) : quotes?.length > 0 ? (
+              <div className="space-y-4">
+                {quotes.slice(0, 3).map((quote: any) => (
+                  <Card key={quote.id} className="hover:shadow-md transition-shadow">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                      <div className="md:col-span-1 bg-neutral-100 rounded-l-lg overflow-hidden">
+                        {quote.details?.imageUrl ? (
                           <img 
-                            src={project.imageUrl} 
-                            alt={project.name} 
-                            className="w-full h-full object-cover"
+                            src={quote.details.imageUrl} 
+                            alt={quote.details.tipo || 'Diseño cotizado'} 
+                            className="w-full h-full object-cover aspect-video"
                           />
-                        </div>
-                      ) : (
-                        <div className="h-32 w-full md:w-48 bg-neutral-200 flex items-center justify-center">
-                          <span className="text-neutral-400">Sin imagen</span>
-                        </div>
-                      )}
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-neutral-400 aspect-video">
+                            <FaFileInvoiceDollar className="w-12 h-12" />
+                          </div>
+                        )}
+                      </div>
                       
-                      <div className="p-6 flex-grow">
-                        <div className="flex flex-col md:flex-row md:items-center justify-between mb-2">
-                          <h3 className="text-lg font-bold">{project.name}</h3>
-                          <Badge className="mt-1 md:mt-0 self-start md:self-auto" variant={project.status === 'draft' ? 'warning' : 'success'}>
-                            {project.status === 'draft' ? 'Borrador' : project.status}
+                      <div className="md:col-span-3 p-4">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2">
+                          <h3 className="text-lg font-bold">{quote.details.tipo || 'Cotización de diseño'}</h3>
+                          <Badge className={
+                            quote.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
+                            quote.status === 'approved' ? 'bg-green-100 text-green-800' : 
+                            quote.status === 'rejected' ? 'bg-red-100 text-red-800' : 
+                            'bg-blue-100 text-blue-800'
+                          }>
+                            {quote.status === 'pending' ? 'Pendiente' : 
+                             quote.status === 'approved' ? 'Aprobada' : 
+                             quote.status === 'rejected' ? 'Rechazada' : 
+                             'Completada'}
                           </Badge>
                         </div>
                         
-                        <p className="text-sm text-neutral-600 mb-4">
-                          {project.description || `Proyecto de ${project.type}`}
-                        </p>
-                        
-                        <div className="flex flex-col sm:flex-row justify-between">
-                          <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 text-sm text-neutral-500">
+                        <div className="mt-2">
+                          <p className="text-sm text-neutral-600">
+                            {quote.details.descripcion || 'Sin descripción'}
+                          </p>
+                          
+                          <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 text-sm text-neutral-500 mt-2">
                             <div>
-                              <span className="font-medium">Tipo:</span> {project.type}
+                              <span className="font-medium">Fecha:</span> {new Date(quote.createdAt).toLocaleDateString()}
                             </div>
-                            <div>
-                              <span className="font-medium">Fecha:</span> {new Date(project.createdAt).toLocaleDateString()}
-                            </div>
+                            {quote.totalCost && (
+                              <div>
+                                <span className="font-medium">Presupuesto:</span> ${(quote.totalCost / 100).toFixed(2)}
+                              </div>
+                            )}
                           </div>
                           
-                          <div className="mt-3 sm:mt-0">
+                          <div className="mt-3">
                             <Button 
                               size="sm" 
                               className="bg-primary hover:bg-primary/90 text-white"
-                              onClick={() => setLocation(`/design-studio?id=${project.id}`)}
+                              onClick={() => setLocation(`/cotizaciones?id=${quote.id}`)}
                             >
-                              Gestionar
+                              Ver detalles
                             </Button>
                           </div>
                         </div>
@@ -468,195 +549,53 @@ const DashboardPage = () => {
                     </div>
                   </Card>
                 ))}
+                
+                {quotes.length > 3 && (
+                  <div className="text-center mt-4">
+                    <Button 
+                      variant="outline"
+                      onClick={() => setLocation('/cotizaciones')}
+                    >
+                      Ver todas las cotizaciones ({quotes.length})
+                    </Button>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="text-center py-12 bg-neutral-50 rounded-lg">
-                <FaFileAlt className="text-neutral-300 text-5xl mx-auto mb-4" />
-                <h3 className="text-xl font-medium mb-2">No hay proyectos activos</h3>
+                <FaFileInvoiceDollar className="text-neutral-300 text-5xl mx-auto mb-4" />
+                <h3 className="text-xl font-medium mb-2">No tienes cotizaciones</h3>
                 <p className="text-neutral-600 mb-6">
-                  Crea tu primer proyecto para comenzar a trabajar
+                  Crea un diseño y solicita una cotización para recibir un presupuesto personalizado
                 </p>
                 <Button 
                   className="bg-primary hover:bg-primary/90 text-white"
-                  onClick={() => setLocation('/design-studio')}
+                  onClick={() => setLocation('/design-generator')}
                 >
-                  Crear primer proyecto
-                </Button>
-              </div>
-            )}
-          </TabsContent>
-          
-          {/* Clients tab */}
-          <TabsContent value="clients">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-['Playfair_Display'] font-semibold">Clientes</h2>
-              <Button variant="outline" className="flex items-center gap-2">
-                <FaPlus /> Añadir cliente
-              </Button>
-            </div>
-            
-            <div className="text-center py-16 bg-neutral-50 rounded-lg">
-              <FaExclamationTriangle className="text-yellow-400 text-5xl mx-auto mb-4" />
-              <h3 className="text-xl font-medium mb-2">Módulo en desarrollo</h3>
-              <p className="text-neutral-600 mb-6 max-w-lg mx-auto">
-                El sistema de gestión de clientes estará disponible próximamente. 
-                Podrás gestionar proyectos para múltiples clientes desde una interfaz centralizada.
-              </p>
-              <Badge variant="secondary">Próximamente</Badge>
-            </div>
-          </TabsContent>
-          
-          {/* Materials tab */}
-          <TabsContent value="materials">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-['Playfair_Display'] font-semibold">Catálogo de materiales</h2>
-            </div>
-            
-            {isLoadingMaterials ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <Card key={i}>
-                    <CardHeader>
-                      <Skeleton className="h-6 w-40 mb-2" />
-                      <Skeleton className="h-4 w-32" />
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-3">
-                        <div className="flex justify-between">
-                          <Skeleton className="h-4 w-20" />
-                          <Skeleton className="h-4 w-16" />
-                        </div>
-                        <div className="flex justify-between">
-                          <Skeleton className="h-4 w-24" />
-                          <Skeleton className="h-4 w-20" />
-                        </div>
-                        <div className="flex justify-between">
-                          <Skeleton className="h-4 w-28" />
-                          <Skeleton className="h-4 w-24" />
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            ) : materials?.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {materials.map((material: any) => (
-                  <Card key={material.id}>
-                    <CardHeader>
-                      <CardTitle>{material.name}</CardTitle>
-                      <CardDescription className="capitalize">
-                        {material.category} - {material.type}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-1 mb-4">
-                        <div className="flex justify-between">
-                          <span className="text-neutral-600">Color:</span>
-                          <span>{material.color}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-neutral-600">Acabado:</span>
-                          <span>{material.finish}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-neutral-600">Precio:</span>
-                          <span>${material.price / 100}/unidad</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-neutral-600">Disponibilidad:</span>
-                          <Badge variant={material.availability === 'available' ? 'success' : 'warning'}>
-                            {material.availability === 'available' ? 'Disponible' : 'Limitado'}
-                          </Badge>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-neutral-600">Distribuidor:</span>
-                          <span>ID: {material.distributorId}</span>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-12 bg-neutral-50 rounded-lg">
-                <FaExclamationTriangle className="text-yellow-400 text-5xl mx-auto mb-4" />
-                <h3 className="text-xl font-medium mb-2">No hay materiales registrados</h3>
-                <p className="text-neutral-600 mb-6">
-                  No hay materiales registrados en el sistema actualmente
-                </p>
-              </div>
-            )}
-          </TabsContent>
-          
-          {/* Distributors tab */}
-          <TabsContent value="distributors">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-['Playfair_Display'] font-semibold">Distribuidores conectados</h2>
-            </div>
-            
-            {isLoadingDistributors ? (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {[1, 2, 3].map((i) => (
-                  <Card key={i}>
-                    <Skeleton className="h-40 rounded-t-lg" />
-                    <CardHeader>
-                      <Skeleton className="h-6 w-40 mb-2" />
-                      <Skeleton className="h-4 w-32" />
-                    </CardHeader>
-                    <CardContent>
-                      <Skeleton className="h-4 w-full mb-2" />
-                      <Skeleton className="h-4 w-3/4 mb-4" />
-                      <Skeleton className="h-8 w-full" />
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            ) : distributors?.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {distributors.map((distributor: any) => (
-                  <Card key={distributor.id}>
-                    <div className="h-40 bg-neutral-200 rounded-t-lg overflow-hidden">
-                      <img 
-                        src={distributor.imageUrl} 
-                        alt={distributor.name} 
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <CardHeader>
-                      <div className="flex items-start justify-between">
-                        <CardTitle>{distributor.name}</CardTitle>
-                        <Badge variant={distributor.status === 'available' ? 'success' : 'warning'}>
-                          {distributor.status === 'available' ? 'Disponible' : 'Stock limitado'}
-                        </Badge>
-                      </div>
-                      <CardDescription>{distributor.location}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-neutral-600 mb-4">
-                        {distributor.description}
-                      </p>
-                      <Button className="w-full bg-primary hover:bg-primary/90 text-white">
-                        Ver inventario
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-12 bg-neutral-50 rounded-lg">
-                <FaExclamationTriangle className="text-yellow-400 text-5xl mx-auto mb-4" />
-                <h3 className="text-xl font-medium mb-2">No hay distribuidores conectados</h3>
-                <p className="text-neutral-600 mb-6">
-                  No has conectado con ningún distribuidor todavía
-                </p>
-                <Button className="bg-primary hover:bg-primary/90 text-white">
-                  Conectar con distribuidores
+                  Crear diseño para cotizar
                 </Button>
               </div>
             )}
           </TabsContent>
         </Tabs>
+        
+        {/* Delete confirmation dialog */}
+        <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Esta acción no se puede deshacer. El proyecto será eliminado permanentemente.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+              <AlertDialogAction onClick={confirmDelete} className="bg-red-600 hover:bg-red-700">
+                Eliminar
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </main>
   );

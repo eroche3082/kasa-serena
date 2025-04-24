@@ -733,7 +733,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Image data is required" });
       }
       
-      const result = await analyzeDesignImage(imageBase64, projectType || 'inspiration');
+      const result = await analyzeImage(imageBase64, projectType || 'inspiration');
       res.json(result);
     } catch (error: any) {
       log(`Error en analyze-image: ${error.message}`, "error");

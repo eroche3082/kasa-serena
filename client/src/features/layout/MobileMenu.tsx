@@ -50,6 +50,9 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
         <PrefetchLink href="/galeria" onNavigate={handleLinkClick} className="text-neutral-700 hover:text-primary py-2 border-b border-neutral-200">
           Galería
         </PrefetchLink>
+        <PrefetchLink href="/inspiracion" onNavigate={handleLinkClick} className="text-neutral-700 hover:text-primary py-2 border-b border-neutral-200">
+          Inspiración IA
+        </PrefetchLink>
         
         {isAuthenticated ? (
           <>

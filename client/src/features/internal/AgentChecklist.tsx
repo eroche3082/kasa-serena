@@ -123,11 +123,12 @@ const AgentChecklist = () => {
     {
       id: 9,
       name: "Cotización y Contacto",
-      completed: false,
+      completed: true,
       items: [
-        { name: "Activar formulario de contacto", completed: false },
-        { name: "Envío automático desde diseños generados", completed: false },
-        { name: "Mostrar mensajes enviados en Dashboard", completed: false }
+        { name: "Implementar formulario de cotización completo", completed: true },
+        { name: "Integración con WhatsApp para compartir cotizaciones", completed: true },
+        { name: "Exportación a PDF de cotizaciones", completed: true },
+        { name: "Visualización de cotizaciones en Dashboard", completed: true }
       ]
     },
     {
@@ -159,8 +160,9 @@ const AgentChecklist = () => {
     { path: "/api/distributors", method: "GET", description: "Obtener distribuidores", protected: true, roles: ["cliente", "diseñador", "admin"], active: true },
     { path: "/api/projects", method: "GET", description: "Obtener proyectos", protected: true, roles: ["diseñador", "admin"], active: true },
     { path: "/api/projects", method: "POST", description: "Crear proyecto", protected: true, roles: ["diseñador", "admin"], active: true },
-    { path: "/api/quotes", method: "POST", description: "Solicitar cotización", protected: true, roles: ["cliente", "diseñador", "admin"], active: false },
-    { path: "/api/contact", method: "POST", description: "Enviar mensaje de contacto", protected: false, roles: [], active: false },
+    { path: "/api/quotes", method: "POST", description: "Solicitar cotización", protected: true, roles: ["cliente", "diseñador", "admin"], active: true },
+    { path: "/api/quotes", method: "GET", description: "Obtener cotizaciones", protected: true, roles: ["cliente", "diseñador", "admin"], active: true },
+    { path: "/api/contact", method: "POST", description: "Enviar mensaje de contacto", protected: false, roles: [], active: true },
     { path: "/api/image-analysis", method: "POST", description: "Analizar imagen", protected: true, roles: ["diseñador", "admin"], active: true },
     { path: "/api/upload-heic", method: "POST", description: "Convertir imagen HEIC", protected: true, roles: ["cliente", "diseñador", "admin"], active: true },
   ]);
@@ -173,10 +175,11 @@ const AgentChecklist = () => {
     { name: "Modular Pool Designer", path: "/modular-pool", active: true },
     { name: "AI Design Generator", path: "/design-generator", active: true },
     { name: "Chat AI de Diseño", path: "/design-chat", active: false },
-    { name: "Dashboard de Usuario", path: "/dashboard", active: false },
-    { name: "Perfil de Usuario", path: "/profile", active: false },
-    { name: "Cotización", path: "/quote", active: false },
-    { name: "Contacto", path: "/contact", active: false },
+    { name: "Dashboard de Usuario", path: "/dashboard", active: true },
+    { name: "Perfil de Usuario", path: "/profile", active: true },
+    { name: "Cotización", path: "/solicitar-cotizacion", active: true },
+    { name: "Mis Cotizaciones", path: "/cotizaciones", active: true },
+    { name: "Contacto", path: "/contacto", active: true },
     { name: "Admin Panel", path: "/admin", active: false },
   ]);
 

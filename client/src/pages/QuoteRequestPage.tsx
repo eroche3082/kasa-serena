@@ -46,13 +46,17 @@ export const QuoteRequestPage = () => {
   
   // Preparar detalles del proyecto
   let projectDetails;
-  if (projectData) {
+  if (projectData && typeof projectData === 'object') {
+    const materialsList = 'materialsList' in projectData ? projectData.materialsList : null;
+    const dimensions = 'dimensions' in projectData ? projectData.dimensions : '';
+    const imageUrl = 'imageUrl' in projectData ? projectData.imageUrl : '';
+    
     projectDetails = {
-      materials: typeof projectData.materialsList === 'object' ? 
-        Object.values(projectData.materialsList || {}).join(', ') : 
-        (projectData.materialsList?.toString() || ''),
-      dimensions: projectData.dimensions || '',
-      imageUrl: projectData.imageUrl || '',
+      materials: typeof materialsList === 'object' && materialsList !== null ? 
+        Object.values(materialsList).join(', ') : 
+        (materialsList?.toString() || ''),
+      dimensions: dimensions as string || '',
+      imageUrl: imageUrl as string || '',
     };
   }
   
@@ -62,7 +66,7 @@ export const QuoteRequestPage = () => {
         <Button 
           variant="ghost" 
           className="flex items-center mb-4" 
-          onClick={() => setLocation(-1)}
+          onClick={() => window.history.back()}
         >
           <ArrowLeft className="mr-2 h-4 w-4" /> Volver
         </Button>

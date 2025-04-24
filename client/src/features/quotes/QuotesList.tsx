@@ -108,7 +108,7 @@ const QuoteCard = ({ quote }: QuoteCardProps) => {
       filename: `Cotización_${quote.id}_KasaSerena.pdf`,
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' as 'portrait' | 'landscape' }
     };
     
     setIsDialogOpen(false);

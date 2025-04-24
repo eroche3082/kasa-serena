@@ -45,6 +45,8 @@ function Router() {
         <Route path="/smart-container" component={SmartContainerPage} />
         <Route path="/modular-pool" component={ModularPoolPage} />
         <Route path="/cotizaciones" component={QuotesPage} />
+        <Route path="/solicitar-cotizacion" component={QuoteRequestPage} />
+        <Route path="/solicitar-cotizacion/:id" component={QuoteRequestPage} />
         <Route path="/internal-map" component={AgentChecklistPage} />
         <Route path="/agent-checklist" component={AgentChecklistPage} />
         <Route component={NotFound} />

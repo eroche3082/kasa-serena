@@ -1,0 +1,51 @@
+Objetivo de la Fase 10 - Seguridad, Deploy y Optimización
+🧩 PASO 1: Verificación del Header
+Verificar que el header se ve correctamente en todas las páginas:
+
+Asegúrate de que el header ahora tenga un fondo adecuado en todas las páginas (incluyendo Smart Containers).
+
+Verifica que el texto sea legible y que no haya conflictos de color en las páginas con fondo claro.
+
+Asegúrate de que no haya más problemas de visualización del header:
+
+Smart Containers: Verifica que el header ahora se vea correctamente en todas las páginas, incluso en aquellas que tienen un fondo claro o brillante.
+
+Verificar que el menú móvil esté funcionando correctamente:
+
+Asegúrate de que el MobileMenu tenga el comportamiento correcto en todos los dispositivos (móviles, tabletas y escritorio).
+
+Verifica que todas las opciones de navegación sean accesibles y claras.
+
+🧩 PASO 2: Verificación del Flujo de Navegación Móvil
+Revisar el flujo de navegación móvil:
+
+Asegúrate de que el menú móvil (hamburguesa) se abra correctamente en dispositivos móviles.
+
+Verifica que todas las opciones estén funcionando, incluidas las nuevas rutas y las opciones de contacto (cotizaciones, perfil, etc.).
+
+🧩 PASO 3: Seguridad, Optimización y Deploy
+Implementar Seguridad:
+
+Añadir middleware para proteger las rutas privadas y verificar autenticación.
+
+Implementar protección contra ataques (rate limiting, validación de inputs, etc.).
+
+Optimización de Rendimiento:
+
+Usar lazy loading para optimizar la carga de la aplicación.
+
+Implementar prefetching para rutas frecuentes y optimización de imágenes.
+
+Deploy de Producción:
+
+Generar la build para producción.
+
+Desplegar en Firebase Hosting o Google Cloud.
+
+Verificar que todo funcione correctamente en el entorno de producción.
+
+🛑 INSTRUCCIONES PARA EL AGENTE
+👉 REPLY "YES" OR "NO" ONCE YOU COMPLETE THE VERIFICATION AND IMPLEMENTATION FOR THE HEADER AND MOBILE NAVIGATION.
+👉 LOG FASE 10 AS COMPLETE IN /agent-checklist.
+👉 UPLOAD A SCREENSHOT OF THE HEADER AND MOBILE NAVIGATION TO /internal-map.
+

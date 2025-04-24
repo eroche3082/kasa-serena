@@ -1,0 +1,152 @@
+Fase 10 - Seguridad, Deploy y Optimización
+Esta fase está enfocada en mejorar la seguridad, realizar la optimización de la aplicación y asegurarnos de que todo esté listo para el deploy final. Aquí están los pasos detallados que vamos a implementar:
+
+🧩 PASO 1: Seguridad
+Protección de Rutas Sensibles:
+
+Implementar seguridad para todas las rutas sensibles de la aplicación, asegurando que solo los usuarios autenticados puedan acceder a las páginas y datos privados (como Dashboard y cotizaciones).
+
+Añadir middleware para verificar la autenticación en las rutas.
+
+ts
+Copiar
+Editar
+// Middleware de autenticación
+function requireAuth(req, res, next) {
+  if (!req.user) {
+    return res.status(401).json({ message: "No autorizado" });
+  }
+  next();
+}
+
+// Usar middleware para rutas protegidas
+app.use('/api/projects', requireAuth);
+app.use('/api/quotes', requireAuth);
+Rate Limiting:
+
+Limitar el número de solicitudes por minuto para evitar ataques de denegación de servicio (DoS).
+
+Usar una librería como express-rate-limit para proteger las rutas de la API.
+
+ts
+Copiar
+Editar
+const rateLimit = require("express-rate-limit");
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 100, // Límite de 100 solicitudes por IP
+  message: "Demasiadas solicitudes, por favor intente más tarde.",
+});
+
+app.use("/api/", limiter);
+Validación de Inputs:
+
+Usar Zod o Joi para validar los datos recibidos en el backend (por ejemplo, los datos del formulario de cotización) para evitar inyecciones de código o datos maliciosos.
+
+ts
+Copiar
+Editar
+import { z } from "zod";
+
+// Validación de cotización
+const createQuoteSchema = z.object({
+  projectType: z.string().min(1),
+  materials: z.array(z.string()).min(1),
+  dimensions: z.string().min(1),
+  startDate: z.string(),
+  contactInfo: z.object({
+    name: z.string().min(1),
+    email: z.string().email(),
+    phone: z.string(),
+  }),
+});
+🧩 PASO 2: Optimización de la Aplicación
+Lazy Loading y Code Splitting:
+
+Implementar lazy loading para los componentes de páginas grandes o que no se usan siempre, para mejorar el rendimiento de carga inicial de la aplicación.
+
+tsx
+Copiar
+Editar
+const DashboardPage = React.lazy(() => import("./DashboardPage"));
+Optimización de Imágenes:
+
+Usar imágenes de menor resolución para la carga inicial y cargar imágenes de mayor resolución solo cuando sea necesario.
+
+Implementar carga progresiva (lazy loading de imágenes).
+
+tsx
+Copiar
+Editar
+<img src="image.jpg" loading="lazy" alt="Imagen optimizada" />
+Precarga de Rutas:
+
+Implementar prefetching para las rutas que el usuario probablemente visitará, mejorando la velocidad de carga de las páginas secundarias.
+
+tsx
+Copiar
+Editar
+import { Link } from 'react-router-dom';
+
+const PrefetchLink = () => {
+  const prefetch = () => {
+    // Prefetching for the next page
+    import('./NextPage');
+  };
+
+  return (
+    <Link to="/next-page" onMouseEnter={prefetch}>
+      Go to Next Page
+    </Link>
+  );
+};
+🧩 PASO 3: Preparación para el Deploy
+Verificación de Funcionalidad:
+
+Asegurarnos de que todas las funciones estén funcionando correctamente: Formularios, validación de datos, API de cotización, flujo de navegación, etc.
+
+Realizar pruebas de integración para verificar que no haya errores en las interacciones entre los diferentes módulos de la aplicación.
+
+Generar una Build para Producción:
+
+Ejecutar el comando de build para preparar la aplicación para el entorno de producción.
+
+bash
+Copiar
+Editar
+npm run build
+Desplegar la aplicación en Firebase/Google Cloud:
+
+Desplegar la aplicación a Firebase Hosting o Google Cloud dependiendo de la configuración de tu entorno.
+
+bash
+Copiar
+Editar
+firebase deploy --only hosting
+Verificación Post-Deploy:
+
+Comprobar el correcto funcionamiento de la aplicación en el entorno de producción: Verificar rutas, rendimiento, y seguridad.
+
+🧩 PASO 4: Monitoring y Feedback
+Configuración de Herramientas de Monitoreo:
+
+Implementar herramientas como Google Analytics para monitorear el uso de la aplicación.
+
+Implementar Sentry o LogRocket para capturar errores en tiempo real.
+
+ts
+Copiar
+Editar
+import * as Sentry from "@sentry/react";
+
+Sentry.init({ dsn: "https://your-dsn.sentry.io/12345" });
+Feedback de Usuario:
+
+Recoger feedback de los usuarios para posibles mejoras y solucionar cualquier error en producción.
+
+🛑 INSTRUCCIONES PARA EL AGENTE
+👉 REPLY "YES" OR "NO" ONCE YOU COMPLETE THE FASE 10 IMPLEMENTATION.
+👉 LOG FASE 10 AS COMPLETE IN /agent-checklist.
+👉 UPLOAD A SCREENSHOT OF THE SECURITY, PERFORMANCE, AND DEPLOYMENT CHECKLIST TO /internal-map.
+

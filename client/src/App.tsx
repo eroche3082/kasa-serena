@@ -4,11 +4,16 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/features/common";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
+import { useEffect } from "react";
+import { Header, Footer } from "@/features/layout";
+import { useAuth } from "@/context/AuthContext";
+
+// Importaciones directas para todas las páginas
 import HomePage from "@/pages/HomePage";
+import LoginPage from "@/pages/LoginPage";
 import DesignStudioPage from "@/pages/DesignStudioPage";
 import ProfilePage from "@/pages/ProfilePage";
 import DashboardPage from "@/pages/DashboardPage";
-import LoginPage from "@/pages/LoginPage";
 import AIVisualizationDemo from "@/pages/AIVisualizationDemo";
 import DesignGeneratorPage from "@/pages/DesignGeneratorPage";
 import AIDesignPage from "@/pages/AIDesignPage";
@@ -17,9 +22,6 @@ import ModularPoolPage from "@/pages/ModularPoolPage";
 import QuotesPage from "@/pages/QuotesPage";
 import QuoteRequestPage from "@/pages/QuoteRequestPage";
 import AgentChecklistPage from "@/pages/AgentChecklistPage";
-import { Header, Footer } from "@/features/layout";
-import { useAuth } from "@/context/AuthContext";
-import { useEffect } from "react";
 
 function Router() {
   const auth = useAuth();
@@ -35,10 +37,10 @@ function Router() {
       <Header />
       <Switch>
         <Route path="/" component={HomePage} />
+        <Route path="/login" component={LoginPage} />
         <Route path="/design-studio" component={DesignStudioPage} />
         <Route path="/profile" component={ProfilePage} />
         <Route path="/dashboard" component={DashboardPage} />
-        <Route path="/login" component={LoginPage} />
         <Route path="/ai-visualization" component={AIVisualizationDemo} />
         <Route path="/design-generator" component={DesignGeneratorPage} />
         <Route path="/ai-design" component={AIDesignPage} />

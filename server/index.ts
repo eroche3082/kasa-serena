@@ -1,10 +1,38 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import rateLimit from "express-rate-limit";
 
+// Configuración de la aplicación
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: false, limit: '10mb' }));
+
+// Middleware de seguridad básica
+app.disable('x-powered-by'); // Eliminar el header que identifica Express
+
+// Configurar la limitación de tasa (rate limiting)
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 100, // Limitar cada IP a 100 solicitudes por ventana
+  message: "Demasiadas solicitudes. Por favor, inténtelo de nuevo más tarde.",
+  standardHeaders: true, // Devolver info de límite en los headers 'RateLimit-*'
+  legacyHeaders: false, // Deshabilitar los headers 'X-RateLimit-*'
+});
+
+// Aplicar a todas las solicitudes de API
+app.use("/api/", apiLimiter);
+
+// Limiter específico para rutas de autenticación
+const authLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hora
+  max: 10, // Limitar cada IP a 10 solicitudes de login por hora
+  message: "Demasiados intentos de autenticación. Por favor, inténtelo de nuevo más tarde."
+});
+
+// Aplicar a rutas de autenticación
+app.use("/api/login", authLimiter);
+app.use("/api/register", authLimiter);
 
 app.use((req, res, next) => {
   const start = Date.now();

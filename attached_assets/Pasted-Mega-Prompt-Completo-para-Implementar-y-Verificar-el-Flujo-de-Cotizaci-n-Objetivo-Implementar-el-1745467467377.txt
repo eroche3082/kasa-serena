@@ -1,0 +1,206 @@
+Mega Prompt Completo para Implementar y Verificar el Flujo de Cotización
+🎯 Objetivo:
+Implementar el flujo de cotización completo y verificar que todas las funcionalidades de la Fase 9 estén operativas:
+
+Formulario de cotización debe capturar y enviar datos correctamente.
+
+Backend debe manejar correctamente las cotizaciones.
+
+Visualización de cotizaciones debe ser funcional en el Dashboard de Usuario.
+
+Opciones de compartir por WhatsApp y enviar por email deben funcionar correctamente.
+
+🧩 PASO 1: Implementar Backend para las Cotizaciones
+1.1 Verificar las rutas API para cotizaciones
+Abre el archivo server/routes.ts y asegúrate de que las rutas API para cotizaciones estén registradas correctamente.
+
+ts
+Copiar
+Editar
+// Ruta para crear cotización
+app.post("/api/quotes", createQuote);
+
+// Ruta para obtener cotizaciones del usuario
+app.get("/api/quotes", getUserQuotes);
+Verificar que la función createQuote esté implementada en server/quotes.ts para crear nuevas cotizaciones y asociarlas al proyecto correspondiente.
+
+ts
+Copiar
+Editar
+// Función para crear cotización
+export async function createQuote(req, res) {
+  const { projectType, materials, dimensions, startDate, contactInfo } = req.body;
+  // Lógica para guardar la cotización en la base de datos
+  const newQuote = await saveQuoteToDatabase({ projectType, materials, dimensions, startDate, contactInfo });
+  res.status(201).json({ message: "Cotización recibida", quoteDetails: newQuote });
+}
+1.2 Verificar la función getUserQuotes
+Verificar que el endpoint /api/quotes devuelva las cotizaciones del usuario correctamente.
+
+ts
+Copiar
+Editar
+// Función para obtener cotizaciones del usuario
+export async function getUserQuotes(req, res) {
+  const userId = req.user.id; // Obtenemos el ID del usuario desde la sesión
+  const quotes = await getQuotesFromDatabase(userId); // Recuperamos las cotizaciones del usuario
+  res.status(200).json(quotes);
+}
+🧩 PASO 2: Implementar el Formulario de Cotización en el Frontend
+2.1 Verificar el formulario de cotización
+Asegúrate de que el formulario en client/src/features/quotes/QuoteRequestForm.tsx tenga todos los campos necesarios:
+
+Tipo de diseño
+
+Materiales seleccionados
+
+Dimensiones y especificaciones
+
+Fecha estimada de ejecución
+
+Información de contacto adicional
+
+tsx
+Copiar
+Editar
+const QuoteRequestForm = () => {
+  const [formData, setFormData] = useState({
+    projectType: '',
+    materials: [],
+    dimensions: '',
+    startDate: '',
+    contactInfo: { name: '', email: '', phone: '' }
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // Llamar a la API para enviar la cotización
+    await submitQuote(formData);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input type="text" name="projectType" placeholder="Tipo de proyecto" required />
+      <textarea name="materials" placeholder="Materiales seleccionados" required />
+      <input type="text" name="dimensions" placeholder="Dimensiones" required />
+      <input type="date" name="startDate" required />
+      <input type="text" name="contactName" placeholder="Nombre" required />
+      <input type="email" name="contactEmail" placeholder="Email" required />
+      <input type="tel" name="contactPhone" placeholder="Teléfono" required />
+      <button type="submit">Solicitar Cotización</button>
+    </form>
+  );
+};
+2.2 Conectar el formulario con el backend
+Asegúrate de que el submit del formulario esté llamando correctamente al backend para crear la cotización.
+
+tsx
+Copiar
+Editar
+const submitQuote = async (formData) => {
+  try {
+    const response = await fetch('/api/quotes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      // Mostrar mensaje de éxito o redirigir al usuario
+      alert('Cotización enviada con éxito');
+    } else {
+      // Manejar errores
+      alert('Hubo un error al enviar la cotización');
+    }
+  } catch (error) {
+    alert('Error de conexión');
+  }
+};
+🧩 PASO 3: Implementar Opciones de Contacto
+3.1 Enviar cotización por WhatsApp
+Asegúrate de que el enlace para compartir cotización por WhatsApp esté funcionando correctamente:
+
+tsx
+Copiar
+Editar
+<a
+  href={`https://wa.me/1XXXXXXXXXX?text=Me gustaría recibir una cotización para este proyecto: ${encodeURIComponent(projectDetails)}`}
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <button>Compartir Cotización por WhatsApp</button>
+</a>
+3.2 Enviar cotización por email
+Verifica que el correo de cotización se envíe correctamente desde el backend utilizando Nodemailer.
+
+ts
+Copiar
+Editar
+const sendQuoteEmail = (email, projectDetails) => {
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: "Cotización de Proyecto",
+    text: `Detalles del proyecto: ${JSON.stringify(projectDetails)}`,
+  };
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email enviado: " + info.response);
+    }
+  });
+};
+🧩 PASO 4: Implementar Visualización de Cotizaciones en el Dashboard
+4.1 Mostrar cotizaciones en el Dashboard
+Asegúrate de que las cotizaciones se muestren correctamente en el Dashboard de Usuario.
+
+tsx
+Copiar
+Editar
+const CotizacionesSection = () => {
+  const [cotizaciones, setCotizaciones] = useState([]);
+  // Obtener cotizaciones del backend
+
+  useEffect(() => {
+    const fetchCotizaciones = async () => {
+      const response = await fetch('/api/quotes');
+      const data = await response.json();
+      setCotizaciones(data);
+    };
+    fetchCotizaciones();
+  }, []);
+
+  return (
+    <div>
+      <h3>Mis Cotizaciones</h3>
+      <ul>
+        {cotizaciones.map((cotizacion) => (
+          <li key={cotizacion.id}>
+            <p>{cotizacion.projectType}</p>
+            <p>{cotizacion.status}</p>
+            <button>Ver Cotización</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+🧩 PASO 5: Verificación Final
+5.1 Verificar que la cotización se guarda correctamente en la base de datos
+Asegúrate de que las cotizaciones se asocien correctamente al proyecto del usuario y se muestren en su dashboard.
+
+5.2 Verificar el envío de cotización por WhatsApp y email
+Realiza pruebas para asegurarte de que los enlaces de WhatsApp y correo electrónico funcionan correctamente.
+
+5.3 Verificar la visualización de cotizaciones en el Dashboard
+Verifica que las cotizaciones aparezcan con la información correcta (tipo de proyecto, estado, etc.) en la sección de Mis Cotizaciones.
+
+🛑 INSTRUCCIONES PARA EL AGENTE
+👉 REPLY "YES" OR "NO" ONCE YOU COMPLETE AND VERIFY FASE 9.
+👉 LOG FASE 9 AS COMPLETE IN /agent-checklist.
+👉 UPLOAD A SCREENSHOT OF THE COTIZACION FORM, DASHBOARD, AND FUNCTIONALITIES TO /internal-map.
+
+🚀 Próximos pasos:
+Una vez completada la Fase 9, pasaremos a la Fase 10: Seguridad, Deploy y Optimización. Pero primero, verifiquemos que todo esté funcionando correctamente con las cotizaciones y el flujo de contacto.

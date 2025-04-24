@@ -4,6 +4,7 @@ import { useAuth } from '@/context/AuthContext';
 import MobileMenu from './MobileMenu';
 import { FaUser, FaBars, FaHome } from 'react-icons/fa';
 import { Button } from '@/components/ui/button';
+import { PrefetchLink } from '@/components/ui/prefetch-link';
 import logoImage from '@/assets/logo-new.png';
 
 const Header = () => {
@@ -39,12 +40,12 @@ const Header = () => {
           : 'py-3 bg-white/95 shadow-sm'
     }`}>
       <div className="container mx-auto px-4 flex justify-between items-center">
-        <Link href="/" className="flex items-center">
+        <PrefetchLink href="/" className="flex items-center">
           <img src={logoImage} alt="Kasa Serena Designs" className="h-16 md:h-20 max-w-[180px] md:max-w-[250px]" />
-        </Link>
+        </PrefetchLink>
         
         <nav className="hidden md:flex space-x-6">
-          <Link 
+          <PrefetchLink 
             href="/" 
             className={`font-medium hover:text-primary transition-colors ${
               location === '/' 
@@ -53,8 +54,8 @@ const Header = () => {
             }`}
           >
             Inicio
-          </Link>
-          <Link 
+          </PrefetchLink>
+          <PrefetchLink 
             href="/design-generator" 
             className={`font-medium hover:text-primary transition-colors ${
               location === '/design-generator' 
@@ -63,8 +64,8 @@ const Header = () => {
             }`}
           >
             Diseños con IA
-          </Link>
-          <Link 
+          </PrefetchLink>
+          <PrefetchLink 
             href="/smart-container" 
             className={`font-medium hover:text-primary transition-colors ${
               location === '/smart-container' 
@@ -73,8 +74,8 @@ const Header = () => {
             }`}
           >
             Contenedores Inteligentes
-          </Link>
-          <Link 
+          </PrefetchLink>
+          <PrefetchLink 
             href="/modular-pool" 
             className={`font-medium hover:text-primary transition-colors ${
               location === '/modular-pool' 
@@ -83,8 +84,8 @@ const Header = () => {
             }`}
           >
             Piscinas Modulares
-          </Link>
-          <Link 
+          </PrefetchLink>
+          <PrefetchLink 
             href="/galeria" 
             className={`font-medium hover:text-primary transition-colors ${
               location === '/galeria' 
@@ -93,10 +94,10 @@ const Header = () => {
             }`}
           >
             Galería
-          </Link>
+          </PrefetchLink>
           {isAuthenticated && (
             <>
-              <Link 
+              <PrefetchLink 
                 href="/dashboard" 
                 className={`font-medium hover:text-primary transition-colors ${
                   location === '/dashboard' 
@@ -105,8 +106,8 @@ const Header = () => {
                 }`}
               >
                 Panel
-              </Link>
-              <Link 
+              </PrefetchLink>
+              <PrefetchLink 
                 href="/cotizaciones" 
                 className={`font-medium hover:text-primary transition-colors ${
                   location === '/cotizaciones' 
@@ -115,7 +116,7 @@ const Header = () => {
                 }`}
               >
                 Mis Cotizaciones
-              </Link>
+              </PrefetchLink>
             </>
           )}
           <Link 
@@ -129,11 +130,11 @@ const Header = () => {
         </nav>
         
         <div className="flex items-center space-x-3">
-          <Link href="/design-generator" className="hidden md:inline-block">
+          <PrefetchLink href="/design-generator" className="hidden md:inline-block">
             <Button variant="default" className="bg-primary hover:bg-primary/90 text-white border border-primary">
               Iniciar proyecto
             </Button>
-          </Link>
+          </PrefetchLink>
           
           <button 
             className={`md:hidden hover:text-primary ${
@@ -145,7 +146,7 @@ const Header = () => {
           </button>
           
           {isAuthenticated ? (
-            <Link 
+            <PrefetchLink 
               href="/profile" 
               className={`px-3 py-2 rounded-full transition-colors border ${
                 isHomePage && !scrolled 
@@ -154,9 +155,9 @@ const Header = () => {
               }`}
             >
               {user?.username?.charAt(0).toUpperCase() || <FaUser />}
-            </Link>
+            </PrefetchLink>
           ) : (
-            <Link 
+            <PrefetchLink 
               href="/login" 
               className={`px-3 py-2 rounded-full transition-colors border ${
                 isHomePage && !scrolled 
@@ -165,7 +166,7 @@ const Header = () => {
               }`}
             >
               <FaUser />
-            </Link>
+            </PrefetchLink>
           )}
         </div>
       </div>

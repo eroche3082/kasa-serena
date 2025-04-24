@@ -7,6 +7,7 @@ import NotFound from "@/pages/not-found";
 import { useEffect } from "react";
 import { Header, Footer } from "@/features/layout";
 import { useAuth } from "@/context/AuthContext";
+import { SecurityHeaders } from "@/components/security/security-headers";
 
 // Importaciones directas para todas las páginas
 import HomePage from "@/pages/HomePage";
@@ -22,6 +23,7 @@ import ModularPoolPage from "@/pages/ModularPoolPage";
 import QuotesPage from "@/pages/QuotesPage";
 import QuoteRequestPage from "@/pages/QuoteRequestPage";
 import AgentChecklistPage from "@/pages/AgentChecklistPage";
+import GaleriaPage from "@/pages/GaleriaPage";
 
 function Router() {
   const auth = useAuth();
@@ -62,6 +64,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <SecurityHeaders />
         <Toaster />
         <Router />
       </TooltipProvider>

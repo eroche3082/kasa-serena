@@ -15,6 +15,7 @@ import AIDesignPage from "@/pages/AIDesignPage";
 import SmartContainerPage from "@/pages/SmartContainerPage";
 import ModularPoolPage from "@/pages/ModularPoolPage";
 import QuotesPage from "@/pages/QuotesPage";
+import QuoteRequestPage from "@/pages/QuoteRequestPage";
 import AgentChecklistPage from "@/pages/AgentChecklistPage";
 import { Header, Footer } from "@/features/layout";
 import { useAuth } from "@/context/AuthContext";

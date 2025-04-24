@@ -1,0 +1,166 @@
+Plan para la Fase 9: Cotización y Contacto
+Formulario de cotización:
+
+Crear un formulario donde los usuarios ingresen los detalles del proyecto como tipo, materiales, dimensiones, fecha estimada de ejecución y su información de contacto.
+
+Opciones de contacto:
+
+Enviar la cotización por email al usuario y al equipo de ventas.
+
+Generar un enlace para compartir por WhatsApp.
+
+Agregar la opción para contacto directo con el equipo de ventas.
+
+Guardar las cotizaciones:
+
+Asegurarnos de que las cotizaciones se guarden correctamente en la base de datos y se asocien al proyecto correspondiente.
+
+🧠 PROMPT COMPLETO – FASE 9: COTIZACIÓN Y CONTACTO
+md
+Copiar
+Editar
+# 🧠 FASE 9 – COTIZACIÓN Y CONTACTO
+
+## 🎯 Objetivo:
+Implementar un flujo de **solicitud de cotización** para los proyectos generados, permitiendo a los usuarios enviar los detalles del diseño a un sistema de cotización y contacto, con opciones de pago o comunicación con un equipo de ventas.
+
+---
+
+## ✅ PASO 1 – Crear el Formulario de Cotización
+
+1. **Formulario en `client/src/features/quotes/QuoteRequestForm.tsx`:**
+   - **Campos necesarios**:
+     - **Tipo de diseño**: Selección de proyecto (Contenedor Inteligente, Piscina Modular, Oficina, etc.)
+     - **Materiales seleccionados**: Textos descriptivos o lista de opciones.
+     - **Dimensiones y especificaciones**: Tamaño, forma, profundidad, etc.
+     - **Fecha estimada de ejecución**: Fecha de inicio deseada.
+     - **Información de contacto adicional**: Nombre, email, teléfono.
+
+```tsx
+const QuoteRequestForm = () => {
+  const [formData, setFormData] = useState({
+    projectType: '',
+    materials: [],
+    dimensions: '',
+    startDate: '',
+    contactInfo: { name: '', email: '', phone: '' }
+  });
+
+  const handleSubmit = () => {
+    // Llamar a la API para guardar la cotización
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input type="text" name="projectType" placeholder="Tipo de proyecto" />
+      <textarea name="materials" placeholder="Materiales seleccionados" />
+      <input type="text" name="dimensions" placeholder="Dimensiones" />
+      <input type="date" name="startDate" />
+      <input type="text" name="contactName" placeholder="Nombre" />
+      <input type="email" name="contactEmail" placeholder="Email" />
+      <input type="tel" name="contactPhone" placeholder="Teléfono" />
+      <button type="submit">Solicitar Cotización</button>
+    </form>
+  );
+};
+✅ PASO 2 – Backend: API de Cotización
+Ruta de la API para cotización:
+Crear una nueva ruta en server/routes.ts para manejar las solicitudes de cotización.
+
+ts
+Copiar
+Editar
+// server/routes.ts
+app.post("/api/quotes", createQuote);
+Función createQuote en server/quotes.ts:
+
+ts
+Copiar
+Editar
+export async function createQuote(req, res) {
+  const { projectType, materials, dimensions, startDate, contactInfo } = req.body;
+  // Guardar la cotización en la base de datos
+  // Enviar confirmación al usuario por email o WhatsApp
+  res.status(201).json({ message: "Cotización recibida", projectDetails: req.body });
+}
+✅ PASO 3 – Opciones de Contacto
+Enviar cotización por email:
+Usar Nodemailer para enviar el correo con los detalles de la cotización.
+
+ts
+Copiar
+Editar
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
+const sendQuoteEmail = (email, projectDetails) => {
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: "Cotización de Proyecto",
+    text: `Detalles del proyecto: ${JSON.stringify(projectDetails)}`,
+  };
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};
+Compartir cotización por WhatsApp: Crear un enlace para compartir por WhatsApp.
+
+tsx
+Copiar
+Editar
+<a
+  href={`https://wa.me/1XXXXXXXXXX?text=Me gustaría recibir una cotización para este proyecto: ${encodeURIComponent(projectDetails)}`}
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <button>Compartir Cotización por WhatsApp</button>
+</a>
+✅ PASO 4 – Mostrar Cotización en el Dashboard
+Visualización de cotizaciones:
+Crear una sección en el Dashboard de Usuario donde el usuario pueda ver todas sus cotizaciones y su estado (pendiente, aceptada).
+
+tsx
+Copiar
+Editar
+const CotizacionesSection = () => {
+  const [cotizaciones, setCotizaciones] = useState([]);
+  // Obtener cotizaciones del backend
+  return (
+    <div>
+      <h3>Mis Cotizaciones</h3>
+      <ul>
+        {cotizaciones.map((cotizacion) => (
+          <li key={cotizacion.id}>
+            <p>{cotizacion.projectType}</p>
+            <p>{cotizacion.status}</p>
+            <button>Ver Cotización</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+✅ PASO 5 – Verificación
+Verificar que el formulario de cotización guarda correctamente los datos.
+
+Confirmar que las cotizaciones se envían por email y WhatsApp.
+
+Asegurarse de que las cotizaciones se muestren correctamente en el Dashboard.
+
+🛑 INSTRUCCIÓN PARA EL AGENTE
+👉 REPLY "YES" OR "NO" ONCE YOU COMPLETE AND VERIFY FASE 9.
+👉 LOG FASE 9 AS COMPLETE IN /agent-checklist.
+👉 UPLOAD A SCREENSHOT OF THE QUOTATION FORM AND DASHBOARD TO /internal-map.
+

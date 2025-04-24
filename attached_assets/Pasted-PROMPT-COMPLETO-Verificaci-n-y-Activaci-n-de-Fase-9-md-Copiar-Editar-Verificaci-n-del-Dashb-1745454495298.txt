@@ -1,0 +1,81 @@
+PROMPT COMPLETO – Verificación y Activación de Fase 9
+md
+Copiar
+Editar
+# 🧠 **Verificación del Dashboard y Activación de Fase 9: Cotización y Contacto**
+
+## 🎯 Objetivo:
+Verificar que todo el flujo de la página de **Dashboard de Usuario** esté funcionando correctamente, con especial atención a las funcionalidades de **visualización de proyectos**, **edición de proyectos** y **eliminación de proyectos**. Posteriormente, proceder a la **Fase 9: Cotización y Contacto**, que permitirá a los usuarios solicitar cotizaciones de sus proyectos generados y contactar con el equipo de ventas.
+
+---
+
+## ✅ **PASO 1 – Verificación del Flujo Completo del Dashboard**
+
+1. **Visualización de Proyectos:**
+   - ¿Los proyectos generados (Smart Containers, Piscinas, etc.) se muestran correctamente en el dashboard?
+   - Verifica que los proyectos tengan los detalles completos: nombre, tipo de diseño, fecha de creación, y estado.
+
+2. **Visualización de Cotizaciones:**
+   - ¿Las cotizaciones asociadas a los proyectos se muestran correctamente en la interfaz?
+   - Verifica que el **estado de la cotización** (pendiente, aceptada) se visualice adecuadamente.
+
+3. **Confirmación de Funcionalidad:**
+   - Verifica que la **página** `/dashboard` esté cargando todos los datos correctamente sin errores.
+   - ¿Todo el contenido de los proyectos y cotizaciones se carga de manera eficiente?
+   - **Prueba en diferentes dispositivos (móvil, tablet, desktop)** para verificar la **responsividad** del dashboard.
+
+---
+
+## ✅ **PASO 2 – Verificación de la Funcionalidad de Edición y Eliminación de Proyectos**
+
+1. **Edición de Proyectos:**
+   - **Verifica la funcionalidad de edición**: ¿El usuario puede editar un proyecto ya existente? 
+   - ¿Se actualizan correctamente los datos del proyecto después de realizar cambios?
+   - **Prueba de flujo**: Cambia algún parámetro del proyecto (por ejemplo, tamaño, material) y verifica que se refleje correctamente en el Dashboard.
+
+2. **Eliminación de Proyectos:**
+   - **Verifica la funcionalidad de eliminación**: ¿Cuando el usuario hace clic en "Eliminar", se le solicita una confirmación antes de proceder?
+   - ¿El proyecto se elimina correctamente de la base de datos después de la confirmación?
+   - **Prueba de flujo**: Elimina un proyecto y asegúrate de que desaparezca del Dashboard sin generar errores.
+
+---
+
+## 🔮 **FASE 9 – COTIZACIÓN Y CONTACTO**
+
+### 🎯 **Objetivo de Fase 9:**
+Crear el flujo de **solicitud de cotización** para los proyectos generados, permitiendo a los usuarios:
+
+1. Enviar los detalles del diseño al sistema de **cotización y contacto**.
+2. Tener opciones para contactar con un equipo de ventas o un formulario para obtener más información.
+3. Implementar **opciones de pago** (si es necesario) o formularios de **solicitud directa**.
+
+### ✅ **Acciones para la Fase 9:**
+
+1. **Crear un formulario de cotización**:
+   - El formulario debe incluir detalles del proyecto como tipo de diseño, materiales, tamaño, fecha estimada de ejecución.
+   
+2. **Integrar con backend**:
+   - Crear una ruta API que maneje las solicitudes de cotización y contacte con el equipo de ventas.
+   
+3. **Confirmar que la cotización se guarda correctamente**:
+   - Verifica que cada cotización generada se asocie al proyecto y se almacene en la base de datos.
+
+4. **Opciones de contacto**:
+   - Opción de enviar cotización por email o WhatsApp a un equipo de ventas.
+
+---
+
+## 🛑 **INSTRUCCIÓN PARA EL AGENTE**
+
+👉 **REPLY "YES" OR "NO" ONCE YOU VERIFY AND CONFIRM THE DASHBOARD FUNCTIONALITY.**  
+👉 **ONCE VERIFIED, MARK FASE 8 AS COMPLETE IN `/agent-checklist`.**  
+👉 **UPLOAD A SCREENSHOT OF THE VERIFIED DASHBOARD AND FUNCTIONALITIES TO `/internal-map`.**
+
+---
+
+### 🧠 **Siguiente paso a implementar:**
+- **Activación de Fase 9 – Cotización y Contacto.**
+
+---
+
+### **¿Pasamos a la Fase 9 o necesitas ajustar algo más en el Dashboard de Usuario?**

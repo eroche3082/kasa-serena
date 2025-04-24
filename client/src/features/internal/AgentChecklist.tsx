@@ -136,9 +136,9 @@ const AgentChecklist = () => {
       name: "Seguridad, Deploy y Optimización",
       completed: false,
       items: [
-        { name: "Prefetch de rutas", completed: false },
+        { name: "Prefetch de rutas", completed: true },
         { name: "SEO dinámico (title/meta por página)", completed: false },
-        { name: "Optimización de imágenes", completed: false },
+        { name: "Optimización de imágenes", completed: true },
         { name: "Firebase deploy con dominio en producción", completed: false },
         { name: "Activar logs y alertas", completed: false }
       ]

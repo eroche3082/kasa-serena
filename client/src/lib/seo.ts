@@ -2,7 +2,7 @@
  * Utilidad para gestionar metadatos SEO de forma dinámica
  */
 
-interface MetaTagsOptions {
+export interface MetaTagsOptions {
   title?: string;
   description?: string;
   keywords?: string[];

@@ -2,6 +2,7 @@ import React from 'react';
 import { Container } from '@/components/ui/container';
 import { LazyImage } from '@/components/ui/lazy-image';
 import { HeicImageUploader } from '@/components/ui/heic-image-uploader';
+import { SEO } from '@/components/ui/seo';
 import { 
   Card, 
   CardContent, 
@@ -88,6 +89,11 @@ const GaleriaPage: React.FC = () => {
   
   return (
     <div className="py-8">
+      <SEO 
+        title="Galería de Diseños"
+        description="Explora nuestra galería de diseños arquitectónicos personalizados y optimizados para Puerto Rico."
+        keywords={['galería', 'diseños', 'arquitectura', 'imágenes optimizadas', 'Puerto Rico']}
+      />
       <Container>
         <div className="text-center mb-12">
           <h1 className="text-4xl font-semibold mb-4">Galería de Diseños</h1>

@@ -103,7 +103,7 @@ const InspirationChatbot = () => {
     
     try {
       // Aquí haríamos la llamada a la API en una implementación real
-      const response = await apiRequest<{response: string}>(
+      const response = await apiRequest(
         'POST', 
         '/api/chat-assistant', 
         {
@@ -198,7 +198,7 @@ const InspirationChatbot = () => {
         
         try {
           // Aquí haríamos la llamada al API para analizar la imagen
-          const response = await apiRequest<{description: string, style: string, materials: string[], recommendations: string[]}>(
+          const response = await apiRequest(
             'POST',
             '/api/analyze-image',
             {
@@ -210,8 +210,8 @@ const InspirationChatbot = () => {
           const data = await response.json();
           
           // Crear mensaje de respuesta
-          const recommendations = data.recommendations.map(rec => `• ${rec}`).join('\n');
-          const materials = data.materials.map(mat => `• ${mat}`).join('\n');
+          const recommendations = data.recommendations.map((rec: string) => `• ${rec}`).join('\n');
+          const materials = data.materials.map((mat: string) => `• ${mat}`).join('\n');
           
           const assistantMessage: ChatMessage = {
             id: (Date.now() + 1).toString(),

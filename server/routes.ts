@@ -706,6 +706,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to fetch quotes" });
     }
   });
+
+  // API para el chatbot de inspiración
+  app.post("/api/chat-assistant", async (req, res) => {
+    try {
+      const { message, projectType } = req.body;
+      
+      if (!message) {
+        return res.status(400).json({ message: "Message is required" });
+      }
+      
+      const result = await chatWithAssistant(message, projectType || 'inspiration');
+      res.json(result);
+    } catch (error: any) {
+      log(`Error en chat-assistant: ${error.message}`, "error");
+      res.status(500).json({ message: "Error generating chat response", error: error.message });
+    }
+  });
+  
+  // API para analizar imágenes de inspiración
+  app.post("/api/analyze-image", async (req, res) => {
+    try {
+      const { imageBase64, projectType } = req.body;
+      
+      if (!imageBase64) {
+        return res.status(400).json({ message: "Image data is required" });
+      }
+      
+      const result = await analyzeDesignImage(imageBase64, projectType || 'inspiration');
+      res.json(result);
+    } catch (error: any) {
+      log(`Error en analyze-image: ${error.message}`, "error");
+      res.status(500).json({ message: "Error analyzing image", error: error.message });
+    }
+  });
   
   // Endpoint de health-check para verificar el estado del servidor
   app.get("/api/health-check", (req, res) => {

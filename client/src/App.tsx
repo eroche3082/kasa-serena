@@ -24,6 +24,7 @@ import QuotesPage from "@/pages/QuotesPage";
 import QuoteRequestPage from "@/pages/QuoteRequestPage";
 import AgentChecklistPage from "@/pages/AgentChecklistPage";
 import GaleriaPage from "@/pages/GaleriaPage";
+import InspirationChatPage from "@/pages/InspirationChatPage";
 
 function Router() {
   const auth = useAuth();
@@ -52,6 +53,7 @@ function Router() {
         <Route path="/solicitar-cotizacion" component={QuoteRequestPage} />
         <Route path="/solicitar-cotizacion/:id" component={QuoteRequestPage} />
         <Route path="/galeria" component={GaleriaPage} />
+        <Route path="/inspiracion" component={InspirationChatPage} />
         <Route path="/internal-map" component={AgentChecklistPage} />
         <Route path="/agent-checklist" component={AgentChecklistPage} />
         <Route component={NotFound} />

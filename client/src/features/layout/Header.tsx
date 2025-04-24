@@ -95,6 +95,16 @@ const Header = () => {
           >
             Galería
           </PrefetchLink>
+          <PrefetchLink 
+            href="/inspiracion" 
+            className={`font-medium hover:text-primary transition-colors ${
+              location === '/inspiracion' 
+                ? 'text-primary' 
+                : isHomePage || scrolled ? 'text-neutral-800' : 'text-neutral-800'
+            }`}
+          >
+            Inspiración IA
+          </PrefetchLink>
           {isAuthenticated && (
             <>
               <PrefetchLink 

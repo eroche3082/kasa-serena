@@ -93,6 +93,36 @@ async function analyzeImageWithAI(imageBase64: string, projectType: string) {
   }
 }
 
+// Configuración para subir archivos al disco
+const diskStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(process.cwd(), 'public/uploads/images'));
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const ext = path.extname(file.originalname).toLowerCase();
+    cb(null, file.fieldname + '-' + uniqueSuffix + ext);
+  }
+});
+
+const diskUpload = multer({
+  storage: diskStorage,
+  limits: { fileSize: 20 * 1024 * 1024 },  // 20MB límite
+  fileFilter: (req, file, cb) => {
+    // Verificar tipos de archivos permitidos
+    const allowedTypes = [
+      'image/jpeg', 'image/jpg', 'image/png', 'image/heic', 'image/heif',
+      'application/octet-stream' // Algunos dispositivos envían HEIC como esto
+    ];
+    
+    if (!allowedTypes.includes(file.mimetype)) {
+      return cb(new Error('Tipo de archivo no soportado. Solo se permiten imágenes JPEG, PNG y HEIC.'));
+    }
+    
+    cb(null, true);
+  }
+});
+
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup session
   const SessionStore = MemoryStore(session);
@@ -720,6 +750,57 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Create HTTP server
+  // Ruta para convertir imágenes HEIC a JPEG y optimizarlas
+  app.post('/api/image-convert', diskUpload.single('image'), async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: 'No se ha subido ninguna imagen' });
+      }
+      
+      const filePath = req.file.path;
+      const fileExt = path.extname(filePath).toLowerCase();
+      
+      logger.info(`Procesando imagen: ${filePath} (${fileExt})`);
+      
+      let jpegPath = filePath;
+      let lowQualityPath = filePath;
+      
+      // Si es una imagen HEIC, convertirla a JPEG
+      if (fileExt === '.heic' || fileExt === '.heif') {
+        logger.info('Detectada imagen HEIC, convirtiendo a JPEG');
+        jpegPath = await convertHeicToJpeg(filePath);
+        
+        // Generar versión de baja calidad para carga progresiva
+        lowQualityPath = await generateLowQualityImage(jpegPath);
+      } else if (fileExt === '.jpg' || fileExt === '.jpeg' || fileExt === '.png') {
+        // Para otras imágenes, generar solo versión de baja calidad
+        logger.info('Generando versión de baja calidad');
+        lowQualityPath = await generateLowQualityImage(filePath);
+      }
+      
+      // Convertir rutas a URLs relativas
+      const baseUrl = '/uploads/images/';
+      const jpegUrl = jpegPath.split('/uploads/images/')[1] 
+        ? baseUrl + jpegPath.split('/uploads/images/')[1] 
+        : null;
+        
+      const lowQualityUrl = lowQualityPath.split('/uploads/images/')[1]
+        ? baseUrl + lowQualityPath.split('/uploads/images/')[1]
+        : null;
+      
+      res.json({
+        original: baseUrl + req.file.filename,
+        optimized: jpegUrl,
+        lowQuality: lowQualityUrl
+      });
+    } catch (error: any) {
+      logger.error('Error procesando imagen:', error);
+      res.status(500).json({ 
+        message: `Error procesando imagen: ${error.message}`
+      });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

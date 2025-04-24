@@ -1,37 +1,37 @@
-import { HTMLAttributes } from 'react';
+import React from 'react';
 import { cn } from '@/lib/utils';
 
-interface ContainerProps extends HTMLAttributes<HTMLDivElement> {
+interface ContainerProps {
+  children: React.ReactNode;
   className?: string;
-  size?: "default" | "small" | "large" | "full";
+  as?: React.ElementType;
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
 }
 
-/**
- * Componente de contenedor que aplica anchos máximos consistentes
- * para mantener el contenido centrado y con márgenes adecuados
- */
+const sizeClasses = {
+  sm: 'max-w-3xl',
+  md: 'max-w-4xl',
+  lg: 'max-w-6xl',
+  xl: 'max-w-7xl',
+  full: 'max-w-full',
+};
+
 export function Container({
-  className,
-  size = "default",
   children,
-  ...props
+  className,
+  as: Component = 'div',
+  size = 'lg'
 }: ContainerProps) {
   return (
-    <div
+    <Component
       className={cn(
-        "mx-auto px-4 md:px-6",
-        {
-          "max-w-screen-sm": size === "small",
-          "max-w-screen-xl": size === "default",
-          "max-w-screen-2xl": size === "large",
-          "w-full": size === "full",
-        },
+        'w-full mx-auto px-4 sm:px-6',
+        sizeClasses[size],
         className
       )}
-      {...props}
     >
       {children}
-    </div>
+    </Component>
   );
 }
 

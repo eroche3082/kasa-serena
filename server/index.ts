@@ -2,11 +2,15 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import rateLimit from "express-rate-limit";
+import logger from "./utils/logger";
 
 // Configuración de la aplicación
 const app = express();
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: false, limit: '10mb' }));
+
+// Configurar para confiar en proxies (necesario para rate limiter con X-Forwarded-For)
+app.set('trust proxy', 1);
 
 // Middleware de seguridad básica
 app.disable('x-powered-by'); // Eliminar el header que identifica Express
@@ -70,6 +74,15 @@ app.use((req, res, next) => {
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
+
+    // Registrar el error en nuestro sistema de logging
+    logger.error(`Error ${status}: ${message}`, { 
+      stack: err.stack, 
+      path: _req.path,
+      method: _req.method,
+      query: _req.query,
+      body: _req.body
+    });
 
     res.status(status).json({ message });
     throw err;

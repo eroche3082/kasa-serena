@@ -1,0 +1,188 @@
+PROMPT COMPLETO PARA IMPLEMENTAR Y VERIFICAR COTIZACIÓN
+🎯 Objetivo:
+Verificar que todo el flujo de cotización funciona correctamente, desde el formulario de cotización, la funcionalidad de envío, hasta el flujo de compartir cotizaciones por WhatsApp y email.
+
+🧩 PASO 1 – Verificación del Formulario de Cotización
+Comprobación de la funcionalidad del formulario:
+Verifica si el formulario de cotización captura correctamente los datos:
+
+Tipo de diseño
+
+Materiales seleccionados
+
+Dimensiones
+
+Fecha estimada de ejecución
+
+Información de contacto adicional
+
+Ejemplo de formulario:
+
+tsx
+Copiar
+Editar
+const QuoteRequestForm = () => {
+  const [formData, setFormData] = useState({
+    projectType: '',
+    materials: [],
+    dimensions: '',
+    startDate: '',
+    contactInfo: { name: '', email: '', phone: '' }
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Llamar a la API para guardar la cotización
+    console.log(formData);  // Verificar que los datos se capturen correctamente
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input type="text" name="projectType" placeholder="Tipo de proyecto" />
+      <textarea name="materials" placeholder="Materiales seleccionados" />
+      <input type="text" name="dimensions" placeholder="Dimensiones" />
+      <input type="date" name="startDate" />
+      <input type="text" name="contactName" placeholder="Nombre" />
+      <input type="email" name="contactEmail" placeholder="Email" />
+      <input type="tel" name="contactPhone" placeholder="Teléfono" />
+      <button type="submit">Solicitar Cotización</button>
+    </form>
+  );
+};
+Verifica que los datos del formulario se envían correctamente:
+
+En el handleSubmit, asegúrate de que la función de guardar cotización (o hacer un POST a la API) se active correctamente.
+
+🧩 PASO 2 – Verificación de la Funcionalidad de Envío de Cotización
+Backend de Envío de Cotización:
+Ruta de API /api/quotes:
+Verifica que la ruta en el backend esté configurada correctamente.
+
+ts
+Copiar
+Editar
+app.post("/api/quotes", createQuote);  // Asegúrate de que esta ruta esté registrada
+Función createQuote en server/quotes.ts:
+
+ts
+Copiar
+Editar
+export async function createQuote(req, res) {
+  const { projectType, materials, dimensions, startDate, contactInfo } = req.body;
+  // Guardar la cotización en la base de datos y asociarla al proyecto
+  // Enviar confirmación al usuario por email o WhatsApp
+  res.status(201).json({ message: "Cotización recibida", projectDetails: req.body });
+}
+Verifica que la cotización se guarda correctamente en la base de datos y que se asocia al proyecto del usuario.
+
+🧩 PASO 3 – Verificación de la Funcionalidad de Compartir Cotizaciones
+Compartir por WhatsApp:
+Verifica que el enlace de WhatsApp se construye correctamente:
+
+tsx
+Copiar
+Editar
+<a
+  href={`https://wa.me/1XXXXXXXXXX?text=Me gustaría recibir una cotización para este proyecto: ${encodeURIComponent(projectDetails)}`}
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <button>Compartir Cotización por WhatsApp</button>
+</a>
+Verifica que el enlace redirige correctamente a WhatsApp con la cotización pre-cargada en el mensaje.
+
+Envío por email:
+Verifica que el correo electrónico se envíe correctamente con los detalles de la cotización, usando la función sendQuoteEmail en el backend.
+
+ts
+Copiar
+Editar
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
+const sendQuoteEmail = (email, projectDetails) => {
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: "Cotización de Proyecto",
+    text: `Detalles del proyecto: ${JSON.stringify(projectDetails)}`,
+  };
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};
+Verifica que el correo de cotización se envíe correctamente a la dirección de email del usuario y al equipo de ventas.
+
+🧩 PASO 4 – Verificación de la Funcionalidad de Visualización de Cotizaciones
+Mostrar las cotizaciones en el Dashboard:
+Componente CotizacionesSection:
+Verifica que las cotizaciones se muestran correctamente en el Dashboard de Usuario.
+
+tsx
+Copiar
+Editar
+const CotizacionesSection = () => {
+  const [cotizaciones, setCotizaciones] = useState([]);
+  // Obtener cotizaciones del backend
+  return (
+    <div>
+      <h3>Mis Cotizaciones</h3>
+      <ul>
+        {cotizaciones.map((cotizacion) => (
+          <li key={cotizacion.id}>
+            <p>{cotizacion.projectType}</p>
+            <p>{cotizacion.status}</p>
+            <button>Ver Cotización</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+Verifica que los detalles de las cotizaciones (tipo de proyecto, estado, etc.) se muestran correctamente en la interfaz.
+
+🧩 PASO 5 – Verificación de la Navegación y Flujo de Usuario
+Navegación Fluida:
+Verifica que la navegación entre las secciones del dashboard y cotizaciones sea fluida:
+
+¿El usuario puede navegar entre el Dashboard, Mis Proyectos, y Mis Cotizaciones sin errores?
+
+¿Los enlaces son claros y se accede fácilmente a todas las secciones?
+
+🧩 PASO 6 – Verificación de la Funcionalidad de Edición y Eliminación de Proyectos
+Funcionalidad de Edición:
+Verifica que el botón de edición redirija correctamente al formulario de edición de proyecto.
+
+¿Los datos del proyecto se cargan correctamente en el formulario de edición?
+
+¿Se actualiza el proyecto correctamente después de la edición?
+
+Funcionalidad de Eliminación:
+Verifica que al hacer clic en "Eliminar" se muestre un diálogo de confirmación.
+
+¿El proyecto se elimina correctamente de la base de datos después de la confirmación?
+
+¿El proyecto desaparece del Dashboard después de eliminarlo?
+
+🛑 INSTRUCCIÓN PARA EL AGENTE
+👉 REPLY "YES" OR "NO" ONCE YOU COMPLETE AND VERIFY THE COTIZACIÓN FLOW AND FUNCTIONALITIES.
+👉 LOG FASE 9 AS COMPLETE IN /agent-checklist.
+👉 UPLOAD A SCREENSHOT OF THE COTIZACION FORM, DASHBOARD, AND FUNCTIONALITIES TO /internal-map.
+
+🚀 Próximos pasos:
+Verificar el flujo completo de cotización.
+
+Asegurar la correcta funcionalidad de compartir, guardar y ver cotizaciones.
+
+Activar la Fase 10: Seguridad, Deploy y Optimización una vez validado todo el sistema de cotizaciones.

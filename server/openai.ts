@@ -100,6 +100,44 @@ export async function generateDesignPreview(description: string, style: string, 
   }
 }
 
+export async function chatWithDesignAssistant(message: string, projectType: string = 'general') {
+  try {
+    log(`Consulta al asistente de diseño: "${message}" (tipo: ${projectType})`, 'openai');
+    
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        {
+          role: "system",
+          content: `Eres un asistente de diseño experto para Kasa Serena, especializado en ${
+            projectType === 'cocina' ? "diseño de cocinas" : 
+            projectType === 'puerta' ? "diseño de puertas" : 
+            projectType === 'ventana' ? "diseño de ventanas" : 
+            projectType === 'gabinete' ? "diseño de gabinetes" : 
+            "diseño de interiores y elementos arquitectónicos"
+          }. 
+          
+          Proporciona consejos útiles, responde preguntas sobre estilos, materiales, tendencias y técnicas de diseño. Tus respuestas deben ser informativas, prácticas y adaptadas al mercado de Puerto Rico. Incluye ejemplos concretos y recomendaciones personalizadas cuando sea posible.
+          
+          Usa un tono conversacional y amable, dirigiéndote al usuario como "tú". Responde siempre en español y mantén tus respuestas concisas pero completas.`
+        },
+        {
+          role: "user",
+          content: message
+        }
+      ],
+      max_tokens: 500
+    });
+    
+    return {
+      response: response.choices[0].message.content || "Lo siento, no pude procesar tu consulta en este momento."
+    };
+  } catch (error: any) {
+    log(`Error en el chat con asistente: ${error.message}`, 'openai');
+    throw new Error(`Error al procesar tu consulta: ${error.message}`);
+  }
+}
+
 export async function estimateDesignCost(projectType: string, materials: string[], size: string) {
   try {
     log(`Estimando costos para proyecto de ${projectType}`, 'openai');

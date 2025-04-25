@@ -18,7 +18,7 @@ import MemoryStore from "memorystore";
 import heicConvert from 'heic-convert';
 import { log } from "./vite";
 import { logger } from "./utils/logger";
-import { analyzeImage, generateDesignPreview, estimateDesignCost } from "./openai";
+import { analyzeImage, generateDesignPreview, estimateDesignCost, chatWithDesignAssistant } from "./openai";
 import { 
   generateDesign, 
   analyzeDesignImage as analyzeImageWithGemini,
@@ -707,7 +707,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // API para el chatbot de inspiración
+  // API para el chatbot de inspiración (usando OpenAI)
   app.post("/api/chat-assistant", async (req, res) => {
     try {
       const { message, projectType } = req.body;
@@ -716,7 +716,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Message is required" });
       }
       
-      const result = await chatWithAssistant(message, projectType || 'inspiration');
+      // Usar nuestra nueva función con OpenAI para mayor calidad en las respuestas
+      const result = await chatWithDesignAssistant(message, projectType || 'general');
       res.json(result);
     } catch (error: any) {
       log(`Error en chat-assistant: ${error.message}`, "error");

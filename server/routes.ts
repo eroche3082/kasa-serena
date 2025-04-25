@@ -741,6 +741,87 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  // API para obtener inspiraciones de diseño
+  app.get("/api/design-inspirations", async (req, res) => {
+    try {
+      const { category, style, limit } = req.query;
+      
+      // Obtener inspiraciones de diseño basadas en parámetros opcionales
+      // Por ahora retornamos inspiraciones predefinidas
+      const inspirations = [
+        {
+          id: '1',
+          imageUrl: '/src/features/home/assets/kitchen-marble-1.jpg',
+          title: 'Cocina de Mármol y Madera',
+          description: 'Combinación de mármol claro y madera oscura para un contraste elegante',
+          style: 'Contemporáneo',
+          category: 'cocina',
+          tags: ['cocina', 'mármol', 'madera', 'elegante']
+        },
+        {
+          id: '2',
+          imageUrl: '/src/features/home/assets/wooden-door-detail-2.jpg',
+          title: 'Puerta Artesanal de Roble',
+          description: 'Puerta con detalles tallados a mano por artesanos locales',
+          style: 'Tradicional',
+          category: 'puerta',
+          tags: ['puerta', 'madera', 'artesanal', 'tallado']
+        },
+        {
+          id: '3',
+          imageUrl: '/src/features/home/assets/kitchen-cabinets-1.jpg',
+          title: 'Gabinetes Modernos con Acentos Dorados',
+          description: 'Gabinetes en tono neutro con herrajes dorados para un toque lujoso',
+          style: 'Moderno',
+          category: 'cocina',
+          tags: ['gabinetes', 'cocina', 'dorado', 'lujo']
+        },
+        {
+          id: '4',
+          imageUrl: '/src/features/home/assets/family-kitchen-1.jpg',
+          title: 'Cocina Familiar con Isla Central',
+          description: 'Espacio funcional diseñado para reuniones familiares y experiencias culinarias compartidas',
+          style: 'Contemporáneo',
+          category: 'cocina',
+          tags: ['cocina', 'isla', 'familiar', 'funcional']
+        },
+        {
+          id: '5',
+          imageUrl: '/src/features/home/assets/craftsman-3.jpg',
+          title: 'Artesano Trabajando la Madera',
+          description: 'Maestros carpinteros creando piezas únicas con técnicas tradicionales',
+          style: 'Tradicional',
+          category: 'proceso',
+          tags: ['artesano', 'madera', 'técnica', 'tradición']
+        }
+      ];
+      
+      // Filtramos según los parámetros recibidos
+      let filteredInspirations = [...inspirations];
+      
+      if (category) {
+        filteredInspirations = filteredInspirations.filter(
+          item => item.category === category || item.tags.includes(category as string)
+        );
+      }
+      
+      if (style) {
+        filteredInspirations = filteredInspirations.filter(
+          item => item.style.toLowerCase() === (style as string).toLowerCase()
+        );
+      }
+      
+      // Limitamos los resultados si es necesario
+      const maxResults = limit ? parseInt(limit as string) : filteredInspirations.length;
+      filteredInspirations = filteredInspirations.slice(0, maxResults);
+      
+      res.json(filteredInspirations);
+    } catch (error: any) {
+      log(`Error obteniendo inspiraciones: ${error.message}`, "error");
+      res.status(500).json({ message: "Error obteniendo inspiraciones de diseño", error: error.message });
+    }
+  });
+  
   // Endpoint de health-check para verificar el estado del servidor
   app.get("/api/health-check", (req, res) => {
     res.json({

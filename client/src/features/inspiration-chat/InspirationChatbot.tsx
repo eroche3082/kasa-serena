@@ -60,31 +60,45 @@ const InspirationChatbot = () => {
   };
 
   const fetchInitialInspirations = async () => {
-    // En una implementación real, esto haría una llamada a la API
-    // Por ahora usamos datos ficticios
-    setInspirations([
-      {
-        imageUrl: '/src/features/home/assets/kitchen-marble-1.jpg',
-        title: 'Cocina de Mármol y Madera',
-        description: 'Combinación de mármol claro y madera oscura para un contraste elegante',
-        style: 'Contemporáneo',
-        tags: ['cocina', 'mármol', 'madera', 'elegante']
-      },
-      {
-        imageUrl: '/src/features/home/assets/wooden-door-detail-2.jpg',
-        title: 'Puerta Artesanal de Roble',
-        description: 'Puerta con detalles tallados a mano por artesanos locales',
-        style: 'Tradicional',
-        tags: ['puerta', 'madera', 'artesanal', 'tallado']
-      },
-      {
-        imageUrl: '/src/features/home/assets/kitchen-cabinets-1.jpg',
-        title: 'Gabinetes Modernos con Acentos Dorados',
-        description: 'Gabinetes en tono neutro con herrajes dorados para un toque lujoso',
-        style: 'Moderno',
-        tags: ['gabinetes', 'cocina', 'dorado', 'lujo']
+    try {
+      setIsLoading(true);
+      // Llamada a la API para obtener inspiraciones iniciales
+      const response = await fetch('/api/design-inspirations?limit=3');
+      
+      if (!response.ok) {
+        throw new Error('Error al obtener inspiraciones');
       }
-    ]);
+      
+      const data = await response.json();
+      setInspirations(data);
+    } catch (error) {
+      console.error('Error fetching inspirations:', error);
+      toast({
+        title: "Error",
+        description: "No se pudieron cargar las inspiraciones de diseño. Mostrando alternativas.",
+        variant: "destructive"
+      });
+      
+      // Fallback a inspiraciones locales en caso de error
+      setInspirations([
+        {
+          imageUrl: '/src/features/home/assets/kitchen-marble-1.jpg',
+          title: 'Cocina de Mármol y Madera',
+          description: 'Combinación de mármol claro y madera oscura para un contraste elegante',
+          style: 'Contemporáneo',
+          tags: ['cocina', 'mármol', 'madera', 'elegante']
+        },
+        {
+          imageUrl: '/src/features/home/assets/wooden-door-detail-2.jpg',
+          title: 'Puerta Artesanal de Roble',
+          description: 'Puerta con detalles tallados a mano por artesanos locales',
+          style: 'Tradicional',
+          tags: ['puerta', 'madera', 'artesanal', 'tallado']
+        }
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const sendMessage = async () => {
@@ -148,10 +162,49 @@ const InspirationChatbot = () => {
     }
   };
 
-  const fetchRelatedInspirations = (query: string) => {
-    // En una implementación real, buscaríamos inspiraciones relacionadas con la consulta
-    // Por ahora, simulamos un cambio en el orden
-    setInspirations(prev => [...prev].sort(() => Math.random() - 0.5));
+  const fetchRelatedInspirations = async (query: string) => {
+    try {
+      setIsLoading(true);
+      // Extraemos posibles categorías o estilos de la consulta
+      const keywords = query.toLowerCase().split(/\s+/);
+      const commonCategories = ['cocina', 'puerta', 'ventana', 'baño', 'dormitorio', 'sala', 'comedor', 'gabinete'];
+      const commonStyles = ['moderno', 'contemporáneo', 'tradicional', 'minimalista', 'industrial', 'rústico', 'mediterráneo'];
+      
+      // Buscamos coincidencias en la consulta
+      const categoryMatch = keywords.find(word => commonCategories.includes(word));
+      const styleMatch = keywords.find(word => commonStyles.includes(word));
+      
+      // Construimos la URL con los parámetros encontrados
+      let url = '/api/design-inspirations?limit=3';
+      if (categoryMatch) url += `&category=${categoryMatch}`;
+      if (styleMatch) url += `&style=${styleMatch}`;
+      
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error('Error al obtener inspiraciones relacionadas');
+      }
+      
+      const data = await response.json();
+      
+      // Si no hay resultados, mantenemos las inspiraciones actuales
+      if (data.length > 0) {
+        setInspirations(data);
+      } else {
+        // Si no hay resultados específicos, solicitamos inspiraciones generales
+        const fallbackResponse = await fetch('/api/design-inspirations?limit=3');
+        if (fallbackResponse.ok) {
+          const fallbackData = await fallbackResponse.json();
+          setInspirations(fallbackData);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching related inspirations:', error);
+      // En caso de error, mezclamos las inspiraciones actuales para dar sensación de cambio
+      setInspirations(prev => [...prev].sort(() => Math.random() - 0.5));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleImageUpload = () => {

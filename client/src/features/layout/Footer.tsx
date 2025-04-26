@@ -119,10 +119,13 @@ const Footer = () => {
           <div className="mb-4 md:mb-0">
             &copy; {new Date().getFullYear()} Kasa Serena Designs. Todos los derechos reservados.
           </div>
-          <div className="flex space-x-6">
+          <div className="flex flex-wrap space-x-4 md:space-x-6">
             <Link href="#" className="hover:text-primary transition-colors">Política de privacidad</Link>
             <Link href="#" className="hover:text-primary transition-colors">Términos y condiciones</Link>
             <Link href="#" className="hover:text-primary transition-colors">Política de cookies</Link>
+            <Link href="/admin" className="hover:text-primary transition-colors">Admin</Link>
+            <Link href="/super-admin" className="hover:text-primary transition-colors">Super Admin</Link>
+            <Link href="/editor-visual" className="hover:text-primary transition-colors">Editor Visual</Link>
           </div>
         </div>
       </div>

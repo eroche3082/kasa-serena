@@ -11,6 +11,7 @@
     "db:push": "drizzle-kit push"
   },
   "dependencies": {
+    "@builder.io/react": "^8.1.0",
     "@fontsource/poppins": "^5.2.5",
     "@hookform/resolvers": "^3.10.0",
     "@jridgewell/trace-mapping": "^0.3.25",
@@ -80,6 +81,7 @@
     "react-dropzone": "^14.3.8",
     "react-hook-form": "^7.55.0",
     "react-icons": "^5.4.0",
+    "react-page": "^2.5.5",
     "react-resizable-panels": "^2.1.7",
     "recharts": "^2.15.2",
     "stripe": "^18.0.0",

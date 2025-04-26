@@ -47,7 +47,6 @@ const EditorVisualPage: React.FC = () => {
         <SEO 
           title="Acceso restringido - Editor Visual"
           description="Acceso restringido al editor visual para administradores."
-          noindex={true}
         />
         <Container>
           <Card className="max-w-md mx-auto p-6 text-center">
@@ -70,7 +69,6 @@ const EditorVisualPage: React.FC = () => {
       <SEO 
         title="Editor Visual - Kasa Serena"
         description="Herramienta de edición visual para personalizar el sitio web."
-        noindex={true}
       />
       
       {/* Sin Container para aprovechar todo el ancho */}

@@ -60,7 +60,6 @@ const SuperAdminPage: React.FC = () => {
         <SEO 
           title="Acceso restringido - Panel de Superadministrador"
           description="Acceso restringido al panel de superadministrador."
-          noindex={true}
         />
         <Container>
           <Card className="max-w-md mx-auto p-6 text-center">
@@ -83,7 +82,6 @@ const SuperAdminPage: React.FC = () => {
       <SEO 
         title="Panel de Superadministrador - Kasa Serena"
         description="Panel de superadministrador para gestionar el sistema."
-        noindex={true}
       />
       
       <Container>

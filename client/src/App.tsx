@@ -25,6 +25,9 @@ import QuoteRequestPage from "@/pages/QuoteRequestPage";
 import AgentChecklistPage from "@/pages/AgentChecklistPage";
 import GaleriaPage from "@/pages/GaleriaPage";
 import InspirationChatPage from "@/pages/InspirationChatPage";
+import AdminPage from "@/pages/AdminPage";
+import SuperAdminPage from "@/pages/SuperAdminPage";
+import EditorVisualPage from "@/pages/EditorVisualPage";
 
 function Router() {
   const auth = useAuth();
@@ -56,6 +59,10 @@ function Router() {
         <Route path="/inspiracion" component={InspirationChatPage} />
         <Route path="/internal-map" component={AgentChecklistPage} />
         <Route path="/agent-checklist" component={AgentChecklistPage} />
+        {/* Nuevas rutas para administración y editor visual */}
+        <Route path="/admin" component={AdminPage} />
+        <Route path="/super-admin" component={SuperAdminPage} />
+        <Route path="/editor-visual" component={EditorVisualPage} />
         <Route component={NotFound} />
       </Switch>
       <Footer />

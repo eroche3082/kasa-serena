@@ -59,7 +59,6 @@ const AdminPage: React.FC = () => {
         <SEO 
           title="Acceso restringido - Panel de Administración"
           description="Acceso restringido al panel de administración."
-          noindex={true}
         />
         <Container>
           <Card className="max-w-md mx-auto p-6 text-center">
@@ -82,7 +81,6 @@ const AdminPage: React.FC = () => {
       <SEO 
         title="Panel de Administración - Kasa Serena"
         description="Panel de administración para gestionar el sitio web."
-        noindex={true}
       />
       
       <Container>

@@ -435,8 +435,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // Endpoint para chat con asistente de diseño
-  app.post("/api/design-chat", requireAuth, requireAnyRole(['cliente', 'disenador']), async (req, res) => {
+  // Endpoint para chat con asistente de diseño (público para mejor accesibilidad)
+  app.post("/api/design-chat", async (req, res) => {
     try {
       const { message, projectType } = req.body;
       

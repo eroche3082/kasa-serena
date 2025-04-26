@@ -96,7 +96,7 @@ export async function generateDesign(params: DesignParams): Promise<DesignResult
     } catch (e) {
       // Si la respuesta no es un JSON válido, extraer la información manualmente
       const descriptionMatch = text.match(/description["\s:]+([^"]+)/);
-      const materialsMatch = text.match(/materials["\s:]+\[(.*?)\]/s);
+      const materialsMatch = text.match(/materials["\s:]+\[(.*?)\]/);
       const estimatedTimeMatch = text.match(/estimatedTime["\s:]+([^"]+)/);
       
       parsedResponse = {
@@ -234,11 +234,11 @@ export async function chatWithAssistant(message: string, projectType: string = '
     const history = [
       {
         role: "user",
-        parts: "Hola, necesito ayuda con mi proyecto de diseño."
+        parts: [{ text: "Hola, necesito ayuda con mi proyecto de diseño." }]
       },
       {
         role: "model",
-        parts: "¡Hola! Soy el asistente de diseño de Kasa Serena. Estoy aquí para ayudarte con tu proyecto. Puedes preguntarme sobre materiales, estilos, costos, tiempos de entrega o cualquier otra duda relacionada con tu proyecto de diseño. ¿En qué puedo ayudarte hoy?"
+        parts: [{ text: "¡Hola! Soy el asistente de diseño de Kasa Serena. Estoy aquí para ayudarte con tu proyecto. Puedes preguntarme sobre materiales, estilos, costos, tiempos de entrega o cualquier otra duda relacionada con tu proyecto de diseño. ¿En qué puedo ayudarte hoy?" }]
       }
     ];
     
@@ -278,7 +278,7 @@ export async function chatWithAssistant(message: string, projectType: string = '
     });
     
     // Enviar mensaje con contexto
-    const result = await chat.sendMessage(`${contextPrompt}\n\nPregunta del cliente: ${message}`);
+    const result = await chat.sendMessage([{ text: `${contextPrompt}\n\nPregunta del cliente: ${message}` }]);
     const response = result.response.text();
     
     return { response };
